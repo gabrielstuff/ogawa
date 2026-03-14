@@ -37,23 +37,24 @@ describe('QBittorrentAdapter E2E', () => {
     let torrent
     try {
       torrent = await waitForTorrent(adapter, 30000)
-    } catch {
+    }
+    catch {
       throw new Error('Failed to find torrent after adding by magnet')
     }
-    
+
     if (!torrent) {
       throw new Error('Torrent not found')
     }
-    
+
     expect(torrent.name).toContain('Sintel')
-    
+
     const testHash = torrent.hash
 
     const startResult = await adapter.startTorrents([testHash])
     expect(startResult).toBe(true)
 
     await new Promise(resolve => setTimeout(resolve, 3000))
-    
+
     const torrents = await adapter.getTorrents()
     const updated = torrents.find(t => t.hash === testHash)
     expect(updated).toBeDefined()

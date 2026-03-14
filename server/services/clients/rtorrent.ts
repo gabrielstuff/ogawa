@@ -44,9 +44,9 @@ export class RTorrentAdapter implements TorrentClientAdapter {
   private async scgiRequest(method: string, params: string[] = []): Promise<unknown> {
     const scgiHost = this.scgiUrl.replace('scgi://', '')
     const [host, port] = scgiHost.includes(':') ? scgiHost.split(':') : [scgiHost, '5000']
-    
+
     const requestBody = this.buildScgiRequest(method, params)
-    
+
     const response = await fetch(`http://${host}:${port}`, {
       method: 'POST',
       headers: {
@@ -70,7 +70,7 @@ export class RTorrentAdapter implements TorrentClientAdapter {
       content += `<param><value><string>${this.escapeXml(param)}</string></value></param>`
     }
     content += '</params></methodCall>'
-    
+
     const contentLength = Buffer.byteLength(content)
     return `CONTENT_LENGTH${contentLength}\u0000${content}`
   }
@@ -89,22 +89,22 @@ export class RTorrentAdapter implements TorrentClientAdapter {
       const getValue = (str: string): unknown => {
         const stringMatch = str.match(/<string>(.*?)<\/string>/)
         if (stringMatch && stringMatch[1]) return stringMatch[1]
-        
+
         const intMatch = str.match(/<int>(.*?)<\/int>/)
         if (intMatch && intMatch[1]) return parseInt(intMatch[1], 10)
-        
+
         const doubleMatch = str.match(/<double>(.*?)<\/double>/)
         if (doubleMatch && doubleMatch[1]) return parseFloat(doubleMatch[1])
-        
+
         const booleanMatch = str.match(/<boolean>(.*?)<\/boolean>/)
         if (booleanMatch && booleanMatch[1]) return booleanMatch[1] === '1'
-        
+
         const arrayMatch = str.match(/<array><data>(.*?)<\/data><\/array>/)
         if (arrayMatch && arrayMatch[1]) {
           const items = arrayMatch[1].match(/<value>.*?<\/value>/g) || []
           return items.map(item => getValue(item))
         }
-        
+
         return str
       }
 
@@ -115,7 +115,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
       }
 
       return null
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to parse XML-RPC response:', e)
       return null
     }
@@ -125,20 +126,21 @@ export class RTorrentAdapter implements TorrentClientAdapter {
     try {
       const result = await this.scgiRequest('download_list', ['main'])
       const hashes: string[] = Array.isArray(result) ? result as string[] : []
-      
+
       if (hashes.length === 0) return []
 
       const torrents: Torrent[] = []
-      
+
       for (const hash of hashes) {
         const details = await this.getTorrentByHash(hash)
         if (details) {
           torrents.push(details)
         }
       }
-      
+
       return torrents
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch rTorrent torrents:', e)
       return []
     }
@@ -174,11 +176,11 @@ export class RTorrentAdapter implements TorrentClientAdapter {
       }
 
       const data = Array.isArray(result[0]) ? (result[0] as (string | number | boolean | null)[]) : []
-      
+
       if (data.length < 18) return null
 
       const [rtHash, name, size, downloaded, uploaded, downRate, upRate, seeds, peers, state, isOpen, isHashing, isUploading, isDownloading, ratio, addedOn, completedOn, left] = data as [
-        string, string, number, number, number, number, number, number, number, number, boolean, boolean, boolean, boolean, number, number, number, number
+        string, string, number, number, number, number, number, number, number, number, boolean, boolean, boolean, boolean, number, number, number, number,
       ]
 
       return {
@@ -197,7 +199,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
         doneAt: completedOn ? completedOn * 1000 : null,
         ratio: ratio || 0,
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(`Failed to fetch rTorrent torrent ${hash}:`, e)
       return null
     }
@@ -217,7 +220,7 @@ export class RTorrentAdapter implements TorrentClientAdapter {
       ]
 
       const filesResult = await this.scgiRequest('system.multicall', [filesParams.map(p => `(${p})`).join('')])
-      
+
       let files: TorrentFile[] = []
       if (filesResult && Array.isArray(filesResult) && Array.isArray(filesResult[0])) {
         const fileData = filesResult[0] as (string | number | null)[][]
@@ -237,7 +240,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
         files,
         trackers: [],
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error(`Failed to fetch rTorrent torrent details ${hash}:`, e)
       return null
     }
@@ -265,7 +269,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
         await this.scgiRequest('d.start', [hash])
       }
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to start rTorrent torrents:', e)
       return false
     }
@@ -278,7 +283,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
         await this.scgiRequest('d.close', [hash])
       }
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to stop rTorrent torrents:', e)
       return false
     }
@@ -292,7 +298,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
         await this.scgiRequest('d.erase', [hash])
       }
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to delete rTorrent torrents:', e)
       return false
     }
@@ -302,7 +309,8 @@ export class RTorrentAdapter implements TorrentClientAdapter {
     try {
       const result = await this.scgiRequest('system.listMethods', [])
       return result !== null
-    } catch {
+    }
+    catch {
       return false
     }
   }

@@ -16,18 +16,18 @@ const statusFilter = ref('all')
 
 const filteredTorrents = computed(() => {
   if (!torrents.value) return []
-  
+
   let result = torrents.value
-  
+
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(t => (t.name || '').toLowerCase().includes(query))
   }
-  
+
   if (statusFilter.value !== 'all') {
     result = result.filter(t => t.state === statusFilter.value)
   }
-  
+
   return result
 })
 
@@ -74,7 +74,8 @@ const selectedTorrents = ref<Set<string>>(new Set())
 function toggleSelect(hash: string) {
   if (selectedTorrents.value.has(hash)) {
     selectedTorrents.value.delete(hash)
-  } else {
+  }
+  else {
     selectedTorrents.value.add(hash)
   }
 }
@@ -82,7 +83,8 @@ function toggleSelect(hash: string) {
 function toggleAll() {
   if (selectedTorrents.value.size === filteredTorrents.value.length) {
     selectedTorrents.value.clear()
-  } else {
+  }
+  else {
     selectedTorrents.value = new Set(filteredTorrents.value.map(t => t.hash))
   }
 }
@@ -92,7 +94,9 @@ function toggleAll() {
   <div class="p-2 sm:p-3">
     <!-- Header -->
     <div class="flex items-center justify-between mb-3">
-      <h1 class="text-xl font-semibold">Torrents</h1>
+      <h1 class="text-xl font-semibold">
+        Torrents
+      </h1>
       <UButton
         icon="i-heroicons-arrow-path"
         variant="ghost"
@@ -121,14 +125,28 @@ function toggleAll() {
     </div>
 
     <!-- Loading State -->
-    <div v-if="pending" class="flex justify-center py-8">
-      <UIcon name="i-heroicons-arrow-path" class="w-6 h-6 animate-spin text-primary-500" />
+    <div
+      v-if="pending"
+      class="flex justify-center py-8"
+    >
+      <UIcon
+        name="i-heroicons-arrow-path"
+        class="w-6 h-6 animate-spin text-primary-500"
+      />
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="filteredTorrents.length === 0" class="text-center py-12">
-      <UIcon name="i-heroicons-cloud-arrow-down" class="w-12 h-12 mx-auto text-gray-600 mb-3" />
-      <p class="text-gray-400 text-sm mb-4">No torrents yet</p>
+    <div
+      v-else-if="filteredTorrents.length === 0"
+      class="text-center py-12"
+    >
+      <UIcon
+        name="i-heroicons-cloud-arrow-down"
+        class="w-12 h-12 mx-auto text-gray-600 mb-3"
+      />
+      <p class="text-gray-400 text-sm mb-4">
+        No torrents yet
+      </p>
       <NuxtLink to="/add">
         <UButton size="sm">Add torrent</UButton>
       </NuxtLink>
@@ -138,14 +156,30 @@ function toggleAll() {
     <div v-else>
       <!-- Desktop Table Header -->
       <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[11px] text-gray-500 font-medium uppercase tracking-wide">
-        <div class="col-span-4">Name</div>
-        <div class="col-span-1 text-right">Size</div>
-        <div class="col-span-1 text-right">Down</div>
-        <div class="col-span-1 text-right">Up</div>
-        <div class="col-span-1 text-right">S/P</div>
-        <div class="col-span-1 text-right">Ratio</div>
-        <div class="col-span-1 text-center">%</div>
-        <div class="col-span-2 text-right">Added</div>
+        <div class="col-span-4">
+          Name
+        </div>
+        <div class="col-span-1 text-right">
+          Size
+        </div>
+        <div class="col-span-1 text-right">
+          Down
+        </div>
+        <div class="col-span-1 text-right">
+          Up
+        </div>
+        <div class="col-span-1 text-right">
+          S/P
+        </div>
+        <div class="col-span-1 text-right">
+          Ratio
+        </div>
+        <div class="col-span-1 text-center">
+          %
+        </div>
+        <div class="col-span-2 text-right">
+          Added
+        </div>
       </div>
 
       <!-- Desktop Torrent Rows -->
@@ -158,7 +192,7 @@ function toggleAll() {
           <!-- Name with inline progress -->
           <div class="col-span-4 flex items-center gap-2 min-w-0">
             <div class="w-14 h-1.5 bg-gray-700 rounded-full overflow-hidden flex-shrink-0">
-              <div 
+              <div
                 class="h-full transition-all"
                 :class="`bg-${getProgressColor(torrent.state)}-500`"
                 :style="{ width: `${getProgressPercent(torrent.completed, torrent.size)}%` }"
@@ -166,38 +200,48 @@ function toggleAll() {
             </div>
             <span class="truncate">{{ torrent.name || 'Unknown' }}</span>
           </div>
-          
+
           <!-- Size -->
-          <div class="col-span-1 text-right text-gray-400">{{ formatSize(torrent.size) }}</div>
-          
+          <div class="col-span-1 text-right text-gray-400">
+            {{ formatSize(torrent.size) }}
+          </div>
+
           <!-- Down -->
-          <div class="col-span-1 text-right text-gray-400">{{ formatSpeed(torrent.downloadSpeed) }}</div>
-          
+          <div class="col-span-1 text-right text-gray-400">
+            {{ formatSpeed(torrent.downloadSpeed) }}
+          </div>
+
           <!-- Up -->
-          <div class="col-span-1 text-right text-gray-400">{{ formatSpeed(torrent.uploadSpeed) }}</div>
-          
+          <div class="col-span-1 text-right text-gray-400">
+            {{ formatSpeed(torrent.uploadSpeed) }}
+          </div>
+
           <!-- Seeds/Peers -->
-          <div class="col-span-1 text-right text-gray-400">{{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }}</div>
-          
+          <div class="col-span-1 text-right text-gray-400">
+            {{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }}
+          </div>
+
           <!-- Ratio -->
-          <div class="col-span-1 text-right text-gray-400">{{ (torrent.ratio || 0).toFixed(2) }}</div>
-          
+          <div class="col-span-1 text-right text-gray-400">
+            {{ (torrent.ratio || 0).toFixed(2) }}
+          </div>
+
           <!-- Progress -->
           <div class="col-span-1 text-center">
-            <span 
+            <span
               class="text-[10px] font-medium px-1.5 py-0.5 rounded"
               :class="{
                 'bg-primary-500/20 text-primary-400': torrent.state === 'downloading',
                 'bg-success-500/20 text-success-400': torrent.state === 'seeding',
                 'bg-warning-500/20 text-warning-400': torrent.state === 'paused',
                 'bg-error-500/20 text-error-400': torrent.state === 'error',
-                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped'
+                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ getProgressPercent(torrent.completed, torrent.size) }}%
             </span>
           </div>
-          
+
           <!-- Added -->
           <div class="col-span-2 text-right text-gray-500">
             {{ torrent.addedAt ? new Date(torrent.addedAt).toLocaleDateString() : '-' }}
@@ -216,7 +260,10 @@ function toggleAll() {
             <!-- Progress Ring -->
             <div class="relative flex-shrink-0">
               <div class="w-10 h-10">
-                <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <svg
+                  class="w-full h-full -rotate-90"
+                  viewBox="0 0 36 36"
+                >
                   <path
                     class="text-gray-700"
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -241,7 +288,9 @@ function toggleAll() {
 
             <!-- Info -->
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium truncate">{{ torrent.name || 'Unknown' }}</p>
+              <p class="text-sm font-medium truncate">
+                {{ torrent.name || 'Unknown' }}
+              </p>
               <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-400 mt-1">
                 <span>{{ formatSize(torrent.size) }}</span>
                 <span v-if="torrent.downloadSpeed">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
@@ -251,14 +300,14 @@ function toggleAll() {
             </div>
 
             <!-- State Badge -->
-            <span 
+            <span
               class="text-[10px] font-medium px-2 py-1 rounded flex-shrink-0"
               :class="{
                 'bg-primary-500/20 text-primary-400': torrent.state === 'downloading',
                 'bg-success-500/20 text-success-400': torrent.state === 'seeding',
                 'bg-warning-500/20 text-warning-400': torrent.state === 'paused',
                 'bg-error-500/20 text-error-400': torrent.state === 'error',
-                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped'
+                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ torrent.state || 'stopped' }}
@@ -273,7 +322,10 @@ function toggleAll() {
       to="/add"
       class="fixed right-3 bottom-16 sm:bottom-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center shadow-lg hover:bg-primary-400 transition-colors md:hidden"
     >
-      <UIcon name="i-heroicons-plus" class="w-5 h-5" />
+      <UIcon
+        name="i-heroicons-plus"
+        class="w-5 h-5"
+      />
     </NuxtLink>
   </div>
 </template>

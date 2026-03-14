@@ -3,9 +3,9 @@ import { createClientAdapter } from '../../services/factory'
 async function getSettings() {
   const db = await import('../../../db').then(m => m.default)
   const { settings: settingsTable } = await import('../../../db/schema').then(m => m)
-  
+
   const rows = await db.select().from(settingsTable).all()
-  
+
   const result: Record<string, Record<string, string>> = {}
   for (const row of rows) {
     const parts = row.key.split('.')
@@ -17,7 +17,7 @@ async function getSettings() {
   }
 
   const clientType = result.client?.type || 'qBittorrent'
-  
+
   switch (clientType) {
     case 'qBittorrent':
       return {
@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
 
   if (method === 'GET') {
     const hash = getRouterParam(event, 'hash')
-    
+
     if (hash) {
       return await adapter.getTorrentDetails(hash)
     }

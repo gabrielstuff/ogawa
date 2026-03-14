@@ -22,7 +22,8 @@ export default defineEventHandler(async (event) => {
         method: 'GET',
       })
       return { success: true, client: 'qBittorrent' }
-    } catch (e) {
+    }
+    catch (e) {
       throw createError({
         statusCode: 500,
         message: 'Failed to connect to qBittorrent',
@@ -54,7 +55,8 @@ export default defineEventHandler(async (event) => {
         return { success: true, client: 'Transmission' }
       }
       throw new Error('Invalid response')
-    } catch (e) {
+    }
+    catch (e) {
       throw createError({
         statusCode: 500,
         message: 'Failed to connect to Transmission',
@@ -80,7 +82,8 @@ export default defineEventHandler(async (event) => {
         return { success: true, client: 'rTorrent' }
       }
       throw new Error('SCGI request failed')
-    } catch (e) {
+    }
+    catch (e) {
       throw createError({
         statusCode: 500,
         message: 'Failed to connect to rTorrent',
@@ -94,7 +97,7 @@ export default defineEventHandler(async (event) => {
     const delugePassword = password || 'admin'
 
     try {
-      const response = await ofetch<{ id: number; result: string; error?: string }>(`http://${delugeHost}:${delugePort}/json`, {
+      const response = await ofetch<{ id: number, result: string, error?: string }>(`http://${delugeHost}:${delugePort}/json`, {
         method: 'POST',
         body: {
           method: 'auth.login',
@@ -107,7 +110,8 @@ export default defineEventHandler(async (event) => {
         return { success: true, client: 'Deluge' }
       }
       throw new Error(response.error)
-    } catch (e) {
+    }
+    catch (e) {
       throw createError({
         statusCode: 500,
         message: 'Failed to connect to Deluge',

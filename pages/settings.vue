@@ -79,13 +79,16 @@ async function saveSettings() {
       clientData.url = clientUrl.value
       clientData.username = clientUsername.value
       clientData.password = clientPassword.value
-    } else if (showTransmissionFields.value) {
+    }
+    else if (showTransmissionFields.value) {
       clientData.url = clientUrl.value
       clientData.username = clientUsername.value
       clientData.password = clientPassword.value
-    } else if (showRTorrentFields.value) {
+    }
+    else if (showRTorrentFields.value) {
       clientData.url = clientUrl.value
-    } else if (showDelugeFields.value) {
+    }
+    else if (showDelugeFields.value) {
       clientData.host = clientHost.value
       clientData.port = clientPort.value
       clientData.password = clientPassword.value
@@ -108,9 +111,11 @@ async function saveSettings() {
       },
     })
     refresh()
-  } catch (e) {
+  }
+  catch (e) {
     console.error('Failed to save settings:', e)
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 }
@@ -133,7 +138,8 @@ async function testConnection() {
     })
     testStatus.value = 'success'
     testMessage.value = 'Connection successful!'
-  } catch (e: any) {
+  }
+  catch (e: any) {
     testStatus.value = 'error'
     testMessage.value = e.message || 'Connection failed'
   }
@@ -142,18 +148,32 @@ async function testConnection() {
 
 <template>
   <div class="p-4 max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6">Settings</h1>
+    <h1 class="text-2xl font-bold mb-6">
+      Settings
+    </h1>
 
-    <div v-if="pending" class="flex justify-center py-8">
-      <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-primary-500" />
+    <div
+      v-if="pending"
+      class="flex justify-center py-8"
+    >
+      <UIcon
+        name="i-heroicons-arrow-path"
+        class="w-8 h-8 animate-spin text-primary-500"
+      />
     </div>
 
-    <div v-else class="space-y-6">
+    <div
+      v-else
+      class="space-y-6"
+    >
       <!-- Connection Settings -->
       <UCard>
         <template #header>
           <h2 class="text-lg font-semibold flex items-center gap-2">
-            <UIcon name="i-heroicons-server-stack" class="w-5 h-5" />
+            <UIcon
+              name="i-heroicons-server-stack"
+              class="w-5 h-5"
+            />
             Connection
           </h2>
         </template>
@@ -297,7 +317,10 @@ async function testConnection() {
       <UCard>
         <template #header>
           <h2 class="text-lg font-semibold flex items-center gap-2">
-            <UIcon name="i-heroicons-paint-brush" class="w-5 h-5" />
+            <UIcon
+              name="i-heroicons-paint-brush"
+              class="w-5 h-5"
+            />
             Interface
           </h2>
         </template>
@@ -329,7 +352,10 @@ async function testConnection() {
       <UCard>
         <template #header>
           <h2 class="text-lg font-semibold flex items-center gap-2">
-            <UIcon name="i-heroicons-arrow-down-circle" class="w-5 h-5" />
+            <UIcon
+              name="i-heroicons-arrow-down-circle"
+              class="w-5 h-5"
+            />
             Downloads
           </h2>
         </template>

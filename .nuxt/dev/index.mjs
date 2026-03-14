@@ -2980,7 +2980,7 @@ const _PoqAkneXbtjxxd7hx2mJPS8crrTR7gtDbVVQBsJxo = defineNitroPlugin(async (nitr
     const localeSegment = detector.route(event.path);
     const pathLocale = isSupportedLocale(localeSegment) && localeSegment || void 0;
     const path = (pathLocale && url.pathname.slice(pathLocale.length + 1)) ?? url.pathname;
-    if (!url.pathname.includes("/_i18n/gTvO7dFS") && !isExistingNuxtRoute(path)) {
+    if (!url.pathname.includes("/_i18n/RQRS8fDB") && !isExistingNuxtRoute(path)) {
       return;
     }
     const resolved = resolveRedirectPath(event, path, pathLocale, ctx.vueI18nOptions.defaultLocale, detector);
@@ -3102,22 +3102,7 @@ _4LMpcbpwdYBnIbK__Ln2kQ2fGw3CYbG7p7bFd6TDpTM,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"2e517-S7y17g4EoC+VX684FL6XGwFY5z4\"",
-    "mtime": "2026-03-14T10:44:02.485Z",
-    "size": 189719,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"afb5c-oWpKwqWggchqj6pXTyI0pOuYuT0\"",
-    "mtime": "2026-03-14T10:44:02.485Z",
-    "size": 719708,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -4187,30 +4172,30 @@ const schema = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   torrentTags: torrentTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-let db$1 = null;
+let db = null;
 function getDb() {
-  if (db$1) return db$1;
+  if (db) return db;
   const tursoUrl = process.env.TURSO_URL || "file:ogawa.db";
   const tursoToken = process.env.TURSO_TOKEN;
   const client = createClient({
     url: tursoUrl,
     authToken: tursoToken
   });
-  db$1 = drizzle(client, { schema });
-  return db$1;
+  db = drizzle(client, { schema });
+  return db;
 }
-const db = getDb();
+const db$1 = getDb();
 
 const index$4 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   db: getDb,
-  default: db
+  default: db$1
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const index$2 = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db.select().from(feeds).all();
+    const rows = await db$1.select().from(feeds).all();
     return rows.map((row) => ({
       id: row.id,
       url: row.url,
@@ -4228,7 +4213,7 @@ const index$2 = defineEventHandler(async (event) => {
         message: "URL is required"
       });
     }
-    const id = await db.insert(feeds).values({
+    const id = await db$1.insert(feeds).values({
       url,
       title: url,
       createdAt: /* @__PURE__ */ new Date()
@@ -4249,7 +4234,7 @@ const index$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 const settings = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db.select().from(settings$2).all();
+    const rows = await db$1.select().from(settings$2).all();
     const result = {};
     for (const row of rows) {
       const parts = row.key.split(".");
@@ -4273,7 +4258,7 @@ const settings = defineEventHandler(async (event) => {
         for (const [key, value] of Object.entries(values)) {
           const settingKey = `${category}.${key}`;
           const stringValue = String(value != null ? value : "");
-          await db.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
+          await db$1.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
         }
       }
     }
@@ -4979,7 +4964,7 @@ class TransmissionAdapter {
   async deleteTorrents(hashes, deleteFiles) {
     try {
       await this.request("torrent_remove", {
-        ids: hashes,
+        "ids": hashes,
         "delete-local-data": deleteFiles
       });
       return true;

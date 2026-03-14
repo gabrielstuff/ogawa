@@ -31,9 +31,11 @@ async function addFeed() {
     showAddModal.value = false
     newFeedUrl.value = ''
     refresh()
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e.message || 'Failed to add feed'
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 }
@@ -44,7 +46,8 @@ async function deleteFeed(id: number) {
       method: 'DELETE',
     })
     refresh()
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e.message || 'Failed to delete feed'
   }
 }
@@ -53,7 +56,9 @@ async function deleteFeed(id: number) {
 <template>
   <div class="p-4">
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold">RSS Feeds</h1>
+      <h1 class="text-2xl font-bold">
+        RSS Feeds
+      </h1>
       <UButton
         icon="i-heroicons-plus"
         @click="showAddModal = true"
@@ -63,27 +68,49 @@ async function deleteFeed(id: number) {
     </div>
 
     <!-- Error -->
-    <UAlert v-if="error" color="error" variant="solid" class="mb-4">
+    <UAlert
+      v-if="error"
+      color="error"
+      variant="solid"
+      class="mb-4"
+    >
       {{ error }}
     </UAlert>
 
     <!-- Empty State -->
-    <div v-if="!feeds || feeds.length === 0" class="text-center py-12">
-      <UIcon name="i-heroicons-rss" class="w-16 h-16 mx-auto text-gray-600 mb-4" />
-      <p class="text-gray-400 mb-4">No RSS feeds yet</p>
-      <UButton @click="showAddModal = true">Add your first feed</UButton>
+    <div
+      v-if="!feeds || feeds.length === 0"
+      class="text-center py-12"
+    >
+      <UIcon
+        name="i-heroicons-rss"
+        class="w-16 h-16 mx-auto text-gray-600 mb-4"
+      />
+      <p class="text-gray-400 mb-4">
+        No RSS feeds yet
+      </p>
+      <UButton @click="showAddModal = true">
+        Add your first feed
+      </UButton>
     </div>
 
     <!-- Feed List -->
-    <div v-else class="space-y-3">
+    <div
+      v-else
+      class="space-y-3"
+    >
       <div
         v-for="feed in feeds"
         :key="feed.id"
         class="bg-gray-800 rounded-lg p-4 flex items-center justify-between"
       >
         <div class="flex-1 min-w-0">
-          <h3 class="font-medium truncate">{{ feed.title }}</h3>
-          <p class="text-sm text-gray-400 truncate">{{ feed.url }}</p>
+          <h3 class="font-medium truncate">
+            {{ feed.title }}
+          </h3>
+          <p class="text-sm text-gray-400 truncate">
+            {{ feed.url }}
+          </p>
           <div class="flex gap-2 mt-2 text-xs text-gray-500">
             <span>{{ feed.items?.length || 0 }} items</span>
             <span>Last updated: {{ feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : 'Never' }}</span>
@@ -104,7 +131,9 @@ async function deleteFeed(id: number) {
     <UModal v-model="showAddModal">
       <UCard>
         <template #header>
-          <h2 class="text-lg font-bold">Add RSS Feed</h2>
+          <h2 class="text-lg font-bold">
+            Add RSS Feed
+          </h2>
         </template>
 
         <div class="space-y-4">

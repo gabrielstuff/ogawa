@@ -55,9 +55,11 @@ async function handleFileUpload(file: File) {
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e.message || 'Failed to add torrent'
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 }
@@ -84,9 +86,11 @@ async function addMagnet() {
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e.message || 'Failed to add magnet link'
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 }
@@ -113,19 +117,22 @@ async function addFromUrl() {
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
-  } catch (e: any) {
+  }
+  catch (e: any) {
     error.value = e.message || 'Failed to add torrent from URL'
-  } finally {
+  }
+  finally {
     isLoading.value = false
   }
 }
 
 function pasteFromClipboard() {
-  navigator.clipboard.readText().then(text => {
+  navigator.clipboard.readText().then((text) => {
     if (text.startsWith('magnet:')) {
       magnetInput.value = text
       activeTab.value = 'magnet'
-    } else {
+    }
+    else {
       urlInput.value = text
       activeTab.value = 'url'
     }
@@ -137,7 +144,9 @@ function pasteFromClipboard() {
 
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-6">Add Torrent</h1>
+    <h1 class="text-2xl font-bold mb-6">
+      Add Torrent
+    </h1>
 
     <!-- Success Message -->
     <UAlert
@@ -160,23 +169,38 @@ function pasteFromClipboard() {
     </UAlert>
 
     <!-- Tabs -->
-    <UTabs v-model="activeTab" class="mb-6">
+    <UTabs
+      v-model="activeTab"
+      class="mb-6"
+    >
       <UTab value="file">
-        <UIcon name="i-heroicons-document-arrow-up" class="w-5 h-5 mr-2" />
+        <UIcon
+          name="i-heroicons-document-arrow-up"
+          class="w-5 h-5 mr-2"
+        />
         File
       </UTab>
       <UTab value="magnet">
-        <UIcon name="i-heroicons-link" class="w-5 h-5 mr-2" />
+        <UIcon
+          name="i-heroicons-link"
+          class="w-5 h-5 mr-2"
+        />
         Magnet
       </UTab>
       <UTab value="url">
-        <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 mr-2" />
+        <UIcon
+          name="i-heroicons-globe-alt"
+          class="w-5 h-5 mr-2"
+        />
         URL
       </UTab>
     </UTabs>
 
     <!-- File Upload -->
-    <div v-if="activeTab === 'file'" class="space-y-4">
+    <div
+      v-if="activeTab === 'file'"
+      class="space-y-4"
+    >
       <div
         v-if="isDropzoneSupported"
         class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center hover:border-primary-500 transition-colors cursor-pointer"
@@ -190,12 +214,22 @@ function pasteFromClipboard() {
           class="hidden"
           @change="handleFileSelect"
         >
-        <UIcon name="i-heroicons-cloud-arrow-up" class="w-12 h-12 mx-auto text-gray-500 mb-4" />
-        <p class="text-gray-300 mb-2">Drag & drop a .torrent file here</p>
-        <p class="text-gray-500 text-sm">or click to browse</p>
+        <UIcon
+          name="i-heroicons-cloud-arrow-up"
+          class="w-12 h-12 mx-auto text-gray-500 mb-4"
+        />
+        <p class="text-gray-300 mb-2">
+          Drag & drop a .torrent file here
+        </p>
+        <p class="text-gray-500 text-sm">
+          or click to browse
+        </p>
       </div>
 
-      <div v-else class="text-center py-8">
+      <div
+        v-else
+        class="text-center py-8"
+      >
         <UInput
           type="file"
           accept=".torrent"
@@ -205,7 +239,10 @@ function pasteFromClipboard() {
     </div>
 
     <!-- Magnet Link -->
-    <div v-if="activeTab === 'magnet'" class="space-y-4">
+    <div
+      v-if="activeTab === 'magnet'"
+      class="space-y-4"
+    >
       <UInput
         v-model="magnetInput"
         placeholder="magnet:?xt=urn:btih:..."
@@ -224,13 +261,19 @@ function pasteFromClipboard() {
           variant="ghost"
           @click="pasteFromClipboard"
         >
-          <UIcon name="i-heroicons-clipboard" class="w-5 h-5" />
+          <UIcon
+            name="i-heroicons-clipboard"
+            class="w-5 h-5"
+          />
         </UButton>
       </div>
     </div>
 
     <!-- URL -->
-    <div v-if="activeTab === 'url'" class="space-y-4">
+    <div
+      v-if="activeTab === 'url'"
+      class="space-y-4"
+    >
       <UInput
         v-model="urlInput"
         placeholder="https://example.com/torrent.torrent"

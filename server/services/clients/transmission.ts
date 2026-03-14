@@ -14,7 +14,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
     return this.settings.url || 'http://localhost:9091'
   }
 
-  private get auth(): { username: string; password: string } {
+  private get auth(): { username: string, password: string } {
     return {
       username: this.settings.username || 'admin',
       password: this.settings.password || 'admin',
@@ -43,7 +43,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
     }
 
     try {
-      const response = await ofetch<{ result: T; arguments?: T; error?: { message: string } }>(`${this.baseUrl}/transmission/rpc`, {
+      const response = await ofetch<{ result: T, arguments?: T, error?: { message: string } }>(`${this.baseUrl}/transmission/rpc`, {
         method: 'POST',
         headers,
         body,
@@ -54,9 +54,10 @@ export class TransmissionAdapter implements TorrentClientAdapter {
       }
 
       return response.result
-    } catch (e: any) {
+    }
+    catch (e: any) {
       if (e.response?.status === 409) {
-        const sessionHeader = e.response?.headers?.['x-transmission-session-id'] 
+        const sessionHeader = e.response?.headers?.['x-transmission-session-id']
           || e.response?.headers?.get?.('x-transmission-session-id')
         if (sessionHeader) {
           this.sessionId = sessionHeader
@@ -112,7 +113,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         doneAt: t.done_date > 0 ? t.done_date * 1000 : null,
         ratio: t.upload_ratio,
       }))
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch Transmission torrents:', e)
       return []
     }
@@ -172,7 +174,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         })),
         trackers: (t.trackers || []).map(tr => tr.announce),
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch Transmission torrent details:', e)
       return null
     }
@@ -185,7 +188,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         metainfo: base64,
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add Transmission torrent:', e)
       return false
     }
@@ -197,7 +201,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         filename: url,
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add Transmission torrent from URL:', e)
       return false
     }
@@ -213,7 +218,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         ids: hashes,
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to start Transmission torrents:', e)
       return false
     }
@@ -225,7 +231,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
         ids: hashes,
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to stop Transmission torrents:', e)
       return false
     }
@@ -234,11 +241,12 @@ export class TransmissionAdapter implements TorrentClientAdapter {
   async deleteTorrents(hashes: string[], deleteFiles: boolean): Promise<boolean> {
     try {
       await this.request('torrent_remove', {
-        ids: hashes,
+        'ids': hashes,
         'delete-local-data': deleteFiles,
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to delete Transmission torrents:', e)
       return false
     }
@@ -248,7 +256,8 @@ export class TransmissionAdapter implements TorrentClientAdapter {
     try {
       await this.request('session_get', {})
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Transmission connection test failed:', e)
       return false
     }

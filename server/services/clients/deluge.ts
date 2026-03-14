@@ -9,7 +9,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
     this.settings = settings
   }
 
-  private get connection(): { host: string; port: number; password: string } {
+  private get connection(): { host: string, port: number, password: string } {
     return {
       host: this.settings.host || 'localhost',
       port: this.settings.port || 58846,
@@ -20,9 +20,9 @@ export class DelugeAdapter implements TorrentClientAdapter {
   private async request<T>(method: string, params: unknown[] = []): Promise<T> {
     const { host, port, password } = this.connection
     const url = `http://${host}:${port}/json`
-    
+
     try {
-      const response = await ofetch<{ id: number; result: T; error?: string }>(url, {
+      const response = await ofetch<{ id: number, result: T, error?: string }>(url, {
         method: 'POST',
         body: {
           method,
@@ -36,7 +36,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
       }
 
       return response.result
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Deluge request failed:', e)
       throw e
     }
@@ -46,7 +47,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     const { password } = this.connection
     try {
       await this.request('auth.login', [password])
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Deluge auth failed:', e)
     }
   }
@@ -90,7 +92,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
         doneAt: t.completed_time > 0 ? t.completed_time * 1000 : null,
         ratio: t.ratio,
       }))
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch Deluge torrents:', e)
       return []
     }
@@ -148,7 +151,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
         })),
         trackers: (t.trackers || []).map(tr => tr.url),
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch Deluge torrent details:', e)
       return null
     }
@@ -160,7 +164,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
       const base64 = Buffer.from(file).toString('base64')
       await this.request('core.add_torrent_file', ['torrent.torrent', base64, {}])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add Deluge torrent:', e)
       return false
     }
@@ -171,7 +176,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('core.add_torrent_url', [url, {}])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add Deluge torrent from URL:', e)
       return false
     }
@@ -182,7 +188,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('core.add_torrent_url', [magnet, {}])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add Deluge magnet:', e)
       return false
     }
@@ -193,7 +200,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('core.resume_torrents', [hashes])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to start Deluge torrents:', e)
       return false
     }
@@ -204,7 +212,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('core.pause_torrents', [hashes])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to pause Deluge torrents:', e)
       return false
     }
@@ -215,7 +224,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('core.remove_torrents', [hashes, deleteFiles])
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to delete Deluge torrents:', e)
       return false
     }
@@ -225,7 +235,8 @@ export class DelugeAdapter implements TorrentClientAdapter {
     try {
       await this.request('web.get_host_status')
       return true
-    } catch {
+    }
+    catch {
       return false
     }
   }

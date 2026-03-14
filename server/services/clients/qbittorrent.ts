@@ -37,7 +37,7 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
     return this.settings.url || 'http://localhost:8080'
   }
 
-  private get auth(): { username: string; password: string } {
+  private get auth(): { username: string, password: string } {
     return {
       username: this.settings.username || 'admin',
       password: this.settings.password || 'adminadmin',
@@ -84,10 +84,12 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
       if (setCookieHeader) {
         this.cookies = setCookieHeader.split(';')[0]
         console.log('Got cookies:', this.cookies)
-      } else {
+      }
+      else {
         console.log('No cookies in response')
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error('qBittorrent auth failed:', e)
     }
   }
@@ -114,7 +116,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         doneAt: t.completion_on > 0 ? t.completion_on * 1000 : null,
         ratio: t.ratio,
       }))
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch torrents:', e)
       return []
     }
@@ -160,7 +163,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         })),
         trackers: [],
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch torrent details:', e)
       return null
     }
@@ -180,7 +184,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
       })
 
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add torrent:', e)
       return false
     }
@@ -195,7 +200,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         body: { urls: url },
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to add torrent from URL:', e)
       return false
     }
@@ -214,7 +220,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         body: { hashes: hashes.join('|') },
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to start torrents:', e)
       return false
     }
@@ -229,7 +236,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         body: { hashes: hashes.join('|') },
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to stop torrents:', e)
       return false
     }
@@ -247,7 +255,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
         },
       })
       return true
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to delete torrents:', e)
       return false
     }
@@ -258,7 +267,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
       await this.ensureAuth()
       await this.request('/app/version')
       return true
-    } catch (e) {
+    }
+    catch (e) {
       return false
     }
   }

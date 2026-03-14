@@ -1,11 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
-
-  future: {
-    compatibilityVersion: 4,
-  },
 
   modules: [
     '@nuxt/eslint',
@@ -15,10 +9,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@vite-pwa/nuxt',
   ],
-
-  ui: {},
-
-  css: ['~/assets/css/main.css'],
+  devtools: { enabled: true },
 
   app: {
     head: {
@@ -34,20 +25,20 @@ export default defineNuxtConfig({
     },
   },
 
-  nitro: {
-    preset: 'node-server',
-  },
+  css: ['~/assets/css/main.css'],
+
+  ui: {},
 
   runtimeConfig: {
     // Server-side only
     qbittorrentUrl: process.env.QBITTORRENT_URL || 'http://localhost:8080',
     qbittorrentUsername: process.env.QBITTORRENT_USERNAME || 'admin',
     qbittorrentPassword: process.env.QBITTORRENT_PASSWORD || 'adminadmin',
-    
+
     // Turso database
     tursoUrl: process.env.TURSO_URL || 'file:ogawa.db',
     tursoToken: process.env.TURSO_TOKEN,
-    
+
     // Public (client-side)
     public: {
       appName: 'Ogawa',
@@ -55,13 +46,17 @@ export default defineNuxtConfig({
     },
   },
 
+  future: {
+    compatibilityVersion: 4,
+  },
+
   experimental: {
     payloadExtraction: false,
   },
+  compatibilityDate: '2024-11-01',
 
-  typescript: {
-    strict: true,
-    shim: false,
+  nitro: {
+    preset: 'node-server',
   },
 
   vite: {
@@ -72,6 +67,20 @@ export default defineNuxtConfig({
         },
       },
     },
+  },
+
+  typescript: {
+    strict: true,
+    shim: false,
+  },
+
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English' },
+    ],
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
   },
 
   pwa: {
@@ -117,14 +126,5 @@ export default defineNuxtConfig({
         },
       ],
     },
-  },
-
-  i18n: {
-    locales: [
-      { code: 'en', name: 'English' },
-    ],
-    defaultLocale: 'en',
-    strategy: 'no_prefix',
-    detectBrowserLanguage: false,
   },
 })

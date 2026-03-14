@@ -10,7 +10,7 @@ let cachedSettings: string | null = null
 
 export function createClientAdapter(settings: Settings): TorrentClientAdapter {
   const settingsKey = JSON.stringify(settings)
-  
+
   if (cachedAdapter && cachedSettings === settingsKey) {
     return cachedAdapter
   }
