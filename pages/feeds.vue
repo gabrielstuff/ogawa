@@ -187,7 +187,6 @@ async function deleteFeed(id: number) {
               {{ t('feeds.addFeed') }}
               <span class="bl"></span><span class="br2"></span>
             </UButton>
-            </UButton>
           </div>
         </template>
       </UCard>

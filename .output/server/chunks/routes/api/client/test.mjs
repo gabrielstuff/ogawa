@@ -13,29 +13,111 @@ import 'consola';
 
 const test = defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const client = (body == null ? void 0 : body.client) || "qBittorrent";
   const url = body == null ? void 0 : body.url;
   body == null ? void 0 : body.username;
-  body == null ? void 0 : body.password;
-  if (!url) {
-    throw createError({
-      statusCode: 400,
-      message: "URL is required"
-    });
+  const password = body == null ? void 0 : body.password;
+  const host = body == null ? void 0 : body.host;
+  const port = body == null ? void 0 : body.port;
+  if (client === "qBittorrent") {
+    if (!url) {
+      throw createError({
+        statusCode: 400,
+        message: "URL is required for qBittorrent"
+      });
+    }
+    try {
+      await ofetch(`${url}/api/v2/app/version`, {
+        method: "GET"
+      });
+      return { success: true, client: "qBittorrent" };
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to qBittorrent"
+      });
+    }
   }
-  try {
-    const response = await ofetch(`${url}/api/v2/app/version`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+  if (client === "Transmission") {
+    if (!url) {
+      throw createError({
+        statusCode: 400,
+        message: "URL is required for Transmission"
+      });
+    }
+    try {
+      const response = await ofetch(`${url}/transmission/rpc`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: {
+          method: "session-get",
+          arguments: {}
+        }
+      });
+      if (response.result === "success") {
+        return { success: true, client: "Transmission" };
       }
-    });
-    return { success: true, version: response };
-  } catch (e) {
-    throw createError({
-      statusCode: 500,
-      message: "Failed to connect to qBittorrent"
-    });
+      throw new Error("Invalid response");
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to Transmission"
+      });
+    }
   }
+  if (client === "rTorrent") {
+    const scgiUrl = url || "localhost:5000";
+    const [scgiHost, scgiPort] = scgiUrl.includes(":") ? scgiUrl.split(":") : [scgiUrl, "5000"];
+    try {
+      const response = await fetch(`http://${scgiHost}:${scgiPort}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "SCGI": "1"
+        },
+        body: `CONTENT_LENGTH18\0<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>`
+      });
+      if (response.ok) {
+        return { success: true, client: "rTorrent" };
+      }
+      throw new Error("SCGI request failed");
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to rTorrent"
+      });
+    }
+  }
+  if (client === "Deluge") {
+    const delugeHost = host || "localhost";
+    const delugePort = port || 58846;
+    const delugePassword = password || "admin";
+    try {
+      const response = await ofetch(`http://${delugeHost}:${delugePort}/json`, {
+        method: "POST",
+        body: {
+          method: "auth.login",
+          params: [delugePassword],
+          id: 1
+        }
+      });
+      if (!response.error) {
+        return { success: true, client: "Deluge" };
+      }
+      throw new Error(response.error);
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to Deluge"
+      });
+    }
+  }
+  throw createError({
+    statusCode: 400,
+    message: `Unknown client: ${client}`
+  });
 });
 
 export { test as default };

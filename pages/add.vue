@@ -309,7 +309,6 @@ function pasteFromClipboard() {
         {{ t('add.addFromUrl') }}
         <span class="bl"></span><span class="br2"></span>
       </UButton>
-      </UButton>
     </div>
   </div>
 </template>

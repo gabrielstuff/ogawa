@@ -38,6 +38,9 @@ class QBittorrentAdapter {
     try {
       const response = await ofetch.raw(`${this.baseUrl}/api/v2/auth/login`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: new URLSearchParams({
           username: this.auth.username,
           password: this.auth.password
@@ -196,7 +199,8 @@ class QBittorrentAdapter {
   }
   async testConnection() {
     try {
-      await ofetch(`${this.baseUrl}/api/v2/app/version`);
+      await this.ensureAuth();
+      await this.request("/app/version");
       return true;
     } catch (e) {
       return false;
@@ -237,29 +241,174 @@ class RTorrentAdapter {
   get baseUrl() {
     return this.settings.url || "http://localhost:8080";
   }
+  get scgiUrl() {
+    const url = this.settings.url || "localhost:5000";
+    if (url.startsWith("scgi://")) {
+      return url;
+    }
+    return `scgi://${url}`;
+  }
+  async scgiRequest(method, params = []) {
+    const scgiHost = this.scgiUrl.replace("scgi://", "");
+    const [host, port] = scgiHost.includes(":") ? scgiHost.split(":") : [scgiHost, "5000"];
+    const requestBody = this.buildScgiRequest(method, params);
+    const response = await fetch(`http://${host}:${port}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "SCGI": "1"
+      },
+      body: requestBody
+    });
+    if (!response.ok) {
+      throw new Error(`SCGI request failed: ${response.status}`);
+    }
+    const text = await response.text();
+    return this.parseXmlRpcResponse(text);
+  }
+  buildScgiRequest(method, params) {
+    let content = `<?xml version="1.0"?><methodCall><methodName>${method}</methodName><params>`;
+    for (const param of params) {
+      content += `<param><value><string>${this.escapeXml(param)}</string></value></param>`;
+    }
+    content += "</params></methodCall>";
+    const contentLength = Buffer.byteLength(content);
+    return `CONTENT_LENGTH${contentLength}\0${content}`;
+  }
+  escapeXml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+  }
+  parseXmlRpcResponse(xml) {
+    try {
+      const getValue = (str) => {
+        const stringMatch = str.match(/<string>(.*?)<\/string>/);
+        if (stringMatch && stringMatch[1]) return stringMatch[1];
+        const intMatch = str.match(/<int>(.*?)<\/int>/);
+        if (intMatch && intMatch[1]) return parseInt(intMatch[1], 10);
+        const doubleMatch = str.match(/<double>(.*?)<\/double>/);
+        if (doubleMatch && doubleMatch[1]) return parseFloat(doubleMatch[1]);
+        const booleanMatch = str.match(/<boolean>(.*?)<\/boolean>/);
+        if (booleanMatch && booleanMatch[1]) return booleanMatch[1] === "1";
+        const arrayMatch = str.match(/<array><data>(.*?)<\/data><\/array>/);
+        if (arrayMatch && arrayMatch[1]) {
+          const items = arrayMatch[1].match(/<value>.*?<\/value>/g) || [];
+          return items.map((item) => getValue(item));
+        }
+        return str;
+      };
+      const paramsMatch = xml.match(/<params>(.*?)<\/params>/s);
+      if (paramsMatch && paramsMatch[1]) {
+        const values = paramsMatch[1].match(/<value>.*?<\/value>/g) || [];
+        return values.map((v) => getValue(v));
+      }
+      return null;
+    } catch (e) {
+      console.error("Failed to parse XML-RPC response:", e);
+      return null;
+    }
+  }
   async getTorrents() {
     try {
-      const response = await ofetch(this.baseUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `<?xml version="1.0"?>
-<methodCall>
-  <methodName>download_list</methodName>
-  <params>
-    <param><value><string>all</string></value></param>
-  </params>
-</methodCall>`
-      });
-      return [];
+      const result = await this.scgiRequest("download_list", ["main"]);
+      const hashes = Array.isArray(result) ? result : [];
+      if (hashes.length === 0) return [];
+      const torrents = [];
+      for (const hash of hashes) {
+        const details = await this.getTorrentByHash(hash);
+        if (details) {
+          torrents.push(details);
+        }
+      }
+      return torrents;
     } catch (e) {
       console.error("Failed to fetch rTorrent torrents:", e);
       return [];
     }
   }
-  async getTorrentDetails(_hash) {
-    return null;
+  async getTorrentByHash(hash) {
+    try {
+      const baseParams = [
+        `d.get_hash=${hash}`,
+        `d.get_name=${hash}`,
+        `d.get_size_bytes=${hash}`,
+        `d.get_bytes_done=${hash}`,
+        `d.get_up_total=${hash}`,
+        `d.get_down_rate=${hash}`,
+        `d.get_up_rate=${hash}`,
+        `d.get_seeders=${hash}`,
+        `d.get_leechers=${hash}`,
+        `d.get_state=${hash}`,
+        `d.get_open=${hash}`,
+        `d.is_hash_checking=${hash}`,
+        `d.is_uploading=${hash}`,
+        `d.is_downloading=${hash}`,
+        `d.get_ratio=${hash}`,
+        `d.get_creation_date=${hash}`,
+        `d.get_completion_on=${hash}`,
+        `d.get_left_bytes=${hash}`
+      ];
+      const result = await this.scgiRequest("system.multicall", [baseParams.map((p) => `(${p})`).join("")]);
+      if (!result || !Array.isArray(result) || result.length === 0) {
+        return null;
+      }
+      const data = Array.isArray(result[0]) ? result[0] : [];
+      if (data.length < 18) return null;
+      const [rtHash, name, size, downloaded, uploaded, downRate, upRate, seeds, peers, state, isOpen, isHashing, isUploading, isDownloading, ratio, addedOn, completedOn, left] = data;
+      return {
+        hash: rtHash,
+        name: name || "Unknown",
+        size: size || 0,
+        completed: (size || 0) - (left || 0),
+        downloaded: downloaded || 0,
+        uploaded: uploaded || 0,
+        downloadSpeed: downRate || 0,
+        uploadSpeed: upRate || 0,
+        seeds: seeds || 0,
+        peers: peers || 0,
+        state: this.mapState(state, isOpen, isHashing, isUploading, isDownloading),
+        addedAt: addedOn ? addedOn * 1e3 : Date.now(),
+        doneAt: completedOn ? completedOn * 1e3 : null,
+        ratio: ratio || 0
+      };
+    } catch (e) {
+      console.error(`Failed to fetch rTorrent torrent ${hash}:`, e);
+      return null;
+    }
+  }
+  async getTorrentDetails(hash) {
+    const torrent = await this.getTorrentByHash(hash);
+    if (!torrent) return null;
+    try {
+      const filesParams = [
+        `d.get_hash=${hash}`,
+        `f.get_path=${hash}`,
+        `f.get_size_bytes=${hash}`,
+        `f.get_completed_bytes=${hash}`,
+        `f.get_priority=${hash}`
+      ];
+      const filesResult = await this.scgiRequest("system.multicall", [filesParams.map((p) => `(${p})`).join("")]);
+      let files = [];
+      if (filesResult && Array.isArray(filesResult) && Array.isArray(filesResult[0])) {
+        const fileData = filesResult[0];
+        files = fileData.map((fileArr) => {
+          const [path, size, completed, priority] = fileArr;
+          return {
+            name: String(path || ""),
+            size: Number(size || 0),
+            completed: Number(completed || 0),
+            priority: this.mapPriority(Number(priority))
+          };
+        });
+      }
+      return {
+        ...torrent,
+        files,
+        trackers: []
+      };
+    } catch (e) {
+      console.error(`Failed to fetch rTorrent torrent details ${hash}:`, e);
+      return null;
+    }
   }
   async addTorrentByFile(_file) {
     console.error("rTorrent: addTorrentByFile not implemented - requires SCGI protocol");
@@ -273,29 +422,64 @@ class RTorrentAdapter {
     console.error("rTorrent: addTorrentByMagnet not implemented - requires SCGI protocol");
     return false;
   }
-  async startTorrents(_hashes) {
-    console.error("rTorrent: startTorrents not implemented - requires SCGI protocol");
-    return false;
+  async startTorrents(hashes) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.open", [hash]);
+        await this.scgiRequest("d.start", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to start rTorrent torrents:", e);
+      return false;
+    }
   }
-  async stopTorrents(_hashes) {
-    console.error("rTorrent: stopTorrents not implemented - requires SCGI protocol");
-    return false;
+  async stopTorrents(hashes) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.stop", [hash]);
+        await this.scgiRequest("d.close", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to stop rTorrent torrents:", e);
+      return false;
+    }
   }
-  async deleteTorrents(_hashes, _deleteFiles) {
-    console.error("rTorrent: deleteTorrents not implemented - requires SCGI protocol");
-    return false;
+  async deleteTorrents(hashes, _deleteFiles) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.stop", [hash]);
+        await this.scgiRequest("d.close", [hash]);
+        await this.scgiRequest("d.erase", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to delete rTorrent torrents:", e);
+      return false;
+    }
   }
   async testConnection() {
     try {
-      await ofetch(this.baseUrl, {
-        method: "POST",
-        body: '<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName></methodCall>',
-        timeout: 5e3
-      });
-      return true;
+      const result = await this.scgiRequest("system.listMethods", []);
+      return result !== null;
     } catch {
       return false;
     }
+  }
+  mapState(state, isOpen, isHashing, isUploading, isDownloading) {
+    if (!isOpen) return "stopped";
+    if (isHashing) return "downloading";
+    if (isDownloading) return "downloading";
+    if (isUploading) return "seeding";
+    return "stopped";
+  }
+  mapPriority(priority) {
+    if (priority === 0) return "skip";
+    if (priority === 1) return "low";
+    if (priority === 2) return "normal";
+    if (priority === 3) return "high";
+    return "normal";
   }
 }
 
@@ -318,66 +502,82 @@ class TransmissionAdapter {
     };
   }
   async request(method, args = {}) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f;
     const headers = {
       "Content-Type": "application/json"
     };
     if (this.sessionId) {
       headers["X-Transmission-Session-Id"] = this.sessionId;
     }
+    if (this.auth.username && this.auth.password) {
+      const credentials = Buffer.from(`${this.auth.username}:${this.auth.password}`).toString("base64");
+      headers["Authorization"] = `Basic ${credentials}`;
+    }
+    const body = {
+      jsonrpc: "2.0",
+      method,
+      params: args,
+      id: 1
+    };
     try {
       const response = await ofetch(`${this.baseUrl}/transmission/rpc`, {
         method: "POST",
         headers,
-        body: {
-          method,
-          arguments: args
-        }
+        body
       });
-      return response.arguments;
+      if (response.error) {
+        throw new Error(response.error.message || "Transmission error");
+      }
+      return response.result;
     } catch (e) {
-      if (((_a = e.response) == null ? void 0 : _a.status) === 409 && ((_c = (_b = e.response) == null ? void 0 : _b.headers) == null ? void 0 : _c["x-transmission-session-id"])) {
-        this.sessionId = e.response.headers["x-transmission-session-id"];
-        return this.request(method, args);
+      if (((_a = e.response) == null ? void 0 : _a.status) === 409) {
+        const sessionHeader = ((_c = (_b = e.response) == null ? void 0 : _b.headers) == null ? void 0 : _c["x-transmission-session-id"]) || ((_f = (_e = (_d = e.response) == null ? void 0 : _d.headers) == null ? void 0 : _e.get) == null ? void 0 : _f.call(_e, "x-transmission-session-id"));
+        if (sessionHeader) {
+          this.sessionId = sessionHeader;
+          return this.request(method, args);
+        }
       }
       throw e;
     }
   }
   async getTorrents() {
     try {
-      const result = await this.request("torrent-get", {
+      const result = await this.request("torrent_get", {
         fields: [
           "id",
-          "hashString",
+          "hash_string",
           "name",
-          "totalSize",
-          "downloadedEver",
-          "uploadedEver",
-          "rateDownload",
-          "rateUpload",
-          "seedersConnected",
-          "peersConnected",
+          "total_size",
+          "downloaded_ever",
+          "uploaded_ever",
+          "rate_download",
+          "rate_upload",
+          "seeds_connected",
+          "peers_connected",
           "status",
-          "dateAdded",
-          "doneDate",
-          "uploadRatio"
+          "date_added",
+          "done_date",
+          "upload_ratio"
         ]
       });
+      if (!(result == null ? void 0 : result.torrents)) {
+        return [];
+      }
       return result.torrents.map((t) => ({
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1e3,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1e3 : null,
-        ratio: t.uploadRatio
+        addedAt: t.date_added * 1e3,
+        doneAt: t.done_date > 0 ? t.done_date * 1e3 : null,
+        ratio: t.upload_ratio
       }));
     } catch (e) {
       console.error("Failed to fetch Transmission torrents:", e);
@@ -385,52 +585,53 @@ class TransmissionAdapter {
     }
   }
   async getTorrentDetails(hash) {
+    var _a;
     try {
-      const result = await this.request("torrent-get", {
+      const result = await this.request("torrent_get", {
         ids: [hash],
         fields: [
           "id",
-          "hashString",
+          "hash_string",
           "name",
-          "totalSize",
-          "downloadedEver",
-          "uploadedEver",
-          "rateDownload",
-          "rateUpload",
-          "seedersConnected",
-          "peersConnected",
+          "total_size",
+          "downloaded_ever",
+          "uploaded_ever",
+          "rate_download",
+          "rate_upload",
+          "seeds_connected",
+          "peers_connected",
           "status",
-          "dateAdded",
-          "doneDate",
-          "uploadRatio",
+          "date_added",
+          "done_date",
+          "upload_ratio",
           "files",
           "trackers"
         ]
       });
-      const t = result.torrents[0];
+      const t = (_a = result.torrents) == null ? void 0 : _a[0];
       if (!t) return null;
       return {
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1e3,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1e3 : null,
-        ratio: t.uploadRatio,
+        addedAt: t.date_added * 1e3,
+        doneAt: t.done_date > 0 ? t.done_date * 1e3 : null,
+        ratio: t.upload_ratio,
         files: (t.files || []).map((f) => ({
           name: f.name,
           size: f.length,
-          completed: f.bytesCompleted,
+          completed: f.bytes_completed,
           priority: this.mapPriority(f.priority)
         })),
-        trackers: (t.trackers || []).map((t2) => t2.announceUrl)
+        trackers: (t.trackers || []).map((tr) => tr.announce)
       };
     } catch (e) {
       console.error("Failed to fetch Transmission torrent details:", e);
@@ -440,7 +641,7 @@ class TransmissionAdapter {
   async addTorrentByFile(file) {
     try {
       const base64 = Buffer.from(file).toString("base64");
-      await this.request("torrent-add", {
+      await this.request("torrent_add", {
         metainfo: base64
       });
       return true;
@@ -451,7 +652,7 @@ class TransmissionAdapter {
   }
   async addTorrentByUrl(url) {
     try {
-      await this.request("torrent-add", {
+      await this.request("torrent_add", {
         filename: url
       });
       return true;
@@ -465,7 +666,7 @@ class TransmissionAdapter {
   }
   async startTorrents(hashes) {
     try {
-      await this.request("torrent-start", {
+      await this.request("torrent_start", {
         ids: hashes
       });
       return true;
@@ -476,7 +677,7 @@ class TransmissionAdapter {
   }
   async stopTorrents(hashes) {
     try {
-      await this.request("torrent-stop", {
+      await this.request("torrent_stop", {
         ids: hashes
       });
       return true;
@@ -487,8 +688,8 @@ class TransmissionAdapter {
   }
   async deleteTorrents(hashes, deleteFiles) {
     try {
-      await this.request("torrent-remove", {
-        ids: hashes,
+      await this.request("torrent_remove", {
+        "ids": hashes,
         "delete-local-data": deleteFiles
       });
       return true;
@@ -499,9 +700,10 @@ class TransmissionAdapter {
   }
   async testConnection() {
     try {
-      await this.request("session-get");
+      await this.request("session_get", {});
       return true;
-    } catch {
+    } catch (e) {
+      console.error("Transmission connection test failed:", e);
       return false;
     }
   }
@@ -538,20 +740,36 @@ class DelugeAdapter {
     };
   }
   async request(method, params = []) {
-    const response = await ofetch("http://localhost:8112/json", {
-      method: "POST",
-      body: {
-        method,
-        params,
-        id: 1
+    const { host, port, password } = this.connection;
+    const url = `http://${host}:${port}/json`;
+    try {
+      const response = await ofetch(url, {
+        method: "POST",
+        body: {
+          method,
+          params,
+          id: 1
+        }
+      });
+      if (response.error) {
+        throw new Error(response.error);
       }
-    });
-    if (response.error) {
-      throw new Error(response.error);
+      return response.result;
+    } catch (e) {
+      console.error("Deluge request failed:", e);
+      throw e;
     }
-    return response.result;
+  }
+  async ensureAuth() {
+    const { password } = this.connection;
+    try {
+      await this.request("auth.login", [password]);
+    } catch (e) {
+      console.error("Deluge auth failed:", e);
+    }
   }
   async getTorrents() {
+    await this.ensureAuth();
     try {
       const result = await this.request("core.get_torrents_status", [{}, [
         "hash",
@@ -590,6 +808,7 @@ class DelugeAdapter {
     }
   }
   async getTorrentDetails(hash) {
+    await this.ensureAuth();
     try {
       const result = await this.request("core.get_torrents_status", [[hash], [
         "hash",
@@ -639,6 +858,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByFile(file) {
+    await this.ensureAuth();
     try {
       const base64 = Buffer.from(file).toString("base64");
       await this.request("core.add_torrent_file", ["torrent.torrent", base64, {}]);
@@ -649,6 +869,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByUrl(url) {
+    await this.ensureAuth();
     try {
       await this.request("core.add_torrent_url", [url, {}]);
       return true;
@@ -658,6 +879,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByMagnet(magnet) {
+    await this.ensureAuth();
     try {
       await this.request("core.add_torrent_url", [magnet, {}]);
       return true;
@@ -667,6 +889,7 @@ class DelugeAdapter {
     }
   }
   async startTorrents(hashes) {
+    await this.ensureAuth();
     try {
       await this.request("core.resume_torrents", [hashes]);
       return true;
@@ -676,6 +899,7 @@ class DelugeAdapter {
     }
   }
   async stopTorrents(hashes) {
+    await this.ensureAuth();
     try {
       await this.request("core.pause_torrents", [hashes]);
       return true;
@@ -685,6 +909,7 @@ class DelugeAdapter {
     }
   }
   async deleteTorrents(hashes, deleteFiles) {
+    await this.ensureAuth();
     try {
       await this.request("core.remove_torrents", [hashes, deleteFiles]);
       return true;

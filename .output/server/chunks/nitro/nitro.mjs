@@ -2932,10 +2932,10 @@ function createNodeFetch() {
     return l(input, { ...nodeFetchOptions, ...init });
   };
 }
-const fetch = globalThis.fetch ? (...args) => globalThis.fetch(...args) : createNodeFetch();
+const fetch$1 = globalThis.fetch ? (...args) => globalThis.fetch(...args) : createNodeFetch();
 const Headers$1 = globalThis.Headers || s$1;
 const AbortController = globalThis.AbortController || i;
-const ofetch = createFetch({ fetch, Headers: Headers$1, AbortController });
+const ofetch = createFetch({ fetch: fetch$1, Headers: Headers$1, AbortController });
 const $fetch$1 = ofetch;
 
 function wrapToPromise(value) {
@@ -4340,6 +4340,160 @@ function klona(x) {
 	return x;
 }
 
+const defineAppConfig = (config) => config;
+
+const appConfig0 = defineAppConfig({
+  ui: {
+    primary: "phosphor",
+    gray: "slate",
+    button: {
+      slots: {
+        base: "font-karla font-bold tracking-wide uppercase text-xs"
+      },
+      variants: {
+        color: {
+          primary: "bg-phosphor text-deep-field hover:bg-static",
+          neutral: "bg-transparent border border-white/25 text-phosphor hover:bg-white/5"
+        },
+        variant: {
+          solid: "",
+          outline: "border border-scan text-phosphor",
+          ghost: "text-phosphor hover:bg-white/5"
+        },
+        size: {
+          xs: "px-2 py-1 text-[10px]",
+          sm: "px-3 py-1.5 text-[11px]",
+          md: "px-4 py-2 text-xs",
+          lg: "px-5 py-2.5 text-sm"
+        }
+      },
+      defaultVariants: {
+        color: "primary",
+        variant: "solid",
+        size: "md"
+      }
+    },
+    input: {
+      slots: {
+        base: "font-mono text-sm bg-transparent border-b border-white/20 text-phosphor placeholder:text-flicker/50 focus:border-halation"
+      },
+      variants: {
+        size: {
+          xs: "h-7 text-xs px-2",
+          sm: "h-8 text-sm px-2.5",
+          md: "h-9 text-sm px-3",
+          lg: "h-10 text-base px-4"
+        }
+      }
+    },
+    select: {
+      slots: {
+        base: "font-mono text-sm bg-transparent border border-scan text-phosphor rounded-none",
+        placeholder: "text-ghost/60",
+        value: "text-phosphor",
+        trailingIcon: "text-ghost/60",
+        content: "bg-deep-field border border-scan/50 rounded-none shadow-lg",
+        viewport: "divide-y divide-scan/20",
+        item: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor rounded-none",
+        itemLabel: "text-ghost",
+        itemTrailingIcon: "text-halation",
+        label: "font-karla text-sm text-ghost",
+        separator: "bg-scan/30"
+      },
+      variants: {
+        size: {
+          xs: "h-7 text-xs px-2",
+          sm: "h-8 text-sm px-2.5",
+          md: "h-9 text-sm px-3",
+          lg: "h-10 text-base px-4"
+        },
+        color: {
+          primary: ""
+        },
+        variant: {
+          outline: "border-scan text-phosphor",
+          ghost: "border-transparent text-phosphor hover:bg-electric/20"
+        }
+      },
+      defaultVariants: {
+        size: "md",
+        color: "primary",
+        variant: "outline"
+      }
+    },
+    card: {
+      slots: {
+        root: "bg-deep-field border border-scan/30",
+        header: "p-3 border-b border-scan/20",
+        body: "p-3",
+        footer: "p-3 border-t border-scan/20"
+      }
+    },
+    tabs: {
+      slots: {
+        list: "gap-0 border-b border-scan/30",
+        trigger: "font-karla text-xs font-bold uppercase tracking-wide text-ghost hover:text-phosphor data-[active=true]:text-halation data-[active=true]:border-b-2 data-[active=true]:border-halation -mb-px"
+      }
+    },
+    modal: {
+      slots: {
+        overlay: "bg-void/80",
+        content: "bg-deep-field border border-scan/50",
+        header: "p-4 border-b border-scan/30",
+        body: "p-4",
+        footer: "p-4 border-t border-scan/30"
+      }
+    },
+    dropdown: {
+      slots: {
+        root: "bg-deep-field border border-scan/50",
+        label: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor"
+      }
+    },
+    table: {
+      slots: {
+        root: "border-collapse",
+        th: "font-mono text-[10px] uppercase tracking-widest text-ghost/60 border-b border-scan/30 px-3 py-2 text-left",
+        td: "font-karla text-sm text-ghost border-b border-scan/20 px-3 py-2"
+      }
+    },
+    alert: {
+      slots: {
+        root: "border font-mono text-xs rounded-none",
+        title: "font-bold text-phosphor",
+        description: "text-ghost",
+        icon: "shrink-0"
+      },
+      variants: {
+        color: {
+          error: "bg-[#EFF3FF] text-[#0E1E8A] border-[#EFF3FF]",
+          success: "bg-[rgba(100,255,180,0.1)] text-[#80FFB8] border-[rgba(100,255,180,0.2)]",
+          warning: "bg-[rgba(255,209,102,0.1)] text-[#FFD166] border-[rgba(255,209,102,0.25)]",
+          info: "bg-[rgba(150,170,255,0.1)] text-[#96AAFF] border-[rgba(150,170,255,0.2)]"
+        },
+        variant: {
+          solid: "",
+          outline: "bg-transparent"
+        }
+      },
+      defaultVariants: {
+        color: "error",
+        variant: "outline"
+      }
+    },
+    badge: {
+      slots: {
+        base: "font-mono text-[10px] uppercase tracking-wider"
+      }
+    },
+    tooltip: {
+      slots: {
+        content: "bg-deep-field border border-scan/50 font-karla text-xs text-phosphor"
+      }
+    }
+  }
+});
+
 const inlineAppConfig = {
   "nuxt": {},
   "ui": {
@@ -4640,9 +4794,7 @@ const inlineAppConfig = {
   }
 };
 
-
-
-const appConfig = defuFn(inlineAppConfig);
+const appConfig = defuFn(appConfig0, inlineAppConfig);
 
 const NUMBER_CHAR_RE = /\d/;
 const STR_SPLITTERS = ["-", "_", "/", "."];
@@ -4740,7 +4892,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "9f35ac30-39ff-4149-83b3-6e439c641147",
+    "buildId": "dd18901a-03c1-4eb2-b838-9f03adf0eb4d",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4786,6 +4938,26 @@ const _inlineRuntimeConfig = {
           "code": "en",
           "name": "English",
           "language": ""
+        },
+        {
+          "code": "fr",
+          "name": "Français",
+          "language": ""
+        },
+        {
+          "code": "es",
+          "name": "Español",
+          "language": ""
+        },
+        {
+          "code": "zh",
+          "name": "中文",
+          "language": ""
+        },
+        {
+          "code": "hi",
+          "name": "हिन्दी",
+          "language": ""
         }
       ],
       "detectBrowserLanguage": false,
@@ -4804,6 +4976,18 @@ const _inlineRuntimeConfig = {
       },
       "domainLocales": {
         "en": {
+          "domain": ""
+        },
+        "fr": {
+          "domain": ""
+        },
+        "es": {
+          "domain": ""
+        },
+        "zh": {
+          "domain": ""
+        },
+        "hi": {
           "domain": ""
         }
       }
@@ -5346,19 +5530,621 @@ async function getLocaleMessagesMerged(locale, loaders = []) {
   return merged;
 }
 
-// @ts-nocheck
+var nav$4 = {
+	torrents: "Torrents",
+	add: "Add",
+	feeds: "Feeds",
+	settings: "Settings"
+};
+var torrents$4 = {
+	title: "Torrents",
+	search: "Search...",
+	noResults: "No torrents yet",
+	addFirst: "Add torrent",
+	name: "Name",
+	size: "Size",
+	down: "Down",
+	up: "Up",
+	sp: "S/P",
+	ratio: "Ratio",
+	percent: "%",
+	added: "Added",
+	unknown: "Unknown",
+	seedsPeers: "{seeds}S / {peers}P"
+};
+var status$4 = {
+	all: "All",
+	downloading: "Downloading",
+	seeding: "Seeding",
+	paused: "Paused",
+	stopped: "Stopped",
+	error: "Error"
+};
+var add$4 = {
+	title: "Add Torrent",
+	file: "File",
+	magnet: "Magnet",
+	url: "URL",
+	dragDrop: "Drag & drop a .torrent file here",
+	orClickToBrowse: "or click to browse",
+	magnetPlaceholder: "magnet:?xt=urn:btih:...",
+	urlPlaceholder: "https://example.com/torrent.torrent",
+	addMagnet: "Add Magnet",
+	addFromUrl: "Add from URL",
+	paste: "Paste",
+	invalidFile: "Please select a .torrent file",
+	torrentAddedSuccess: "Torrent added successfully!",
+	torrentAddFailed: "Failed to add torrent",
+	enterMagnet: "Please enter a magnet link",
+	magnetAddSuccess: "Magnet link added successfully!",
+	magnetAddFailed: "Failed to add magnet link",
+	enterUrl: "Please enter a URL",
+	urlAddSuccess: "Torrent added from URL successfully!",
+	urlAddFailed: "Failed to add torrent from URL",
+	clipboardFailed: "Failed to read clipboard"
+};
+var settings$4 = {
+	title: "Settings",
+	connection: "Connection",
+	torrentClient: "Torrent Client",
+	clientUrl: "{client} URL",
+	username: "Username",
+	password: "Password",
+	host: "Host",
+	port: "Port",
+	scgiUrl: "SCGI URL",
+	testConnection: "Test Connection",
+	connectionSuccess: "Connection successful!",
+	connectionFailed: "Connection failed",
+	"interface": "Interface",
+	theme: "Theme",
+	themeSystem: "System",
+	themeLight: "Light",
+	themeDark: "Dark",
+	itemsPerPage: "Items per page",
+	downloads: "Downloads",
+	defaultDownloadPath: "Default download path",
+	maxActiveDownloads: "Max active downloads",
+	downloadSpeedLimit: "Download speed limit (KB/s)",
+	uploadSpeedLimit: "Upload speed limit (KB/s)",
+	unlimited: "0 = unlimited",
+	save: "Save Settings"
+};
+var feeds$4 = {
+	title: "RSS Feeds",
+	addFeed: "Add Feed",
+	noFeeds: "No RSS feeds yet",
+	addFirstFeed: "Add your first feed",
+	items: "{count} items",
+	lastUpdated: "Last updated: {date}",
+	never: "Never",
+	addRssFeed: "Add RSS Feed",
+	feedUrlPlaceholder: "https://example.com/feed.xml",
+	cancel: "Cancel",
+	addFailed: "Failed to add feed",
+	deleteFailed: "Failed to delete feed"
+};
+var common$4 = {
+	loading: "Loading...",
+	error: "Error",
+	success: "Success"
+};
+const locale_en_46json_64595a20 = {
+	nav: nav$4,
+	torrents: torrents$4,
+	status: status$4,
+	add: add$4,
+	settings: settings$4,
+	feeds: feeds$4,
+	common: common$4
+};
 
+var nav$3 = {
+	torrents: "Torrents",
+	add: "Ajouter",
+	feeds: "Flux",
+	settings: "Paramètres"
+};
+var torrents$3 = {
+	title: "Torrents",
+	search: "Rechercher...",
+	noResults: "Aucun torrent",
+	addFirst: "Ajouter un torrent",
+	name: "Nom",
+	size: "Taille",
+	down: "Réception",
+	up: "Envoi",
+	sp: "S/P",
+	ratio: "Ratio",
+	percent: "%",
+	added: "Ajouté",
+	unknown: "Inconnu",
+	seedsPeers: "{seeds}S / {peers}P"
+};
+var status$3 = {
+	all: "Tous",
+	downloading: "Téléchargement",
+	seeding: "Seed",
+	paused: "En pause",
+	stopped: "Arrêté",
+	error: "Erreur"
+};
+var add$3 = {
+	title: "Ajouter un torrent",
+	file: "Fichier",
+	magnet: "Magnet",
+	url: "URL",
+	dragDrop: "Glissez-déposez un fichier .torrent ici",
+	orClickToBrowse: "ou cliquez pour parcourir",
+	magnetPlaceholder: "magnet:?xt=urn:btih:...",
+	urlPlaceholder: "https://exemple.com/torrent.torrent",
+	addMagnet: "Ajouter Magnet",
+	addFromUrl: "Ajouter depuis URL",
+	paste: "Coller",
+	invalidFile: "Veuillez sélectionner un fichier .torrent",
+	torrentAddedSuccess: "Torrent ajouté avec succès !",
+	torrentAddFailed: "Échec de l'ajout du torrent",
+	enterMagnet: "Veuillez entrer un lien magnet",
+	magnetAddSuccess: "Lien magnet ajouté avec succès !",
+	magnetAddFailed: "Échec de l'ajout du lien magnet",
+	enterUrl: "Veuillez entrer une URL",
+	urlAddSuccess: "Torrent ajouté depuis l'URL avec succès !",
+	urlAddFailed: "Échec de l'ajout du torrent depuis l'URL",
+	clipboardFailed: "Échec de la lecture du presse-papiers"
+};
+var settings$3 = {
+	title: "Paramètres",
+	connection: "Connexion",
+	torrentClient: "Client Torrent",
+	clientUrl: "URL {client}",
+	username: "Nom d'utilisateur",
+	password: "Mot de passe",
+	host: "Hôte",
+	port: "Port",
+	scgiUrl: "URL SCGI",
+	testConnection: "Tester la connexion",
+	connectionSuccess: "Connexion réussie !",
+	connectionFailed: "Échec de la connexion",
+	"interface": "Interface",
+	theme: "Thème",
+	themeSystem: "Système",
+	themeLight: "Clair",
+	themeDark: "Sombre",
+	itemsPerPage: "Éléments par page",
+	downloads: "Téléchargements",
+	defaultDownloadPath: "Chemin de téléchargement par défaut",
+	maxActiveDownloads: "Téléchargements actifs max",
+	downloadSpeedLimit: "Limite de réception (Ko/s)",
+	uploadSpeedLimit: "Limite d'envoi (Ko/s)",
+	unlimited: "0 = illimité",
+	save: "Enregistrer"
+};
+var feeds$3 = {
+	title: "Flux RSS",
+	addFeed: "Ajouter un flux",
+	noFeeds: "Aucun flux RSS",
+	addFirstFeed: "Ajoutez votre premier flux",
+	items: "{count} éléments",
+	lastUpdated: "Dernière mise à jour : {date}",
+	never: "Jamais",
+	addRssFeed: "Ajouter un flux RSS",
+	feedUrlPlaceholder: "https://exemple.com/feed.xml",
+	cancel: "Annuler",
+	addFailed: "Échec de l'ajout du flux",
+	deleteFailed: "Échec de la suppression du flux"
+};
+var common$3 = {
+	loading: "Chargement...",
+	error: "Erreur",
+	success: "Succès"
+};
+const locale_fr_46json_821f442b = {
+	nav: nav$3,
+	torrents: torrents$3,
+	status: status$3,
+	add: add$3,
+	settings: settings$3,
+	feeds: feeds$3,
+	common: common$3
+};
+
+var nav$2 = {
+	torrents: "Torrents",
+	add: "Añadir",
+	feeds: "Feeds",
+	settings: "Ajustes"
+};
+var torrents$2 = {
+	title: "Torrents",
+	search: "Buscar...",
+	noResults: "No hay torrents",
+	addFirst: "Añadir torrent",
+	name: "Nombre",
+	size: "Tamaño",
+	down: "Baj",
+	up: "Sub",
+	sp: "S/P",
+	ratio: "Ratio",
+	percent: "%",
+	added: "Añadido",
+	unknown: "Desconocido",
+	seedsPeers: "{seeds}S / {peers}P"
+};
+var status$2 = {
+	all: "Todos",
+	downloading: "Descargando",
+	seeding: "Semillando",
+	paused: "Pausado",
+	stopped: "Detenido",
+	error: "Error"
+};
+var add$2 = {
+	title: "Añadir Torrent",
+	file: "Archivo",
+	magnet: "Magnet",
+	url: "URL",
+	dragDrop: "Arrastra y suelta un archivo .torrent aquí",
+	orClickToBrowse: "o haz clic para buscar",
+	magnetPlaceholder: "magnet:?xt=urn:btih:...",
+	urlPlaceholder: "https://ejemplo.com/torrent.torrent",
+	addMagnet: "Añadir Magnet",
+	addFromUrl: "Añadir desde URL",
+	paste: "Pegar",
+	invalidFile: "Por favor selecciona un archivo .torrent",
+	torrentAddedSuccess: "¡Torrent añadido con éxito!",
+	torrentAddFailed: "Error al añadir torrent",
+	enterMagnet: "Por favor ingresa un enlace magnet",
+	magnetAddSuccess: "¡Enlace magnet añadido con éxito!",
+	magnetAddFailed: "Error al añadir enlace magnet",
+	enterUrl: "Por favor ingresa una URL",
+	urlAddSuccess: "¡Torrent añadido desde URL con éxito!",
+	urlAddFailed: "Error al añadir torrent desde URL",
+	clipboardFailed: "Error al leer el portapapeles"
+};
+var settings$2 = {
+	title: "Ajustes",
+	connection: "Conexión",
+	torrentClient: "Cliente Torrent",
+	clientUrl: "URL de {client}",
+	username: "Usuario",
+	password: "Contraseña",
+	host: "Host",
+	port: "Puerto",
+	scgiUrl: "URL SCGI",
+	testConnection: "Probar conexión",
+	connectionSuccess: "¡Conexión exitosa!",
+	connectionFailed: "Conexión fallida",
+	"interface": "Interfaz",
+	theme: "Tema",
+	themeSystem: "Sistema",
+	themeLight: "Claro",
+	themeDark: "Oscuro",
+	itemsPerPage: "Elementos por página",
+	downloads: "Descargas",
+	defaultDownloadPath: "Ruta de descarga predeterminada",
+	maxActiveDownloads: "Descargas activas máx",
+	downloadSpeedLimit: "Límite de descarga (KB/s)",
+	uploadSpeedLimit: "Límite de subida (KB/s)",
+	unlimited: "0 = ilimitado",
+	save: "Guardar"
+};
+var feeds$2 = {
+	title: "Feeds RSS",
+	addFeed: "Añadir Feed",
+	noFeeds: "No hay feeds RSS",
+	addFirstFeed: "Añade tu primer feed",
+	items: "{count} elementos",
+	lastUpdated: "Última actualización: {date}",
+	never: "Nunca",
+	addRssFeed: "Añadir Feed RSS",
+	feedUrlPlaceholder: "https://ejemplo.com/feed.xml",
+	cancel: "Cancelar",
+	addFailed: "Error al añadir feed",
+	deleteFailed: "Error al eliminar feed"
+};
+var common$2 = {
+	loading: "Cargando...",
+	error: "Error",
+	success: "Éxito"
+};
+const locale_es_46json_e61a49f1 = {
+	nav: nav$2,
+	torrents: torrents$2,
+	status: status$2,
+	add: add$2,
+	settings: settings$2,
+	feeds: feeds$2,
+	common: common$2
+};
+
+var nav$1 = {
+	torrents: "种子",
+	add: "添加",
+	feeds: "订阅",
+	settings: "设置"
+};
+var torrents$1 = {
+	title: "种子",
+	search: "搜索...",
+	noResults: "暂无种子",
+	addFirst: "添加种子",
+	name: "名称",
+	size: "大小",
+	down: "下载",
+	up: "上传",
+	sp: "S/P",
+	ratio: "比率",
+	percent: "%",
+	added: "添加时间",
+	unknown: "未知",
+	seedsPeers: "{seeds}S / {peers}P"
+};
+var status$1 = {
+	all: "全部",
+	downloading: "下载中",
+	seeding: "做种中",
+	paused: "已暂停",
+	stopped: "已停止",
+	error: "错误"
+};
+var add$1 = {
+	title: "添加种子",
+	file: "文件",
+	magnet: "磁力",
+	url: "链接",
+	dragDrop: "拖放 .torrent 文件到这里",
+	orClickToBrowse: "或点击浏览",
+	magnetPlaceholder: "magnet:?xt=urn:btih:...",
+	urlPlaceholder: "https://example.com/torrent.torrent",
+	addMagnet: "添加磁力",
+	addFromUrl: "通过链接添加",
+	paste: "粘贴",
+	invalidFile: "请选择 .torrent 文件",
+	torrentAddedSuccess: "种子添加成功！",
+	torrentAddFailed: "添加种子失败",
+	enterMagnet: "请输入磁力链接",
+	magnetAddSuccess: "磁力链接添加成功！",
+	magnetAddFailed: "添加磁力链接失败",
+	enterUrl: "请输入链接",
+	urlAddSuccess: "从链接添加种子成功！",
+	urlAddFailed: "从链接添加种子失败",
+	clipboardFailed: "读取剪贴板失败"
+};
+var settings$1 = {
+	title: "设置",
+	connection: "连接",
+	torrentClient: "BT客户端",
+	clientUrl: "{client} 链接",
+	username: "用户名",
+	password: "密码",
+	host: "主机",
+	port: "端口",
+	scgiUrl: "SCGI 链接",
+	testConnection: "测试连接",
+	connectionSuccess: "连接成功！",
+	connectionFailed: "连接失败",
+	"interface": "界面",
+	theme: "主题",
+	themeSystem: "跟随系统",
+	themeLight: "浅色",
+	themeDark: "深色",
+	itemsPerPage: "每页条目数",
+	downloads: "下载",
+	defaultDownloadPath: "默认下载路径",
+	maxActiveDownloads: "最大同时下载数",
+	downloadSpeedLimit: "下载速度限制 (KB/s)",
+	uploadSpeedLimit: "上传速度限制 (KB/s)",
+	unlimited: "0 = 无限制",
+	save: "保存设置"
+};
+var feeds$1 = {
+	title: "RSS 订阅",
+	addFeed: "添加订阅",
+	noFeeds: "暂无 RSS 订阅",
+	addFirstFeed: "添加你的第一个订阅",
+	items: "{count} 条目",
+	lastUpdated: "最后更新：{date}",
+	never: "从未",
+	addRssFeed: "添加 RSS 订阅",
+	feedUrlPlaceholder: "https://example.com/feed.xml",
+	cancel: "取消",
+	addFailed: "添加订阅失败",
+	deleteFailed: "删除订阅失败"
+};
+var common$1 = {
+	loading: "加载中...",
+	error: "错误",
+	success: "成功"
+};
+const locale_zh_46json_893763b0 = {
+	nav: nav$1,
+	torrents: torrents$1,
+	status: status$1,
+	add: add$1,
+	settings: settings$1,
+	feeds: feeds$1,
+	common: common$1
+};
+
+var nav = {
+	torrents: "टॉरेंट",
+	add: "जोड़ें",
+	feeds: "फीड्स",
+	settings: "सेटिंग्स"
+};
+var torrents = {
+	title: "टॉरेंट",
+	search: "खोजें...",
+	noResults: "कोई टॉरेंट नहीं",
+	addFirst: "टॉरेंट जोड़ें",
+	name: "नाम",
+	size: "आकार",
+	down: "डाउन",
+	up: "अप",
+	sp: "S/P",
+	ratio: "अनुपात",
+	percent: "%",
+	added: "जोड़ा गया",
+	unknown: "अज्ञात",
+	seedsPeers: "{seeds}S / {peers}P"
+};
+var status = {
+	all: "सभी",
+	downloading: "डाउनलोड हो रहा है",
+	seeding: "सीडिंग",
+	paused: "रुका हुआ",
+	stopped: "बंद",
+	error: "त्रुटि"
+};
+var add = {
+	title: "टॉरेंट जोड़ें",
+	file: "फ़ाइल",
+	magnet: "मैग्नेट",
+	url: "URL",
+	dragDrop: ".torrent फ़ाइल यहां खींचें और छोड़ें",
+	orClickToBrowse: "या ब्राउज़ करने के लिए क्लिक करें",
+	magnetPlaceholder: "magnet:?xt=urn:btih:...",
+	urlPlaceholder: "https://example.com/torrent.torrent",
+	addMagnet: "मैग्नेट जोड़ें",
+	addFromUrl: "URL से जोड़ें",
+	paste: "पेस्ट",
+	invalidFile: "कृपया .torrent फ़ाइल चुनें",
+	torrentAddedSuccess: "टॉरेंट सफलतापूर्वक जोड़ा गया!",
+	torrentAddFailed: "टॉरेंट जोड़ने में विफल",
+	enterMagnet: "कृपया मैग्नेट लिंक दर्ज करें",
+	magnetAddSuccess: "मैग्नेट लिंक सफलतापूर्वक जोड़ा गया!",
+	magnetAddFailed: "मैग्नेट लिंक जोड़ने में विफल",
+	enterUrl: "कृपया URL दर्ज करें",
+	urlAddSuccess: "URL से टॉरेंट सफलतापूर्वक जोड़ा गया!",
+	urlAddFailed: "URL से टॉरेंट जोड़ने में विफल",
+	clipboardFailed: "क्लिपबोर्ड पढ़ने में विफल"
+};
+var settings = {
+	title: "सेटिंग्स",
+	connection: "कनेक्शन",
+	torrentClient: "टॉरेंट क्लाइंट",
+	clientUrl: "{client} URL",
+	username: "उपयोगकर्ता नाम",
+	password: "पासवर्ड",
+	host: "होस्ट",
+	port: "पोर्ट",
+	scgiUrl: "SCGI URL",
+	testConnection: "कनेक्शन टेस्ट करें",
+	connectionSuccess: "कनेक्शन सफल!",
+	connectionFailed: "कनेक्शन विफल",
+	"interface": "इंटरफ़ेस",
+	theme: "थीम",
+	themeSystem: "सिस्टम",
+	themeLight: "लाइट",
+	themeDark: "डार्क",
+	itemsPerPage: "प्रति पृष्ठ आइटम",
+	downloads: "डाउनलोड",
+	defaultDownloadPath: "डिफ़ॉल्ट डाउनलोड पथ",
+	maxActiveDownloads: "अधिकतम सक्रिय डाउनलोड",
+	downloadSpeedLimit: "डाउनलोड गति सीमा (KB/s)",
+	uploadSpeedLimit: "अपलोड गति सीमा (KB/s)",
+	unlimited: "0 = असीमित",
+	save: "सेटिंग्स सेव करें"
+};
+var feeds = {
+	title: "RSS फीड्स",
+	addFeed: "फीड जोड़ें",
+	noFeeds: "कोई RSS फीड नहीं",
+	addFirstFeed: "अपनी पहली फीड जोड़ें",
+	items: "{count} आइटम",
+	lastUpdated: "अंतिम अपडेट: {date}",
+	never: "कभी नहीं",
+	addRssFeed: "RSS फीड जोड़ें",
+	feedUrlPlaceholder: "https://example.com/feed.xml",
+	cancel: "रद्द करें",
+	addFailed: "फीड जोड़ने में विफल",
+	deleteFailed: "फीड हटाने में विफल"
+};
+var common = {
+	loading: "लोड हो रहा है...",
+	error: "त्रुटि",
+	success: "सफलता"
+};
+const locale_hi_46json_e2842f6b = {
+	nav: nav,
+	torrents: torrents,
+	status: status,
+	add: add,
+	settings: settings,
+	feeds: feeds,
+	common: common
+};
+
+// @ts-nocheck
 const localeCodes =  [
-  "en"
+  "en",
+  "fr",
+  "es",
+  "zh",
+  "hi"
 ];
 const localeLoaders = {
-  en: []
+  en: [
+    {
+      key: "locale_en_46json_64595a20",
+      load: () => Promise.resolve(locale_en_46json_64595a20),
+      cache: true
+    }
+  ],
+  fr: [
+    {
+      key: "locale_fr_46json_821f442b",
+      load: () => Promise.resolve(locale_fr_46json_821f442b),
+      cache: true
+    }
+  ],
+  es: [
+    {
+      key: "locale_es_46json_e61a49f1",
+      load: () => Promise.resolve(locale_es_46json_e61a49f1),
+      cache: true
+    }
+  ],
+  zh: [
+    {
+      key: "locale_zh_46json_893763b0",
+      load: () => Promise.resolve(locale_zh_46json_893763b0),
+      cache: true
+    }
+  ],
+  hi: [
+    {
+      key: "locale_hi_46json_e2842f6b",
+      load: () => Promise.resolve(locale_hi_46json_e2842f6b),
+      cache: true
+    }
+  ]
 };
 const vueI18nConfigs = [];
 const normalizedLocales = [
   {
     code: "en",
     name: "English",
+    language: undefined
+  },
+  {
+    code: "fr",
+    name: "Français",
+    language: undefined
+  },
+  {
+    code: "es",
+    name: "Español",
+    language: undefined
+  },
+  {
+    code: "zh",
+    name: "中文",
+    language: undefined
+  },
+  {
+    code: "hi",
+    name: "हिन्दी",
     language: undefined
   }
 ];
@@ -5591,7 +6377,7 @@ function findBrowserLocale(locales, browserLocales) {
   return matchedLocales.sort(compareBrowserLocale).at(0)?.code ?? "";
 }
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"description","content":"Modern torrent web client"},{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"},{"name":"theme-color","content":"#0f172a"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[],"script":[],"noscript":[],"title":"Ogawa - Torrent Client"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"description","content":"Modern torrent web client"},{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"},{"name":"theme-color","content":"#1633CC"}],"link":[{"rel":"icon","type":"image/svg+xml","href":"/favicon.svg"}],"style":[],"script":[],"noscript":[],"title":"Ogawa - Torrent Client"};
 
 const appRootTag = "div";
 
@@ -5803,7 +6589,7 @@ const _PoqAkneXbtjxxd7hx2mJPS8crrTR7gtDbVVQBsJxo = defineNitroPlugin(async (nitr
     const localeSegment = detector.route(event.path);
     const pathLocale = isSupportedLocale(localeSegment) && localeSegment || void 0;
     const path = (pathLocale && url.pathname.slice(pathLocale.length + 1)) ?? url.pathname;
-    if (!url.pathname.includes("/_i18n/l5udelP9") && !isExistingNuxtRoute(path)) {
+    if (!url.pathname.includes("/_i18n/hobWfAbA") && !isExistingNuxtRoute(path)) {
       return;
     }
     const resolved = resolveRedirectPath(event, path, pathLocale, ctx.vueI18nOptions.defaultLocale, detector);
@@ -5823,7 +6609,7 @@ const _PoqAkneXbtjxxd7hx2mJPS8crrTR7gtDbVVQBsJxo = defineNitroPlugin(async (nitr
   });
 });
 
-const script = "\"use strict\";(()=>{const t=window,e=document.documentElement,c=[\"dark\",\"light\"],n=getStorageValue(\"localStorage\",\"nuxt-color-mode\")||\"system\";let i=n===\"system\"?u():n;const r=e.getAttribute(\"data-color-mode-forced\");r&&(i=r),l(i),t[\"__NUXT_COLOR_MODE__\"]={preference:n,value:i,getColorScheme:u,addColorScheme:l,removeColorScheme:d};function l(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.add(s):e.className+=\" \"+s,a&&e.setAttribute(\"data-\"+a,o)}function d(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.remove(s):e.className=e.className.replace(new RegExp(s,\"g\"),\"\"),a&&e.removeAttribute(\"data-\"+a)}function f(o){return t.matchMedia(\"(prefers-color-scheme\"+o+\")\")}function u(){if(t.matchMedia&&f(\"\").media!==\"not all\"){for(const o of c)if(f(\":\"+o).matches)return o}return\"light\"}})();function getStorageValue(t,e){switch(t){case\"localStorage\":return window.localStorage.getItem(e);case\"sessionStorage\":return window.sessionStorage.getItem(e);case\"cookie\":return getCookie(e);default:return null}}function getCookie(t){const c=(\"; \"+window.document.cookie).split(\"; \"+t+\"=\");if(c.length===2)return c.pop()?.split(\";\").shift()}";
+const script = "\"use strict\";(()=>{const t=window,e=document.documentElement,c=[\"dark\",\"light\"],n=getStorageValue(\"localStorage\",\"nuxt-color-mode\")||\"dark\";let i=n===\"system\"?u():n;const r=e.getAttribute(\"data-color-mode-forced\");r&&(i=r),l(i),t[\"__NUXT_COLOR_MODE__\"]={preference:n,value:i,getColorScheme:u,addColorScheme:l,removeColorScheme:d};function l(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.add(s):e.className+=\" \"+s,a&&e.setAttribute(\"data-\"+a,o)}function d(o){const s=\"\"+o+\"\",a=\"\";e.classList?e.classList.remove(s):e.className=e.className.replace(new RegExp(s,\"g\"),\"\"),a&&e.removeAttribute(\"data-\"+a)}function f(o){return t.matchMedia(\"(prefers-color-scheme\"+o+\")\")}function u(){if(t.matchMedia&&f(\"\").media!==\"not all\"){for(const o of c)if(f(\":\"+o).matches)return o}return\"dark\"}})();function getStorageValue(t,e){switch(t){case\"localStorage\":return window.localStorage.getItem(e);case\"sessionStorage\":return window.sessionStorage.getItem(e);case\"cookie\":return getCookie(e);default:return null}}function getCookie(t){const c=(\"; \"+window.document.cookie).split(\"; \"+t+\"=\");if(c.length===2)return c.pop()?.split(\";\").shift()}";
 
 const _4LMpcbpwdYBnIbK__Ln2kQ2fGw3CYbG7p7bFd6TDpTM = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
@@ -5840,275 +6626,261 @@ const assets = {
   "/favicon.svg": {
     "type": "image/svg+xml",
     "etag": "\"1e9-OdapW8EI14gqNspCdFtDZDtwxMo\"",
-    "mtime": "2026-03-14T09:21:53.052Z",
+    "mtime": "2026-03-14T14:44:49.530Z",
     "size": 489,
     "path": "../public/favicon.svg"
   },
   "/manifest.webmanifest": {
     "type": "application/manifest+json",
-    "etag": "\"172-tcKnK9jOnlIdM9gNB1ZngnTHAR4\"",
-    "mtime": "2026-03-14T09:21:53.043Z",
+    "etag": "\"172-UPURkOsC2UtMms/4TyxiC3UobNU\"",
+    "mtime": "2026-03-14T14:44:49.520Z",
     "size": 370,
     "path": "../public/manifest.webmanifest"
   },
   "/sw.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"83e-oT3xIGIvf6SOqaqTOn5kamQ52FI\"",
-    "mtime": "2026-03-14T09:21:54.326Z",
-    "size": 2110,
+    "etag": "\"906-Q8wUxrYnS+0eSbpQwxU2y9Jzkt4\"",
+    "mtime": "2026-03-14T14:44:50.942Z",
+    "size": 2310,
     "path": "../public/sw.js"
   },
   "/workbox-1d305bb8.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"5572-wnwjECsPFADIluZiasHigyhPcbI\"",
-    "mtime": "2026-03-14T09:21:54.326Z",
+    "mtime": "2026-03-14T14:44:50.943Z",
     "size": 21874,
     "path": "../public/workbox-1d305bb8.js"
   },
-  "/_nuxt/B01OdF1a.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"542-kjDEP32zfcnCamU3qAjuGbrVIEQ\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 1346,
-    "path": "../public/_nuxt/B01OdF1a.js"
+  "/_fonts/1lIWDHjOylEMvLGUk57H0CvPB-4oPaeJaA5yhE6ihFU-HujIAahTwvl_5iBwjsukG431k7_UZhyBl-zxUYto9LU.woff2": {
+    "type": "font/woff2",
+    "etag": "\"5ec8-kMvsX4kJpCFJ3upKtFNqNEx31oU\"",
+    "mtime": "2026-03-14T14:44:49.517Z",
+    "size": 24264,
+    "path": "../public/_fonts/1lIWDHjOylEMvLGUk57H0CvPB-4oPaeJaA5yhE6ihFU-HujIAahTwvl_5iBwjsukG431k7_UZhyBl-zxUYto9LU.woff2"
   },
-  "/_nuxt/BM14j4QX.js": {
+  "/_fonts/H520pC90-jEkFEYDEuDKy06Ch1l1qpQPOsuWGBR1yEI-9u0nY5Ib_uMCS8F3Fdr6hSpDZSS_BMCDyu__C1u_8_Y.woff2": {
+    "type": "font/woff2",
+    "etag": "\"5fec-O/vTMk4eD7kXidiycxglGeYx2Qs\"",
+    "mtime": "2026-03-14T14:44:49.517Z",
+    "size": 24556,
+    "path": "../public/_fonts/H520pC90-jEkFEYDEuDKy06Ch1l1qpQPOsuWGBR1yEI-9u0nY5Ib_uMCS8F3Fdr6hSpDZSS_BMCDyu__C1u_8_Y.woff2"
+  },
+  "/_fonts/OSz2anka5MTgLsNwYJxHXP8VNDugPISb0FQI8VMuTXw-ALaZcrrNBfi9h4nVQcX8ZV5Btvxuj3IiJzSeRkhErSY.woff2": {
+    "type": "font/woff2",
+    "etag": "\"21b8-MPaZul26uVO7GeJPvwEEkg2E/DM\"",
+    "mtime": "2026-03-14T14:44:49.517Z",
+    "size": 8632,
+    "path": "../public/_fonts/OSz2anka5MTgLsNwYJxHXP8VNDugPISb0FQI8VMuTXw-ALaZcrrNBfi9h4nVQcX8ZV5Btvxuj3IiJzSeRkhErSY.woff2"
+  },
+  "/_fonts/uuJT0aPNJitSLdjfQbQ87Y88aWW_I43CDqOd5c28_ms-eXAgY5HQPWIALz1Uq9X6Ar_29SP_fwjj9K1ydThAh30.woff2": {
+    "type": "font/woff2",
+    "etag": "\"316c-JKJk77bsmNAeD84aQU13Nc/dzU4\"",
+    "mtime": "2026-03-14T14:44:49.517Z",
+    "size": 12652,
+    "path": "../public/_fonts/uuJT0aPNJitSLdjfQbQ87Y88aWW_I43CDqOd5c28_ms-eXAgY5HQPWIALz1Uq9X6Ar_29SP_fwjj9K1ydThAh30.woff2"
+  },
+  "/_fonts/zTSApYlvv0gi8xImEYkmAOFDsB5mQUokekS8ke9DVCU-Aih1HRKEw1L_SidQB8ZIQWO8fhMzlZNj06Ho4PKlFM8.woff2": {
+    "type": "font/woff2",
+    "etag": "\"2e84-JqJGeFwdG89UF9yeS4qZAqKqG64\"",
+    "mtime": "2026-03-14T14:44:49.518Z",
+    "size": 11908,
+    "path": "../public/_fonts/zTSApYlvv0gi8xImEYkmAOFDsB5mQUokekS8ke9DVCU-Aih1HRKEw1L_SidQB8ZIQWO8fhMzlZNj06Ho4PKlFM8.woff2"
+  },
+  "/_fonts/oOj5BkOVS9Nb1McK5ZALuoAUSBp85QfCuW6KOH9YFYk-wpP4jVbJ5HPEr28wrILNeMNBZj_STAolN8iIbggFLAk.woff2": {
+    "type": "font/woff2",
+    "etag": "\"63d4-0KjIxVZ5jbCKXeWjURcGAz3jYY0\"",
+    "mtime": "2026-03-14T14:44:49.518Z",
+    "size": 25556,
+    "path": "../public/_fonts/oOj5BkOVS9Nb1McK5ZALuoAUSBp85QfCuW6KOH9YFYk-wpP4jVbJ5HPEr28wrILNeMNBZj_STAolN8iIbggFLAk.woff2"
+  },
+  "/_fonts/Uso081bJrkVUP2q-jJMVfYgHH76G0g9kkkRFgHKFSHk-xqQ30kaaxnL8Qp2btyjOXk1RCku8K7W2OAgVHta5xAo.woff2": {
+    "type": "font/woff2",
+    "etag": "\"715c-sB8yNk0slRPs3nOjAl3YmwFOMCY\"",
+    "mtime": "2026-03-14T14:44:49.518Z",
+    "size": 29020,
+    "path": "../public/_fonts/Uso081bJrkVUP2q-jJMVfYgHH76G0g9kkkRFgHKFSHk-xqQ30kaaxnL8Qp2btyjOXk1RCku8K7W2OAgVHta5xAo.woff2"
+  },
+  "/_nuxt/B5yOXzHg.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"86e-H/trbKKnuEF/rghw4cYHcF4seKg\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 2158,
-    "path": "../public/_nuxt/BM14j4QX.js"
+    "etag": "\"20da-2mHqeaUX8nwXIz/gsvPVseaEzoE\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 8410,
+    "path": "../public/_nuxt/B5yOXzHg.js"
+  },
+  "/_nuxt/B8INfgRb.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"17c9-iZBKKuCBPz0G96wwJs7U4pccP1I\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 6089,
+    "path": "../public/_nuxt/B8INfgRb.js"
+  },
+  "/_nuxt/0tInwIKn.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1821-ULTmJdP5/twViQWVayV5gSQ9Ouw\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 6177,
+    "path": "../public/_nuxt/0tInwIKn.js"
   },
   "/_nuxt/BIl4cyR9.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"1681-8OY0+UaG+gUiKJSGiH59s2B32fM\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
+    "mtime": "2026-03-14T14:44:49.525Z",
     "size": 5761,
     "path": "../public/_nuxt/BIl4cyR9.js"
   },
-  "/_nuxt/BPKhoJP0.js": {
+  "/_nuxt/B_ZgCPsl.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"102bc-3xm8qpo7Nd8NW2sQISFTyZyVPlw\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 66236,
-    "path": "../public/_nuxt/BPKhoJP0.js"
-  },
-  "/_nuxt/BUa7fozH.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1a87-PZz5y/PbilDEyAtqC7WtNATEWyI\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 6791,
-    "path": "../public/_nuxt/BUa7fozH.js"
-  },
-  "/_nuxt/CUy8uvwk.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"3ee9-9nRfRAhxN9ojyNwAaPJ8zoXlnrw\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 16105,
-    "path": "../public/_nuxt/CUy8uvwk.js"
-  },
-  "/_nuxt/CcIcwYLx.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"d96-DhB8ZfGtNK0OLnFNonBMPtGPcPc\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 3478,
-    "path": "../public/_nuxt/CcIcwYLx.js"
-  },
-  "/_nuxt/BbKAvBv1.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"6b092-z/oQ/4olQIvGtr2TQVB3TxK4T34\"",
-    "mtime": "2026-03-14T09:21:53.048Z",
-    "size": 438418,
-    "path": "../public/_nuxt/BbKAvBv1.js"
-  },
-  "/_nuxt/CtUEUJpi.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1821-9/aMMGBBeKUE4MdhcmnndYz2k3c\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 6177,
-    "path": "../public/_nuxt/CtUEUJpi.js"
-  },
-  "/_nuxt/DLBvAexE.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"eb9-IoyRKiQ6mxGT6fWaIAEL/Ae7zsg\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
+    "etag": "\"eb9-kiLDP5f6Ck3zln2pmiWSUyL84wg\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
     "size": 3769,
-    "path": "../public/_nuxt/DLBvAexE.js"
+    "path": "../public/_nuxt/B_ZgCPsl.js"
+  },
+  "/_nuxt/BPjco3Xo.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"11c2-u+YITPRRGCkC0nw6+GX3lWUcvUw\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 4546,
+    "path": "../public/_nuxt/BPjco3Xo.js"
+  },
+  "/_nuxt/BkoZHPBD.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"12c7-RbtMTFodQJI65UQiAqwqoPR+mqs\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 4807,
+    "path": "../public/_nuxt/BkoZHPBD.js"
+  },
+  "/_nuxt/BtyqwhHa.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"95-zt/KRAlBJRlhzjLxL7mRnaDiry8\"",
+    "mtime": "2026-03-14T14:44:49.525Z",
+    "size": 149,
+    "path": "../public/_nuxt/BtyqwhHa.js"
+  },
+  "/_nuxt/C0vwcXjc.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"d51-ung3j2oPgFnyllR+Ye4lmyeE5l0\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 3409,
+    "path": "../public/_nuxt/C0vwcXjc.js"
+  },
+  "/_nuxt/CB_exxY2.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2897-GLkxShIY3shfIDeDIIqopI/xC1w\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 10391,
+    "path": "../public/_nuxt/CB_exxY2.js"
+  },
+  "/_nuxt/Cr57g20h.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1839-PDPvNsA3aMmtzrQwz9N5MZd99E8\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 6201,
+    "path": "../public/_nuxt/Cr57g20h.js"
+  },
+  "/_nuxt/D7dZy8uh.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"60-9wTLoapZPaOVxKqG2a7oZwKSM+4\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 96,
+    "path": "../public/_nuxt/D7dZy8uh.js"
+  },
+  "/_nuxt/DKO3kvDT.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1260-VibUI08+CCY95ZXZCcj64dFqswo\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 4704,
+    "path": "../public/_nuxt/DKO3kvDT.js"
+  },
+  "/_nuxt/DGKCSnBM.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2207-LcoZAvSl7QeXCUyVyuNoGnhPF38\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 8711,
+    "path": "../public/_nuxt/DGKCSnBM.js"
+  },
+  "/_nuxt/DfqS3aXY.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"6cf0-TXA2YuLTvAT5ZwHPdMF40jl91pA\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 27888,
+    "path": "../public/_nuxt/DfqS3aXY.js"
+  },
+  "/_nuxt/DgWrXRDS.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"11c1-45gKl3Ei/AjgnJE//n+zfxnmdpk\"",
+    "mtime": "2026-03-14T14:44:49.526Z",
+    "size": 4545,
+    "path": "../public/_nuxt/DgWrXRDS.js"
   },
   "/_nuxt/DlAUqK2U.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"5b-eFCz/UrraTh721pgAl0VxBNR1es\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
+    "mtime": "2026-03-14T14:44:49.526Z",
     "size": 91,
     "path": "../public/_nuxt/DlAUqK2U.js"
   },
-  "/_nuxt/DnfELSM6.js": {
+  "/_nuxt/DuTeGII-.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"211a-yLJY/8XmVASLyoOd4pbbJPVHjuo\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 8474,
-    "path": "../public/_nuxt/DnfELSM6.js"
+    "etag": "\"d96-KubU4XLz7BqChMq6DlJOntm/g3E\"",
+    "mtime": "2026-03-14T14:44:49.527Z",
+    "size": 3478,
+    "path": "../public/_nuxt/DuTeGII-.js"
   },
-  "/_nuxt/_HWj4_LP.js": {
+  "/_nuxt/RqpjE5zq.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"69ba-I+uNbveYJ+aU7YqiMCEqjweuMBs\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 27066,
-    "path": "../public/_nuxt/_HWj4_LP.js"
+    "etag": "\"4800-fLmIX02MjjDd9MCWg5HdJKjGSXk\"",
+    "mtime": "2026-03-14T14:44:49.527Z",
+    "size": 18432,
+    "path": "../public/_nuxt/RqpjE5zq.js"
   },
-  "/_nuxt/ed5vr3ml.js": {
+  "/_nuxt/O-2zlIPI.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"95-C+/dw4luWK/vhT80nyV5k05W6uQ\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 149,
-    "path": "../public/_nuxt/ed5vr3ml.js"
+    "etag": "\"102bc-s/42xCKJFj/CpzqUTzr5qOO0Sfo\"",
+    "mtime": "2026-03-14T14:44:49.527Z",
+    "size": 66236,
+    "path": "../public/_nuxt/O-2zlIPI.js"
   },
   "/_nuxt/error-404._yXoGkXB.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"97e-UvhxUpGzrIO+HDYB4qU9Txgu35A\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
+    "mtime": "2026-03-14T14:44:49.527Z",
     "size": 2430,
     "path": "../public/_nuxt/error-404._yXoGkXB.css"
   },
   "/_nuxt/error-500.BENb_mjk.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"773-BFLUend+w1t3SP3QDB+Z0A0V5pI\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
+    "mtime": "2026-03-14T14:44:49.527Z",
     "size": 1907,
     "path": "../public/_nuxt/error-500.BENb_mjk.css"
   },
-  "/_nuxt/sLrt2GpD.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1657-i1pKdJwMLf3UXmx5Ub/DWwC40As\"",
-    "mtime": "2026-03-14T09:21:53.050Z",
-    "size": 5719,
-    "path": "../public/_nuxt/sLrt2GpD.js"
-  },
-  "/_nuxt/tdYFQZh4.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"17c9-/EsAzwJ2YmZfPkSUo3dUUbHp6zQ\"",
-    "mtime": "2026-03-14T09:21:53.050Z",
-    "size": 6089,
-    "path": "../public/_nuxt/tdYFQZh4.js"
-  },
-  "/_nuxt/entry.D_UIkPHu.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"31e51-bl5r23wf+n+UBRejzaKJh1Mg40g\"",
-    "mtime": "2026-03-14T09:21:53.049Z",
-    "size": 204369,
-    "path": "../public/_nuxt/entry.D_UIkPHu.css"
-  },
-  "/_fonts/178SDQEgKlkYIwN3m_zkIjcMBXox4CVikxxdM0ZM8vo-jb38HpZEzI0_yhPLZ-Yy9g2MdhSlJbWEEPtE4J-7mA4.woff2": {
-    "type": "font/woff2",
-    "etag": "\"2998-n4Ng0qtMjpor9BjKimp6sLXh5BI\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 10648,
-    "path": "../public/_fonts/178SDQEgKlkYIwN3m_zkIjcMBXox4CVikxxdM0ZM8vo-jb38HpZEzI0_yhPLZ-Yy9g2MdhSlJbWEEPtE4J-7mA4.woff2"
-  },
-  "/_fonts/5M2MKUFWnEpuT8NeCYosby4H1wQsStpPWE7MBNFFD6Q-6gJALEDS7yNhRMCqenJPe8GZSicXSdryDX23b39FgW8.woff2": {
-    "type": "font/woff2",
-    "etag": "\"4e30-CJVl1taa8AaNO619z7s06dRAxFQ\"",
-    "mtime": "2026-03-14T09:21:53.041Z",
-    "size": 20016,
-    "path": "../public/_fonts/5M2MKUFWnEpuT8NeCYosby4H1wQsStpPWE7MBNFFD6Q-6gJALEDS7yNhRMCqenJPe8GZSicXSdryDX23b39FgW8.woff2"
-  },
-  "/_fonts/AIcocMSXl6nLNQXbUptJf69FjdmzotJy-Fioo4iy220-SB6HQ5Gm3Vcgx3qj0cg_Wze4ux2YBnw264Bp9JBOtqc.woff2": {
-    "type": "font/woff2",
-    "etag": "\"2f04-ntsyPpeWIrXM3hz1Nt0hG95RmwU\"",
-    "mtime": "2026-03-14T09:21:53.039Z",
-    "size": 12036,
-    "path": "../public/_fonts/AIcocMSXl6nLNQXbUptJf69FjdmzotJy-Fioo4iy220-SB6HQ5Gm3Vcgx3qj0cg_Wze4ux2YBnw264Bp9JBOtqc.woff2"
-  },
-  "/_fonts/CFNPQVcnBImzX0EtDNVhm6rxBn1xmGUJ07BRlOI64c-AuN8M25eo79PWJa2sA8bcOzJYOX3pV7Xznm4ZDHm7L4.woff2": {
-    "type": "font/woff2",
-    "etag": "\"6afc-065UyE/loH4v/KPT2cqQjWbu2Yc\"",
-    "mtime": "2026-03-14T09:21:53.039Z",
-    "size": 27388,
-    "path": "../public/_fonts/CFNPQVcnBImzX0EtDNVhm6rxBn1xmGUJ07BRlOI64c-AuN8M25eo79PWJa2sA8bcOzJYOX3pV7Xznm4ZDHm7L4.woff2"
-  },
-  "/_fonts/ERDypvkxXdChOV_B5u1ryQXmRbXDEMV5qjyhhW3xYeU-k61Y5mwieeHUzISWavQeKX6iyBBLnhRtxyom_DNxZzo.woff2": {
-    "type": "font/woff2",
-    "etag": "\"4a64-m06OCqyGws0mpyGBBfmbbVtFPSU\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 19044,
-    "path": "../public/_fonts/ERDypvkxXdChOV_B5u1ryQXmRbXDEMV5qjyhhW3xYeU-k61Y5mwieeHUzISWavQeKX6iyBBLnhRtxyom_DNxZzo.woff2"
-  },
-  "/_fonts/HgJel4iAS5mDVqJaDUYKmxaMJg4zKHTGmyD1FQkOsTM-2hVuuQIZ4GSGMgNv6dvlqz7cfD6lr7xLohUph7OCgFg.woff2": {
-    "type": "font/woff2",
-    "etag": "\"bd30-HcBE9IJP1a9r/tZ/7ki+cPoGnz8\"",
-    "mtime": "2026-03-14T09:21:53.039Z",
-    "size": 48432,
-    "path": "../public/_fonts/HgJel4iAS5mDVqJaDUYKmxaMJg4zKHTGmyD1FQkOsTM-2hVuuQIZ4GSGMgNv6dvlqz7cfD6lr7xLohUph7OCgFg.woff2"
-  },
-  "/_fonts/KCD5gdyGvwD04J2YZVfG5P-c82WM-ESA68SM8qCokq0-VU4O6gA3mknWHXkXUMY7aShByLKqEZOCYay7MuxAVuU.woff2": {
-    "type": "font/woff2",
-    "etag": "\"c9b4-M34QudaP9GdXqIjZ6Tla/ROWz5M\"",
-    "mtime": "2026-03-14T09:21:53.039Z",
-    "size": 51636,
-    "path": "../public/_fonts/KCD5gdyGvwD04J2YZVfG5P-c82WM-ESA68SM8qCokq0-VU4O6gA3mknWHXkXUMY7aShByLKqEZOCYay7MuxAVuU.woff2"
-  },
-  "/_fonts/IbbswF-_Vv86nKnoVzycaklhFj9_jJEnyisnqN6LmPo-m6Ab3Re0t4DnCyR1DwEHCEvwfevkTcA65xJQ4ZPG4co.woff2": {
-    "type": "font/woff2",
-    "etag": "\"166bc-r/t3z77mQ+DDMQr+Pkm5yR2/0FE\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 91836,
-    "path": "../public/_fonts/IbbswF-_Vv86nKnoVzycaklhFj9_jJEnyisnqN6LmPo-m6Ab3Re0t4DnCyR1DwEHCEvwfevkTcA65xJQ4ZPG4co.woff2"
-  },
-  "/_fonts/UzhR3nAaijOxr33OombACPQO7z-6yxLefOdxL2qrdkM-a0beAYA6HgY0fQ5vpHiCL_P_ChfPRJkoN6xel0ZbT_M.woff2": {
-    "type": "font/woff2",
-    "etag": "\"4938-N3S2eKZrRgCJpY2MefXWBufCQaA\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 18744,
-    "path": "../public/_fonts/UzhR3nAaijOxr33OombACPQO7z-6yxLefOdxL2qrdkM-a0beAYA6HgY0fQ5vpHiCL_P_ChfPRJkoN6xel0ZbT_M.woff2"
-  },
-  "/_fonts/ez4lVSyRqqCUuKH6dN6OoXAdOd1Tig7Lx0sxWNqSyss-FAPjTJvN2otlgkrcoQlc70SE03hjkWoDwAr5QrM_lH4.woff2": {
-    "type": "font/woff2",
-    "etag": "\"2828-F3GDdFn8yIqL/ZsbzNDCHlQrmMo\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 10280,
-    "path": "../public/_fonts/ez4lVSyRqqCUuKH6dN6OoXAdOd1Tig7Lx0sxWNqSyss-FAPjTJvN2otlgkrcoQlc70SE03hjkWoDwAr5QrM_lH4.woff2"
-  },
-  "/_fonts/ffbDlYcgTaEOnso-ipkZyoviU7H_qu1vdDKLzdRMiGk-z0cz_vXe9FMQpUr1XPibpV3rF_SBN35ESvr3xAG3hgg.woff2": {
-    "type": "font/woff2",
-    "etag": "\"2c08-0jmpRV2Mkkir4F2SgNetftT+X2g\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 11272,
-    "path": "../public/_fonts/ffbDlYcgTaEOnso-ipkZyoviU7H_qu1vdDKLzdRMiGk-z0cz_vXe9FMQpUr1XPibpV3rF_SBN35ESvr3xAG3hgg.woff2"
-  },
-  "/_fonts/gKY12I0xR6XlZGrxmgE6Ajg7dolnFcwq2-CgW16emfc-X7w6QUwy0G27X1sBOv3U2zKeLNfjYiwTzwCsHp_sD_I.woff2": {
-    "type": "font/woff2",
-    "etag": "\"5084-wzEMqHmSXhs0bT3Vh/Szi16YDd8\"",
-    "mtime": "2026-03-14T09:21:53.040Z",
-    "size": 20612,
-    "path": "../public/_fonts/gKY12I0xR6XlZGrxmgE6Ajg7dolnFcwq2-CgW16emfc-X7w6QUwy0G27X1sBOv3U2zKeLNfjYiwTzwCsHp_sD_I.woff2"
-  },
-  "/_fonts/zp_5eX_kcCb1NC9W_nqDxOyw80DU-fOCfH6vtlxk4Z8-noxSJKtVKEVnythGOQu3KozvszjDOTsJmBloptS0j1U.woff2": {
-    "type": "font/woff2",
-    "etag": "\"64f4-tK7ixsAzSz1n1+rZ0d41uh7QBHY\"",
-    "mtime": "2026-03-14T09:21:53.041Z",
-    "size": 25844,
-    "path": "../public/_fonts/zp_5eX_kcCb1NC9W_nqDxOyw80DU-fOCfH6vtlxk4Z8-noxSJKtVKEVnythGOQu3KozvszjDOTsJmBloptS0j1U.woff2"
-  },
   "/_nuxt/builds/latest.json": {
     "type": "application/json",
-    "etag": "\"47-1iCAsX66qtWyg3cw6oXppvFdfp4\"",
-    "mtime": "2026-03-14T09:21:53.036Z",
+    "etag": "\"47-+KipjM0AxZIzhIl1/qHkVZv/IUU\"",
+    "mtime": "2026-03-14T14:44:49.514Z",
     "size": 71,
     "path": "../public/_nuxt/builds/latest.json"
   },
-  "/_nuxt/builds/meta/9f35ac30-39ff-4149-83b3-6e439c641147.json": {
+  "/_nuxt/builds/meta/dd18901a-03c1-4eb2-b838-9f03adf0eb4d.json": {
     "type": "application/json",
-    "etag": "\"58-krPIDDZY0MvR+9dYPp/lcR0TaYc\"",
-    "mtime": "2026-03-14T09:21:53.032Z",
+    "etag": "\"58-2e4QJFWdP6NXwzO3erHK71c3RzE\"",
+    "mtime": "2026-03-14T14:44:49.511Z",
     "size": 88,
-    "path": "../public/_nuxt/builds/meta/9f35ac30-39ff-4149-83b3-6e439c641147.json"
+    "path": "../public/_nuxt/builds/meta/dd18901a-03c1-4eb2-b838-9f03adf0eb4d.json"
   },
-  "/_fonts/zkQRrBN3g9v_dVJWVkYryI2HWN4gfl77yu_FVFWNDYY-dCKEZ5lgZTVD30ATELD5lKDbBeBCP_ph7B4YtZQnSns.woff2": {
-    "type": "font/woff2",
-    "etag": "\"14d18-Uh4k0XQeDHQ4ioQoYVD4qScmVZc\"",
-    "mtime": "2026-03-14T09:21:53.041Z",
-    "size": 85272,
-    "path": "../public/_fonts/zkQRrBN3g9v_dVJWVkYryI2HWN4gfl77yu_FVFWNDYY-dCKEZ5lgZTVD30ATELD5lKDbBeBCP_ph7B4YtZQnSns.woff2"
+  "/_nuxt/entry.DQJcP03P.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"349e0-eRn5N6sRSHsrJooj8q4LFpjZ1sI\"",
+    "mtime": "2026-03-14T14:44:49.527Z",
+    "size": 215520,
+    "path": "../public/_nuxt/entry.DQJcP03P.css"
+  },
+  "/_nuxt/yBwWAnAC.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"6bffe-5nNyzk63dfmWazil2KrW37eZ0Uk\"",
+    "mtime": "2026-03-14T14:44:49.528Z",
+    "size": 442366,
+    "path": "../public/_nuxt/yBwWAnAC.js"
   }
 };
 
@@ -6317,6 +7089,7 @@ const _u9yx8s = eventHandler((event) => {
 const _SxA8c9 = defineEventHandler(() => {});
 
 const collections = {
+  'lucide': () => import('../_/icons.mjs').then(m => m.default),
 };
 
 const DEFAULT_ENDPOINT = "https://api.iconify.design";

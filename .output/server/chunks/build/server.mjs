@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import * as Vue from 'vue';
-import { computed, inject, toValue, mergeProps, unref, createVNode, resolveDynamicComponent, ref, watch, withCtx, renderSlot, openBlock, createBlock, toDisplayString as toDisplayString$1, useSlots, createCommentVNode, toRef, provide, useModel, createTextVNode, mergeModels, hasInjectionContext, defineComponent, shallowRef, h, resolveComponent, isRef, getCurrentInstance as getCurrentInstance$1, onServerPrefetch, nextTick, createElementBlock, cloneVNode, reactive, defineAsyncComponent, useSSRContext, shallowReactive, Suspense, Fragment, createApp, renderList, useId, onErrorCaptured, effectScope, useTemplateRef, withModifiers, getCurrentScope, markRaw, isReadonly, toRaw, isShallow, isReactive, Text, customRef } from 'vue';
+import { computed, inject, toValue, mergeProps, unref, createVNode, resolveDynamicComponent, ref, watch, withCtx, renderSlot, openBlock, createBlock, toDisplayString as toDisplayString$1, useSlots, createCommentVNode, toRef, provide, hasInjectionContext, useModel, createTextVNode, mergeModels, defineComponent, shallowRef, h, resolveComponent, isRef, getCurrentInstance as getCurrentInstance$1, onServerPrefetch, nextTick, createElementBlock, cloneVNode, reactive, defineAsyncComponent, useSSRContext, shallowReactive, Suspense, Fragment, createApp, Text, renderList, useId, onErrorCaptured, effectScope, useTemplateRef, withModifiers, getCurrentScope, markRaw, isReadonly, toRaw, isShallow, isReactive, customRef } from 'vue';
 import { A as serialize, B as klona, C as defu, D as hasProtocol, E as isScriptProtocol, y as joinURL, F as parseQuery, G as defuFn, H as withQuery, I as sanitizeStatusCode, J as parseURL, K as encodePath, L as decodePath, M as isEqual, N as getContext, O as withTrailingSlash, P as withoutTrailingSlash, c as createError$1, $ as $fetch$1, Q as baseURL, R as hash, S as executeAsync, T as getRequestURL, U as getRequestHeader, V as getCookie, W as parse$1, X as createDefu, Y as parsePath, Z as setCookie, _ as deleteCookie } from '../nitro/nitro.mjs';
 import { setActivePinia, createPinia, shouldHydrate } from 'pinia';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
@@ -515,6 +515,9 @@ function useRuntimeConfig(_event) {
 function defineGetter(obj, key, val) {
   Object.defineProperty(obj, key, { get: () => val });
 }
+function defineAppConfig(config) {
+  return config;
+}
 const LayoutMetaSymbol = /* @__PURE__ */ Symbol("layout-meta");
 const PageRouteSymbol = /* @__PURE__ */ Symbol("route");
 globalThis._importMeta_.url.replace(/\/app\/.*$/, "/");
@@ -726,25 +729,25 @@ const _routes = [
     name: "add",
     path: "/add",
     meta: __nuxt_page_meta$3 || {},
-    component: () => import('./add-DFWIz_sG.mjs')
+    component: () => import('./add-DIrxMdKf.mjs')
   },
   {
     name: "feeds",
     path: "/feeds",
     meta: __nuxt_page_meta$2 || {},
-    component: () => import('./feeds-G6qrQJ_J.mjs')
+    component: () => import('./feeds-D0M3LYU0.mjs')
   },
   {
     name: "settings",
     path: "/settings",
     meta: __nuxt_page_meta$1 || {},
-    component: () => import('./settings-zGwRWv6c.mjs')
+    component: () => import('./settings-tmJqJTUy.mjs')
   },
   {
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-DZS7RMbJ.mjs')
+    component: () => import('./index-BWWOelHf.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -2013,6 +2016,157 @@ function applyTrailingSlashBehavior(to, trailingSlash) {
   }
   return normalizeFn(to, true);
 }
+const cfg0 = defineAppConfig({
+  ui: {
+    primary: "phosphor",
+    gray: "slate",
+    button: {
+      slots: {
+        base: "font-karla font-bold tracking-wide uppercase text-xs"
+      },
+      variants: {
+        color: {
+          primary: "bg-phosphor text-deep-field hover:bg-static",
+          neutral: "bg-transparent border border-white/25 text-phosphor hover:bg-white/5"
+        },
+        variant: {
+          solid: "",
+          outline: "border border-scan text-phosphor",
+          ghost: "text-phosphor hover:bg-white/5"
+        },
+        size: {
+          xs: "px-2 py-1 text-[10px]",
+          sm: "px-3 py-1.5 text-[11px]",
+          md: "px-4 py-2 text-xs",
+          lg: "px-5 py-2.5 text-sm"
+        }
+      },
+      defaultVariants: {
+        color: "primary",
+        variant: "solid",
+        size: "md"
+      }
+    },
+    input: {
+      slots: {
+        base: "font-mono text-sm bg-transparent border-b border-white/20 text-phosphor placeholder:text-flicker/50 focus:border-halation"
+      },
+      variants: {
+        size: {
+          xs: "h-7 text-xs px-2",
+          sm: "h-8 text-sm px-2.5",
+          md: "h-9 text-sm px-3",
+          lg: "h-10 text-base px-4"
+        }
+      }
+    },
+    select: {
+      slots: {
+        base: "font-mono text-sm bg-transparent border border-scan text-phosphor rounded-none",
+        placeholder: "text-ghost/60",
+        value: "text-phosphor",
+        trailingIcon: "text-ghost/60",
+        content: "bg-deep-field border border-scan/50 rounded-none shadow-lg",
+        viewport: "divide-y divide-scan/20",
+        item: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor rounded-none",
+        itemLabel: "text-ghost",
+        itemTrailingIcon: "text-halation",
+        label: "font-karla text-sm text-ghost",
+        separator: "bg-scan/30"
+      },
+      variants: {
+        size: {
+          xs: "h-7 text-xs px-2",
+          sm: "h-8 text-sm px-2.5",
+          md: "h-9 text-sm px-3",
+          lg: "h-10 text-base px-4"
+        },
+        color: {
+          primary: ""
+        },
+        variant: {
+          outline: "border-scan text-phosphor",
+          ghost: "border-transparent text-phosphor hover:bg-electric/20"
+        }
+      },
+      defaultVariants: {
+        size: "md",
+        color: "primary",
+        variant: "outline"
+      }
+    },
+    card: {
+      slots: {
+        root: "bg-deep-field border border-scan/30",
+        header: "p-3 border-b border-scan/20",
+        body: "p-3",
+        footer: "p-3 border-t border-scan/20"
+      }
+    },
+    tabs: {
+      slots: {
+        list: "gap-0 border-b border-scan/30",
+        trigger: "font-karla text-xs font-bold uppercase tracking-wide text-ghost hover:text-phosphor data-[active=true]:text-halation data-[active=true]:border-b-2 data-[active=true]:border-halation -mb-px"
+      }
+    },
+    modal: {
+      slots: {
+        overlay: "bg-void/80",
+        content: "bg-deep-field border border-scan/50",
+        header: "p-4 border-b border-scan/30",
+        body: "p-4",
+        footer: "p-4 border-t border-scan/30"
+      }
+    },
+    dropdown: {
+      slots: {
+        root: "bg-deep-field border border-scan/50",
+        label: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor"
+      }
+    },
+    table: {
+      slots: {
+        root: "border-collapse",
+        th: "font-mono text-[10px] uppercase tracking-widest text-ghost/60 border-b border-scan/30 px-3 py-2 text-left",
+        td: "font-karla text-sm text-ghost border-b border-scan/20 px-3 py-2"
+      }
+    },
+    alert: {
+      slots: {
+        root: "border font-mono text-xs rounded-none",
+        title: "font-bold text-phosphor",
+        description: "text-ghost",
+        icon: "shrink-0"
+      },
+      variants: {
+        color: {
+          error: "bg-[#EFF3FF] text-[#0E1E8A] border-[#EFF3FF]",
+          success: "bg-[rgba(100,255,180,0.1)] text-[#80FFB8] border-[rgba(100,255,180,0.2)]",
+          warning: "bg-[rgba(255,209,102,0.1)] text-[#FFD166] border-[rgba(255,209,102,0.25)]",
+          info: "bg-[rgba(150,170,255,0.1)] text-[#96AAFF] border-[rgba(150,170,255,0.2)]"
+        },
+        variant: {
+          solid: "",
+          outline: "bg-transparent"
+        }
+      },
+      defaultVariants: {
+        color: "error",
+        variant: "outline"
+      }
+    },
+    badge: {
+      slots: {
+        base: "font-mono text-[10px] uppercase tracking-wider"
+      }
+    },
+    tooltip: {
+      slots: {
+        content: "bg-deep-field border border-scan/50 font-karla text-xs text-phosphor"
+      }
+    }
+  }
+});
 const inlineConfig = {
   "nuxt": {},
   "ui": {
@@ -2312,7 +2466,7 @@ const inlineConfig = {
     "fetchTimeout": 1500
   }
 };
-const appConfig = /* @__PURE__ */ defuFn(inlineConfig);
+const appConfig = /* @__PURE__ */ defuFn(cfg0, inlineConfig);
 function useAppConfig() {
   const nuxtApp = useNuxtApp();
   nuxtApp._appConfig ||= klona(appConfig);
@@ -2353,6 +2507,29 @@ const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE
       nuxtApp.vueApp.component("Lazy" + name, component);
     }
   }
+});
+const preference = "dark";
+const plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A = /* @__PURE__ */ defineNuxtPlugin((nuxtApp) => {
+  const colorMode = nuxtApp.ssrContext?.islandContext ? ref({}) : useState("color-mode", () => reactive({
+    preference,
+    value: preference,
+    unknown: true,
+    forced: false
+  })).value;
+  const htmlAttrs = {};
+  {
+    useHead({ htmlAttrs });
+  }
+  useRouter().afterEach((to) => {
+    const forcedColorMode = to.meta.colorMode;
+    if (forcedColorMode && forcedColorMode !== "system") {
+      colorMode.value = htmlAttrs["data-color-mode-forced"] = forcedColorMode;
+      colorMode.forced = true;
+    } else if (forcedColorMode === "system") {
+      console.warn("You cannot force the colorMode to system at the page level.");
+    }
+  });
+  nuxtApp.provide("colorMode", colorMode);
 });
 const pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug = /* @__PURE__ */ defineNuxtPlugin(() => {
   return {
@@ -2724,16 +2901,89 @@ function createLocalizedRouteByPathResolver(router) {
   }
 }
 const localeCodes = [
-  "en"
+  "en",
+  "fr",
+  "es",
+  "zh",
+  "hi"
 ];
 const localeLoaders = {
-  en: []
+  en: [
+    {
+      key: "locale_en_46json_64595a20",
+      load: () => import(
+        './en-Ml-yluM3.mjs'
+        /* webpackChunkName: "locale_en_46json_64595a20" */
+      ),
+      cache: true
+    }
+  ],
+  fr: [
+    {
+      key: "locale_fr_46json_821f442b",
+      load: () => import(
+        './fr-ptF-5kRL.mjs'
+        /* webpackChunkName: "locale_fr_46json_821f442b" */
+      ),
+      cache: true
+    }
+  ],
+  es: [
+    {
+      key: "locale_es_46json_e61a49f1",
+      load: () => import(
+        './es-DUqkvZdC.mjs'
+        /* webpackChunkName: "locale_es_46json_e61a49f1" */
+      ),
+      cache: true
+    }
+  ],
+  zh: [
+    {
+      key: "locale_zh_46json_893763b0",
+      load: () => import(
+        './zh-DrmxFSe1.mjs'
+        /* webpackChunkName: "locale_zh_46json_893763b0" */
+      ),
+      cache: true
+    }
+  ],
+  hi: [
+    {
+      key: "locale_hi_46json_e2842f6b",
+      load: () => import(
+        './hi-PG_q1NUH.mjs'
+        /* webpackChunkName: "locale_hi_46json_e2842f6b" */
+      ),
+      cache: true
+    }
+  ]
 };
 const vueI18nConfigs = [];
 const normalizedLocales = [
   {
     code: "en",
     name: "English",
+    language: void 0
+  },
+  {
+    code: "fr",
+    name: "Français",
+    language: void 0
+  },
+  {
+    code: "es",
+    name: "Español",
+    language: void 0
+  },
+  {
+    code: "zh",
+    name: "中文",
+    language: void 0
+  },
+  {
+    code: "hi",
+    name: "हिन्दी",
     language: void 0
   }
 ];
@@ -2900,7 +3150,7 @@ function createNuxtI18nContext(nuxt, vueI18n, defaultLocale) {
       return;
     }
     const headers = getLocaleConfig(locale)?.cacheable ? {} : { "Cache-Control": "no-cache" };
-    const messages = await $fetch(`${"/_i18n/l5udelP9"}/${locale}/messages.json`, { headers });
+    const messages = await $fetch(`${"/_i18n/hobWfAbA"}/${locale}/messages.json`, { headers });
     for (const k of Object.keys(messages)) {
       i18n.mergeLocaleMessage(k, messages[k]);
     }
@@ -7159,7 +7409,7 @@ const i18n_EI7LsD1KYQADczz5hrChviGQCdVM8yUkvFEZLJpmnvM = /* @__PURE__ */ defineN
     {
       localeConfigs.value = useRequestEvent().context.nuxtI18n?.localeConfigs || {};
     }
-    prerenderRoutes(localeCodes.map((locale) => `${"/_i18n/l5udelP9"}/${locale}/messages.json`));
+    prerenderRoutes(localeCodes.map((locale) => `${"/_i18n/hobWfAbA"}/${locale}/messages.json`));
     const i18n = createI18n(optionsI18n);
     const detectors = useDetectors(useRequestEvent(nuxt), useI18nDetection(nuxt), nuxt);
     const ctx = createNuxtI18nContext(nuxt, i18n, optionsI18n.defaultLocale);
@@ -7309,29 +7559,6 @@ const colors_E7kSti5pGZ28QhUUurq6gGRU3l65WuXO_KJC3GQgzFo = /* @__PURE__ */ defin
   };
   useHead(headData);
 });
-const preference = "system";
-const plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A = /* @__PURE__ */ defineNuxtPlugin((nuxtApp) => {
-  const colorMode = nuxtApp.ssrContext?.islandContext ? ref({}) : useState("color-mode", () => reactive({
-    preference,
-    value: preference,
-    unknown: true,
-    forced: false
-  })).value;
-  const htmlAttrs = {};
-  {
-    useHead({ htmlAttrs });
-  }
-  useRouter().afterEach((to) => {
-    const forcedColorMode = to.meta.colorMode;
-    if (forcedColorMode && forcedColorMode !== "system") {
-      colorMode.value = htmlAttrs["data-color-mode-forced"] = forcedColorMode;
-      colorMode.forced = true;
-    } else if (forcedColorMode === "system") {
-      console.warn("You cannot force the colorMode to system at the page level.");
-    }
-  });
-  nuxtApp.provide("colorMode", colorMode);
-});
 const ssg_detect_IpHCGcQQ_IR5Rl99qyukWoMA9fJGfuTYyoksTzy81cs = /* @__PURE__ */ defineNuxtPlugin({
   name: "i18n:plugin:ssg-detect",
   dependsOn: ["i18n:plugin", "i18n:plugin:route-locale-detect"],
@@ -7349,6 +7576,7 @@ const plugins = [
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
   plugin,
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8,
+  plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A,
   pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug,
   switch_locale_path_ssr_NflG9_QeVcJ1jVig0vCfxB_cZhpEMQ9U2ujRUiYbbVw,
   route_locale_detect__HPHJq3Jg7gwhwgKEI8tQavopSAjmrCSPXl9HgL2h9U,
@@ -7356,7 +7584,6 @@ const plugins = [
   i18n_EI7LsD1KYQADczz5hrChviGQCdVM8yUkvFEZLJpmnvM,
   plugin_MeUvTuoKUi51yb_kBguab6hdcExVXeTtZtTg9TZZBB8,
   colors_E7kSti5pGZ28QhUUurq6gGRU3l65WuXO_KJC3GQgzFo,
-  plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A,
   ssg_detect_IpHCGcQQ_IR5Rl99qyukWoMA9fJGfuTYyoksTzy81cs
 ];
 function omit(data, keys) {
@@ -10782,7 +11009,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-f-2QTxiJ.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-1dxY_FKM.mjs').then((m) => m.default || m))
 };
 const routeRulesMatcher = _routeRulesMatcher;
 const LayoutLoader = defineComponent({
@@ -11081,8 +11308,8 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-CciYPbHb.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-B0izgdVx.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-Cbh8wdUV.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-A8tIYjaK.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ status: unref(status), statusText: unref(statusText), statusCode: unref(status), statusMessage: unref(statusText), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -11163,5 +11390,5 @@ let entry;
 }
 const entry_default = ((ssrContext) => entry(ssrContext));
 
-export { __nuxt_component_0$2 as _, useAppConfig as a, useComponentUI as b, useFieldGroup as c, useComponentIcons as d, entry_default as default, _sfc_main$d as e, _sfc_main$b as f, get as g, _sfc_main$8 as h, useLocale as i, usePortal as j, useFetch as k, useFormField as l, isArrayOfArray as m, navigateTo as n, _sfc_main$c as o, looseToNumber as p, getDisplayValue as q, useRoute as r, tv as t, useHead as u };
+export { __nuxt_component_0$2 as _, useAppConfig as a, useComponentUI as b, useFieldGroup as c, useComponentIcons as d, entry_default as default, _sfc_main$d as e, _sfc_main$b as f, get as g, useI18n as h, _sfc_main$8 as i, useLocale as j, usePortal as k, useFetch as l, useFormField as m, navigateTo as n, looseToNumber as o, useRoute as p, isArrayOfArray as q, _sfc_main$c as r, getDisplayValue as s, tv as t, useHead as u };
 //# sourceMappingURL=server.mjs.map
