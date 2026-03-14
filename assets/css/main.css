@@ -549,6 +549,7 @@ body {
 .status-strip {
   background: var(--surface-2);
   border-top: 1px solid var(--line);
+  border-bottom: 0;
   padding: 8px 18px;
   display: flex;
   gap: 24px;
