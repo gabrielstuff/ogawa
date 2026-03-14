@@ -162,7 +162,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/03c88302-48a7-4df2-8a04-89373fa0b251"
+        "./manifest/meta/dev"
       ],
       "#components": [
         "./components"
@@ -234,10 +234,10 @@
     "../node_modules",
     "../node_modules/nuxt/node_modules",
     "../node_modules/@nuxt/eslint/node_modules",
-    "../node_modules/@nuxt/fonts/node_modules",
     "../node_modules/@nuxtjs/color-mode/node_modules",
     "../node_modules/@nuxt/ui/node_modules",
     "../node_modules/@nuxt/icon/node_modules",
+    "../node_modules/@nuxt/fonts/node_modules",
     "../node_modules/@pinia/nuxt/node_modules",
     "../node_modules/@nuxtjs/i18n/node_modules",
     "../node_modules/@vite-pwa/nuxt/node_modules",

@@ -162,7 +162,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/03c88302-48a7-4df2-8a04-89373fa0b251"
+        "./manifest/meta/dev"
       ],
       "#components": [
         "./components"
@@ -234,7 +234,7 @@
     "../node_modules/dist/runtime/server",
     "../node_modules/*.*",
     "../node_modules/dist/*.*",
-    "../.output",
+    "dev",
     "../server"
   ],
   "vueCompilerOptions": {
