@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen min-h-[100dvh] bg-gray-900 text-gray-100">
+  <div class="min-h-screen min-h-[100dvh] bg-surface-900 text-surface-100">
     <!-- Main Content -->
     <main class="pb-20 md:pb-4 md:ml-56">
       <slot />
@@ -29,7 +29,7 @@ onMounted(() => {
     <!-- Mobile Bottom Navigation -->
     <nav
       v-if="isMobile"
-      class="fixed bottom-0 left-0 right-0 bg-gray-800/95 backdrop-blur-sm border-t border-gray-700 safe-area-inset-bottom z-50"
+      class="fixed bottom-0 left-0 right-0 bg-surface-800/95 backdrop-blur-sm border-t border-surface-700 safe-area-inset-bottom z-50"
     >
       <div class="flex justify-around items-center h-16">
         <NuxtLink
@@ -37,7 +37,7 @@ onMounted(() => {
           :key="item.path"
           :to="item.path"
           class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200"
-          :class="route.path === item.path ? 'text-primary-500' : 'text-gray-400 hover:text-gray-200'"
+          :class="route.path === item.path ? 'text-primary-500' : 'text-surface-400 hover:text-surface-200'"
         >
           <UIcon
             :name="item.icon"
@@ -51,7 +51,7 @@ onMounted(() => {
     <!-- Desktop Sidebar -->
     <aside
       v-if="!isMobile"
-      class="fixed left-0 top-0 bottom-0 w-56 bg-gray-800 border-r border-gray-700 p-3 hidden md:block"
+      class="fixed left-0 top-0 bottom-0 w-56 bg-surface-800 border-r border-surface-700 p-3 hidden md:block"
     >
       <div class="flex items-center gap-2 mb-6 px-2">
         <UIcon
@@ -69,7 +69,7 @@ onMounted(() => {
           :key="item.path"
           :to="item.path"
           class="flex items-center gap-2.5 px-3 py-2 rounded-md transition-colors text-sm"
-          :class="route.path === item.path ? 'bg-primary-500/20 text-primary-400' : 'text-gray-400 hover:bg-gray-700 hover:text-gray-200'"
+          :class="route.path === item.path ? 'bg-primary-500/20 text-primary-400' : 'text-surface-400 hover:bg-surface-700 hover:text-surface-200'"
         >
           <UIcon
             :name="item.icon"
