@@ -30,17 +30,24 @@ export class TransmissionAdapter implements TorrentClientAdapter {
       headers['X-Transmission-Session-Id'] = this.sessionId
     }
 
+    if (this.auth.username && this.auth.password) {
+      const credentials = Buffer.from(`${this.auth.username}:${this.auth.password}`).toString('base64')
+      headers['Authorization'] = `Basic ${credentials}`
+    }
+
     try {
-      const response = await ofetch<{ result: string; arguments: T }>(`${this.baseUrl}/transmission/rpc`, {
+      const response = await ofetch<{ result: string; arguments?: T }>(`${this.baseUrl}/transmission/rpc`, {
         method: 'POST',
         headers,
         body: {
+          jsonrpc: '2.0',
           method,
           arguments: args,
+          id: 1,
         },
       })
 
-      return response.arguments
+      return response.arguments ?? (response.result as T)
     } catch (e: any) {
       if (e.response?.status === 409) {
         const sessionHeader = e.response?.headers?.['x-transmission-session-id'] 
@@ -229,9 +236,10 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async testConnection(): Promise<boolean> {
     try {
-      await this.request('session-get')
+      await this.request('session_get', {})
       return true
-    } catch {
+    } catch (e) {
+      console.error('Transmission connection test failed:', e)
       return false
     }
   }

@@ -3105,16 +3105,16 @@ _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2e2e1-J2zriGQXk+u6pwLwdZgiz2ugN/g\"",
-    "mtime": "2026-03-14T10:24:17.510Z",
-    "size": 189153,
+    "etag": "\"2e404-QDIu6oO1Ul/81JVBmXf7OBdBY+8\"",
+    "mtime": "2026-03-14T10:31:16.207Z",
+    "size": 189444,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"af261-TSN95du6CDRbBBxMHpbb4HwcojQ\"",
-    "mtime": "2026-03-14T10:24:17.511Z",
-    "size": 717409,
+    "etag": "\"af72d-qMHDzJBVX1BCDeozKKSnZycIEWQ\"",
+    "mtime": "2026-03-14T10:31:16.208Z",
+    "size": 718637,
     "path": "index.mjs.map"
   }
 };
@@ -4187,30 +4187,30 @@ const schema = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   torrentTags: torrentTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-let db = null;
+let db$1 = null;
 function getDb() {
-  if (db) return db;
+  if (db$1) return db$1;
   const tursoUrl = process.env.TURSO_URL || "file:ogawa.db";
   const tursoToken = process.env.TURSO_TOKEN;
   const client = createClient({
     url: tursoUrl,
     authToken: tursoToken
   });
-  db = drizzle(client, { schema });
-  return db;
+  db$1 = drizzle(client, { schema });
+  return db$1;
 }
-const db$1 = getDb();
+const db = getDb();
 
 const index$4 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   db: getDb,
-  default: db$1
+  default: db
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const index$2 = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db$1.select().from(feeds).all();
+    const rows = await db.select().from(feeds).all();
     return rows.map((row) => ({
       id: row.id,
       url: row.url,
@@ -4228,7 +4228,7 @@ const index$2 = defineEventHandler(async (event) => {
         message: "URL is required"
       });
     }
-    const id = await db$1.insert(feeds).values({
+    const id = await db.insert(feeds).values({
       url,
       title: url,
       createdAt: /* @__PURE__ */ new Date()
@@ -4249,7 +4249,7 @@ const index$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 const settings = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db$1.select().from(settings$2).all();
+    const rows = await db.select().from(settings$2).all();
     const result = {};
     for (const row of rows) {
       const parts = row.key.split(".");
@@ -4273,7 +4273,7 @@ const settings = defineEventHandler(async (event) => {
         for (const [key, value] of Object.entries(values)) {
           const settingKey = `${category}.${key}`;
           const stringValue = String(value != null ? value : "");
-          await db$1.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
+          await db.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
         }
       }
     }
@@ -4792,26 +4792,32 @@ class TransmissionAdapter {
     };
   }
   async request(method, args = {}) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g;
     const headers = {
       "Content-Type": "application/json"
     };
     if (this.sessionId) {
       headers["X-Transmission-Session-Id"] = this.sessionId;
     }
+    if (this.auth.username && this.auth.password) {
+      const credentials = Buffer.from(`${this.auth.username}:${this.auth.password}`).toString("base64");
+      headers["Authorization"] = `Basic ${credentials}`;
+    }
     try {
       const response = await ofetch(`${this.baseUrl}/transmission/rpc`, {
         method: "POST",
         headers,
         body: {
+          jsonrpc: "2.0",
           method,
-          arguments: args
+          arguments: args,
+          id: 1
         }
       });
-      return response.arguments;
+      return (_a = response.arguments) != null ? _a : response.result;
     } catch (e) {
-      if (((_a = e.response) == null ? void 0 : _a.status) === 409) {
-        const sessionHeader = ((_c = (_b = e.response) == null ? void 0 : _b.headers) == null ? void 0 : _c["x-transmission-session-id"]) || ((_f = (_e = (_d = e.response) == null ? void 0 : _d.headers) == null ? void 0 : _e.get) == null ? void 0 : _f.call(_e, "x-transmission-session-id"));
+      if (((_b = e.response) == null ? void 0 : _b.status) === 409) {
+        const sessionHeader = ((_d = (_c = e.response) == null ? void 0 : _c.headers) == null ? void 0 : _d["x-transmission-session-id"]) || ((_g = (_f = (_e = e.response) == null ? void 0 : _e.headers) == null ? void 0 : _f.get) == null ? void 0 : _g.call(_f, "x-transmission-session-id"));
         if (sessionHeader) {
           this.sessionId = sessionHeader;
           return this.request(method, args);
@@ -4976,9 +4982,10 @@ class TransmissionAdapter {
   }
   async testConnection() {
     try {
-      await this.request("session-get");
+      await this.request("session_get", {});
       return true;
-    } catch {
+    } catch (e) {
+      console.error("Transmission connection test failed:", e);
       return false;
     }
   }
