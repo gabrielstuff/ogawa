@@ -315,6 +315,30 @@ select {
   gap: 6px;
 }
 
+/* Corner brackets for btn-bracket - top corners via pseudo-elements */
+.btn-bracket::before,
+.btn-bracket::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--halation);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.btn-bracket::before {
+  top: 0;
+  left: 0;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.btn-bracket::after {
+  top: 0;
+  right: 0;
+  border-width: 1.5px 1.5px 0 0;
+}
+
 /* ===========================================
    INPUT STYLES
    With corner brackets
