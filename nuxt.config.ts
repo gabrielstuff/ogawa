@@ -5,11 +5,21 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/ui',
     '@nuxt/icon',
+    '@nuxt/fonts',
     '@pinia/nuxt',
     '@nuxtjs/i18n',
     '@vite-pwa/nuxt',
   ],
+
   devtools: { enabled: true },
+
+  fonts: {
+    families: [{ name: 'Inter', provider: 'google' }],
+  },
+
+  devServer: {
+    port: 3000,
+  },
 
   app: {
     head: {
