@@ -55,6 +55,7 @@ async function handleDeleteFeed(id: number) {
           {{ t('feeds.title') }}
         </h1>
         <UButtonBracket
+          v-if="!showAddModal"
           variant="bracket"
           icon="i-heroicons-plus"
           @click="showAddModal = true"
@@ -67,6 +68,48 @@ async function handleDeleteFeed(id: number) {
       </p>
       <span class="bl" /><span class="br2" />
     </div>
+
+    <Transition name="slide-down">
+      <div
+        v-if="showAddModal"
+        class="mb-6 bracket-lg px-4 py-3"
+      >
+        <p class="text-xs font-mono text-ink-3/50 uppercase tracking-widest mb-3">
+          {{ t('feeds.addRssFeed') }}
+        </p>
+        <div class="flex gap-2 items-center">
+          <div class="input-bracket flex-1">
+            <UInput
+              v-model="newFeedUrl"
+              :placeholder="t('feeds.feedUrlPlaceholder')"
+              size="lg"
+              class="w-full"
+              autofocus
+              @keydown.enter="handleAddFeed"
+              @keydown.escape="showAddModal = false"
+            />
+            <span class="bl" /><span class="br2" />
+          </div>
+          <UButton
+            variant="ghost"
+            class="btn-ghost shrink-0"
+            @click="showAddModal = false"
+          >
+            {{ t('feeds.cancel') }}
+          </UButton>
+          <UButtonBracket
+            variant="bracket"
+            :loading="isLoading"
+            :disabled="!newFeedUrl"
+            class="shrink-0"
+            @click="handleAddFeed"
+          >
+            {{ t('feeds.addFeed') }}
+          </UButtonBracket>
+        </div>
+        <span class="bl" /><span class="br2" />
+      </div>
+    </Transition>
 
     <UAlert
       v-if="error"
@@ -81,9 +124,10 @@ async function handleDeleteFeed(id: number) {
       v-if="!feeds || feeds.length === 0"
       :title="t('feeds.noFeeds')"
       subtitle="Add RSS feeds to automatically download torrents"
-      :icon="t('feeds.noFeeds') ? '' : 'i-heroicons-rss'"
+      icon="i-heroicons-rss"
     >
       <UButtonBracket
+        v-if="!showAddModal"
         variant="bracket"
         @click="showAddModal = true"
       >
@@ -96,46 +140,5 @@ async function handleDeleteFeed(id: number) {
       :feeds="feeds"
       @delete="handleDeleteFeed"
     />
-
-    <UModal v-model="showAddModal">
-      <UCard>
-        <template #header>
-          <h2 class="text-lg font-bold text-ink-0">
-            {{ t('feeds.addRssFeed') }}
-          </h2>
-        </template>
-
-        <div class="space-y-4">
-          <div class="input-bracket">
-            <UInput
-              v-model="newFeedUrl"
-              :placeholder="t('feeds.feedUrlPlaceholder')"
-              size="lg"
-              class="w-full"
-            />
-            <span class="bl" /><span class="br2" />
-          </div>
-        </div>
-
-        <template #footer>
-          <div class="flex justify-end gap-2">
-            <UButton
-              class="btn-ghost"
-              @click="showAddModal = false"
-            >
-              {{ t('feeds.cancel') }}
-            </UButton>
-            <UButtonBracket
-              variant="bracket"
-              :loading="isLoading"
-              :disabled="!newFeedUrl"
-              @click="handleAddFeed"
-            >
-              {{ t('feeds.addFeed') }}
-            </UButtonBracket>
-          </div>
-        </template>
-      </UCard>
-    </UModal>
   </div>
 </template>
