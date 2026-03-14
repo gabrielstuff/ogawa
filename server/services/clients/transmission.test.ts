@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { TransmissionAdapter } from './transmission'
 
 const transmissionSettings = {
@@ -9,14 +9,13 @@ const transmissionSettings = {
 }
 
 describe('TransmissionAdapter', () => {
-  const adapter = new TransmissionAdapter(transmissionSettings)
+  let adapter: TransmissionAdapter
 
-  it('should connect to Transmission', async () => {
-    const result = await adapter.testConnection()
-    expect(result).toBe(true)
+  beforeEach(() => {
+    adapter = new TransmissionAdapter(transmissionSettings)
   })
 
-  it('should authenticate with correct credentials', async () => {
+  it('should connect to Transmission', async () => {
     const result = await adapter.testConnection()
     expect(result).toBe(true)
   })
@@ -36,23 +35,29 @@ describe('TransmissionAdapter', () => {
     expect(typeof result).toBe('boolean')
   })
 
+  it('should add a torrent by file', async () => {
+    const buffer = Buffer.from('fake torrent data')
+    const result = await adapter.addTorrentByFile(buffer)
+    expect(typeof result).toBe('boolean')
+  })
+
   it('should start torrents', async () => {
     const result = await adapter.startTorrents(['nonexistent'])
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should stop torrents', async () => {
     const result = await adapter.stopTorrents(['nonexistent'])
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should delete torrents without files', async () => {
     const result = await adapter.deleteTorrents(['nonexistent'], false)
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should delete torrents with files', async () => {
     const result = await adapter.deleteTorrents(['nonexistent'], true)
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 })

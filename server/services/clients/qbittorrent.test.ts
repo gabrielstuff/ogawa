@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { QBittorrentAdapter } from './qbittorrent'
 
 const qbitSettings = {
@@ -9,14 +9,13 @@ const qbitSettings = {
 }
 
 describe('QBittorrentAdapter', () => {
-  const adapter = new QBittorrentAdapter(qbitSettings)
+  let adapter: QBittorrentAdapter
 
-  it('should connect to qBittorrent', async () => {
-    const result = await adapter.testConnection()
-    expect(result).toBe(true)
+  beforeEach(() => {
+    adapter = new QBittorrentAdapter(qbitSettings)
   })
 
-  it('should authenticate with correct credentials', async () => {
+  it('should connect to qBittorrent', async () => {
     const result = await adapter.testConnection()
     expect(result).toBe(true)
   })
@@ -28,31 +27,37 @@ describe('QBittorrentAdapter', () => {
 
   it('should add a torrent by URL', async () => {
     const result = await adapter.addTorrentByUrl('https://example.com/test.torrent')
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should add a torrent by magnet', async () => {
     const result = await adapter.addTorrentByMagnet('magnet:?xt=urn:btih:test')
+    expect(result).toBe(true)
+  })
+
+  it('should add a torrent by file', async () => {
+    const buffer = Buffer.from('fake torrent data')
+    const result = await adapter.addTorrentByFile(buffer)
     expect(typeof result).toBe('boolean')
   })
 
   it('should start torrents', async () => {
     const result = await adapter.startTorrents(['nonexistent'])
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should stop torrents', async () => {
     const result = await adapter.stopTorrents(['nonexistent'])
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should delete torrents without files', async () => {
     const result = await adapter.deleteTorrents(['nonexistent'], false)
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 
   it('should delete torrents with files', async () => {
     const result = await adapter.deleteTorrents(['nonexistent'], true)
-    expect(typeof result).toBe('boolean')
+    expect(result).toBe(true)
   })
 })
