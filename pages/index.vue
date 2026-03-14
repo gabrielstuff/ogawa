@@ -88,11 +88,14 @@ const queueCount = computed(() => filteredTorrents.value.length)
           </p>
         </div>
         <UButton
+          class="btn-bracket"
           icon="i-heroicons-arrow-path"
           variant="ghost"
           size="sm"
           @click="refresh()"
-        />
+        >
+          <span class="bl"></span><span class="br2"></span>
+        </UButton>
       </div>
       <span class="bl"></span><span class="br2"></span>
     </div>
@@ -145,8 +148,9 @@ const queueCount = computed(() => filteredTorrents.value.length)
       </div>
       <div class="flex gap-3 justify-center mb-4">
         <NuxtLink to="/add">
-          <UButton class="btn-primary">
+          <UButton class="btn-bracket">
             + Add torrent
+            <span class="bl"></span><span class="br2"></span>
           </UButton>
         </NuxtLink>
         <NuxtLink to="/add?tab=magnet">
@@ -341,7 +345,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
     <!-- Floating Action Button (Mobile) -->
     <NuxtLink
       to="/add"
-      class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 bg-phosphor text-deep-field flex items-center justify-center shadow-lg hover:bg-static transition-colors md:hidden"
+      class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 flex items-center justify-center shadow-lg transition-colors md:hidden btn-primary"
     >
       <UIcon
         name="i-heroicons-plus"

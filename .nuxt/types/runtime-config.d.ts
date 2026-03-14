@@ -78,6 +78,22 @@ import { RuntimeConfig as UserRuntimeConfig, PublicRuntimeConfig as UserPublicRu
          en: {
             domain: string,
          },
+
+         fr: {
+            domain: string,
+         },
+
+         es: {
+            domain: string,
+         },
+
+         zh: {
+            domain: string,
+         },
+
+         hi: {
+            domain: string,
+         },
       },
    },
   }

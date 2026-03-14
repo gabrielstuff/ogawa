@@ -49,8 +49,8 @@ export { fieldGroupInjectionKey, useFieldGroup } from '../node_modules/@nuxt/ui/
 export { formOptionsInjectionKey, formBusInjectionKey, formStateInjectionKey, formFieldInjectionKey, inputIdInjectionKey, formInputsInjectionKey, formLoadingInjectionKey, formErrorsInjectionKey, useFormField } from '../node_modules/@nuxt/ui/dist/runtime/composables/useFormField';
 export { localeContextInjectionKey, useLocale } from '../node_modules/@nuxt/ui/dist/runtime/composables/useLocale';
 export { portalTargetInjectionKey, usePortal } from '../node_modules/@nuxt/ui/dist/runtime/composables/usePortal';
-export { useColorMode } from '../node_modules/@nuxtjs/color-mode/dist/runtime/composables';
 export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/@pinia/nuxt/dist/runtime/composables';
 export { useI18n } from 'vue-i18n';
 export { usePWA, useTransparentPwaIcon, useMaskablePwaIcon, useFaviconPwaIcon, useApplePwaIcon, useAppleSplashScreenPwaIcon } from '../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index';
+export { useColorMode } from '../node_modules/@nuxtjs/color-mode/dist/runtime/composables';
 export { useNuxtDevTools } from '../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools';

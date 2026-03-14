@@ -265,12 +265,13 @@ function pasteFromClipboard() {
 
       <div class="flex gap-2">
         <UButton
-          class="btn-primary"
+          class="btn-bracket"
           :loading="isLoading"
           :disabled="!magnetInput"
           @click="addMagnet"
         >
           Add magnet
+          <span class="bl"></span><span class="br2"></span>
         </UButton>
         <UButton
           class="btn-ghost"
@@ -300,12 +301,14 @@ function pasteFromClipboard() {
       </div>
 
       <UButton
-        class="btn-primary"
+        class="btn-bracket"
         :loading="isLoading"
         :disabled="!urlInput"
         @click="addFromUrl"
       >
         {{ t('add.addFromUrl') }}
+        <span class="bl"></span><span class="br2"></span>
+      </UButton>
       </UButton>
     </div>
   </div>

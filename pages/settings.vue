@@ -441,12 +441,13 @@ async function testConnection() {
       <!-- Save Button -->
       <div class="flex justify-end">
         <UButton
-          class="btn-primary"
+          class="btn-bracket"
           :loading="isLoading"
           size="lg"
           @click="saveSettings"
         >
           {{ t('settings.save') }}
+          <span class="bl"></span><span class="br2"></span>
         </UButton>
       </div>
     </div>

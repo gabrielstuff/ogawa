@@ -134,9 +134,6 @@
       "#ui/*": [
         "../node_modules/@nuxt/ui/dist/runtime/*"
       ],
-      "#color-mode-options": [
-        "./color-mode-options.mjs"
-      ],
       "#i18n": [
         "../node_modules/@nuxtjs/i18n/dist/runtime/composables/index"
       ],
@@ -151,6 +148,9 @@
       ],
       "#pwa": [
         "../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index"
+      ],
+      "#color-mode-options": [
+        "./color-mode-options.mjs"
       ],
       "#vue-router": [
         "../node_modules/vue-router"

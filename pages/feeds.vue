@@ -64,11 +64,12 @@ async function deleteFeed(id: number) {
           {{ t('feeds.title') }}
         </h1>
         <UButton
-          class="btn-primary"
+          class="btn-bracket"
           icon="i-heroicons-plus"
           @click="showAddModal = true"
         >
           {{ t('feeds.addFeed') }}
+          <span class="bl"></span><span class="br2"></span>
         </UButton>
       </div>
       <p class="header-meta">
@@ -103,10 +104,11 @@ async function deleteFeed(id: number) {
         Add RSS feeds to automatically download torrents
       </div>
       <UButton
-        class="btn-primary"
+        class="btn-bracket"
         @click="showAddModal = true"
       >
         {{ t('feeds.addFirstFeed') }}
+        <span class="bl"></span><span class="br2"></span>
       </UButton>
       <span class="bl"></span><span class="br2"></span>
     </div>
@@ -177,12 +179,14 @@ async function deleteFeed(id: number) {
               {{ t('feeds.cancel') }}
             </UButton>
             <UButton
-              class="btn-primary"
+              class="btn-bracket"
               :loading="isLoading"
               :disabled="!newFeedUrl"
               @click="addFeed"
             >
               {{ t('feeds.addFeed') }}
+              <span class="bl"></span><span class="br2"></span>
+            </UButton>
             </UButton>
           </div>
         </template>
