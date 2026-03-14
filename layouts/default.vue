@@ -6,8 +6,9 @@ const navItems = computed(() => [
   { name: t('nav.torrents'), path: '/', icon: 'i-heroicons-arrow-down-circle' },
   { name: t('nav.add'), path: '/add', icon: 'i-heroicons-plus-circle' },
   { name: t('nav.feeds'), path: '/feeds', icon: 'i-heroicons-rss' },
-  { name: t('nav.settings'), path: '/settings', icon: 'i-heroicons-cog-6-tooth' },
 ])
+
+const settingsItem = { name: t('nav.settings'), path: '/settings', icon: 'i-heroicons-cog-6-tooth' }
 
 const isMobile = ref(true)
 
@@ -79,6 +80,21 @@ const appVersion = '1.0.0'
           <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
         </NuxtLink>
       </nav>
+
+      <!-- Settings - Sticky at bottom -->
+      <div class="mt-auto">
+        <NuxtLink
+          :to="settingsItem.path"
+          class="flex flex-col items-center justify-center py-3 transition-colors"
+          :class="route.path === settingsItem.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
+        >
+          <UIcon
+            :name="settingsItem.icon"
+            class="w-5 h-5"
+          />
+          <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ settingsItem.name.charAt(0) }}</span>
+        </NuxtLink>
+      </div>
     </aside>
 
     <!-- Status Strip - Always visible -->
