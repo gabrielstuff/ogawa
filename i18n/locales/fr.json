@@ -82,7 +82,9 @@
     "downloadSpeedLimit": "Limite de réception (Ko/s)",
     "uploadSpeedLimit": "Limite d'envoi (Ko/s)",
     "unlimited": "0 = illimité",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "saved": "Settings saved",
+    "saveFailed": "Failed to save settings"
   },
   "feeds": {
     "title": "Flux RSS",
@@ -96,7 +98,9 @@
     "feedUrlPlaceholder": "https://exemple.com/feed.xml",
     "cancel": "Annuler",
     "addFailed": "Échec de l'ajout du flux",
-    "deleteFailed": "Échec de la suppression du flux"
+    "deleteFailed": "Échec de la suppression du flux",
+    "addSuccess": "Feed added",
+    "deleteSuccess": "Feed removed"
   },
   "common": {
     "loading": "Chargement...",

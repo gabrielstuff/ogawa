@@ -82,7 +82,9 @@
     "downloadSpeedLimit": "Límite de descarga (KB/s)",
     "uploadSpeedLimit": "Límite de subida (KB/s)",
     "unlimited": "0 = ilimitado",
-    "save": "Guardar"
+    "save": "Guardar",
+    "saved": "Settings saved",
+    "saveFailed": "Failed to save settings"
   },
   "feeds": {
     "title": "Feeds RSS",
@@ -96,7 +98,9 @@
     "feedUrlPlaceholder": "https://ejemplo.com/feed.xml",
     "cancel": "Cancelar",
     "addFailed": "Error al añadir feed",
-    "deleteFailed": "Error al eliminar feed"
+    "deleteFailed": "Error al eliminar feed",
+    "addSuccess": "Feed added",
+    "deleteSuccess": "Feed removed"
   },
   "common": {
     "loading": "Cargando...",

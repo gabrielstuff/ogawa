@@ -5,6 +5,7 @@ definePageMeta({
 
 const { t, locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
+const toast = useToast()
 
 useHead({
   title: computed(() => `${t('settings.title')} - Ogawa`),
@@ -13,8 +14,7 @@ useHead({
 const { settings, pending, refresh, saveSettings, testConnection } = useSettings()
 
 const isLoading = ref(false)
-const testStatus = ref<'idle' | 'testing' | 'success' | 'error'>('idle')
-const testMessage = ref('')
+const isTesting = ref(false)
 
 const clientType = ref('qBittorrent')
 const clientUrl = ref('')
@@ -79,9 +79,7 @@ onMounted(() => {
 async function handleSaveSettings() {
   isLoading.value = true
   try {
-    const clientData: Record<string, unknown> = {
-      client: clientType.value,
-    }
+    const clientData: Record<string, unknown> = { client: clientType.value }
 
     if (clientType.value === 'qBittorrent' || clientType.value === 'Transmission') {
       clientData.url = clientUrl.value
@@ -99,10 +97,7 @@ async function handleSaveSettings() {
 
     await saveSettings({
       client: clientData,
-      ui: {
-        theme: theme.value,
-        itemsPerPage: itemsPerPage.value,
-      },
+      ui: { theme: theme.value, itemsPerPage: itemsPerPage.value },
       download: {
         defaultPath: defaultPath.value,
         maxActive: maxActive.value,
@@ -111,9 +106,11 @@ async function handleSaveSettings() {
       },
     })
     refresh()
+    toast.add({ title: t('settings.saved'), color: 'success', icon: 'i-heroicons-check-circle' })
   }
-  catch (e) {
-    console.error('Failed to save settings:', e)
+  catch (e: unknown) {
+    const err = e as { message?: string }
+    toast.add({ title: err.message || t('settings.saveFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
   finally {
     isLoading.value = false
@@ -121,8 +118,7 @@ async function handleSaveSettings() {
 }
 
 async function handleTestConnection() {
-  testStatus.value = 'testing'
-  testMessage.value = ''
+  isTesting.value = true
 
   try {
     await testConnection(clientType.value, {
@@ -132,13 +128,14 @@ async function handleTestConnection() {
       host: clientHost.value,
       port: clientPort.value,
     })
-    testStatus.value = 'success'
-    testMessage.value = t('settings.connectionSuccess')
+    toast.add({ title: t('settings.connectionSuccess'), color: 'success', icon: 'i-heroicons-check-circle' })
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    testStatus.value = 'error'
-    testMessage.value = err.message || t('settings.connectionFailed')
+    toast.add({ title: err.message || t('settings.connectionFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
+  }
+  finally {
+    isTesting.value = false
   }
 }
 </script>
@@ -185,26 +182,12 @@ async function handleTestConnection() {
         <div class="flex gap-2 pt-2">
           <UButtonBracket
             variant="bracket"
-            :loading="testStatus === 'testing'"
+            :loading="isTesting"
             @click="handleTestConnection"
           >
             {{ t('settings.testConnection') }}
           </UButtonBracket>
         </div>
-
-        <UAlert
-          v-if="testStatus === 'success'"
-          color="success"
-          :title="testMessage"
-          class="font-mono mt-2"
-        />
-
-        <UAlert
-          v-if="testStatus === 'error'"
-          color="error"
-          :title="testMessage"
-          class="font-mono mt-2"
-        />
       </SettingsSection>
 
       <SettingsSection

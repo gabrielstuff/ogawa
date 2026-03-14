@@ -82,7 +82,9 @@
     "downloadSpeedLimit": "डाउनलोड गति सीमा (KB/s)",
     "uploadSpeedLimit": "अपलोड गति सीमा (KB/s)",
     "unlimited": "0 = असीमित",
-    "save": "सेटिंग्स सेव करें"
+    "save": "सेटिंग्स सेव करें",
+    "saved": "Settings saved",
+    "saveFailed": "Failed to save settings"
   },
   "feeds": {
     "title": "RSS फीड्स",
@@ -96,7 +98,9 @@
     "feedUrlPlaceholder": "https://example.com/feed.xml",
     "cancel": "रद्द करें",
     "addFailed": "फीड जोड़ने में विफल",
-    "deleteFailed": "फीड हटाने में विफल"
+    "deleteFailed": "फीड हटाने में विफल",
+    "addSuccess": "Feed added",
+    "deleteSuccess": "Feed removed"
   },
   "common": {
     "loading": "लोड हो रहा है...",

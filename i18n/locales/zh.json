@@ -82,7 +82,9 @@
     "downloadSpeedLimit": "下载速度限制 (KB/s)",
     "uploadSpeedLimit": "上传速度限制 (KB/s)",
     "unlimited": "0 = 无限制",
-    "save": "保存设置"
+    "save": "保存设置",
+    "saved": "Settings saved",
+    "saveFailed": "Failed to save settings"
   },
   "feeds": {
     "title": "RSS 订阅",
@@ -96,7 +98,9 @@
     "feedUrlPlaceholder": "https://example.com/feed.xml",
     "cancel": "取消",
     "addFailed": "添加订阅失败",
-    "deleteFailed": "删除订阅失败"
+    "deleteFailed": "删除订阅失败",
+    "addSuccess": "Feed added",
+    "deleteSuccess": "Feed removed"
   },
   "common": {
     "loading": "加载中...",

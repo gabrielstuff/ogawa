@@ -137,6 +137,28 @@ export default defineAppConfig({
       },
     },
 
+    toast: {
+      slots: {
+        root: 'relative group overflow-hidden bg-surface border border-line-strong shadow-lg rounded-none p-4 flex gap-3 focus:outline-none font-mono',
+        wrapper: 'w-0 flex-1 flex flex-col gap-0.5',
+        title: 'text-xs font-semibold uppercase tracking-widest text-ink-0',
+        description: 'text-xs text-ink-3',
+        icon: 'shrink-0 size-4 mt-0.5',
+        actions: 'flex gap-1.5 shrink-0',
+        progress: 'absolute inset-x-0 bottom-0 h-[2px]',
+        close: 'p-0',
+      },
+      variants: {
+        color: {
+          success: { root: 'border-green-line', icon: 'text-green' },
+          error: { root: 'border-red-line', icon: 'text-red' },
+          warning: { root: 'border-amber-line', icon: 'text-amber' },
+          info: { root: 'border-line-strong', icon: 'text-ink-3' },
+          neutral: { root: 'border-line-strong', icon: 'text-ink-2' },
+        },
+      },
+    },
+
     alert: {
       slots: {
         root: 'border font-mono text-xs',

@@ -4,6 +4,7 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const toast = useToast()
 
 useHead({
   title: computed(() => `${t('feeds.title')} - Ogawa`),
@@ -14,22 +15,21 @@ const { feeds, addFeed, deleteFeed } = useFeeds()
 const showAddModal = ref(false)
 const newFeedUrl = ref('')
 const isLoading = ref(false)
-const error = ref('')
 
 async function handleAddFeed() {
   if (!newFeedUrl.value) return
 
   isLoading.value = true
-  error.value = ''
 
   try {
     await addFeed(newFeedUrl.value)
     showAddModal.value = false
     newFeedUrl.value = ''
+    toast.add({ title: t('feeds.addSuccess'), color: 'success', icon: 'i-heroicons-check-circle' })
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    error.value = err.message || t('feeds.addFailed')
+    toast.add({ title: err.message || t('feeds.addFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
   finally {
     isLoading.value = false
@@ -39,10 +39,11 @@ async function handleAddFeed() {
 async function handleDeleteFeed(id: number) {
   try {
     await deleteFeed(id)
+    toast.add({ title: t('feeds.deleteSuccess'), color: 'neutral', icon: 'i-heroicons-trash' })
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    error.value = err.message || t('feeds.deleteFailed')
+    toast.add({ title: err.message || t('feeds.deleteFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
 }
 </script>
@@ -110,13 +111,6 @@ async function handleDeleteFeed(id: number) {
         <span class="bl" /><span class="br2" />
       </div>
     </Transition>
-
-    <UAlert
-      v-if="error"
-      color="error"
-      :title="error"
-      class="mb-4 font-mono"
-    />
 
     <EmptyState
       v-if="!feeds || feeds.length === 0"

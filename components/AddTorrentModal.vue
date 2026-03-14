@@ -11,13 +11,12 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const toast = useToast()
 
 const activeTab = ref<'file' | 'magnet' | 'url'>('file')
 const magnetInput = ref('')
 const urlInput = ref('')
 const isLoading = ref(false)
-const error = ref('')
-const success = ref('')
 const isDropzoneSupported = ref(true)
 
 const isOpen = computed({
@@ -44,12 +43,11 @@ function handleFileSelect(event: Event) {
 
 async function handleFileUpload(file: File) {
   if (!file.name.endsWith('.torrent')) {
-    error.value = t('add.invalidFile')
+    toast.add({ title: t('add.invalidFile'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
     return
   }
 
   isLoading.value = true
-  error.value = ''
 
   try {
     const formData = new FormData()
@@ -60,16 +58,14 @@ async function handleFileUpload(file: File) {
       body: formData,
     })
 
-    success.value = t('add.torrentAddedSuccess')
-    setTimeout(() => {
-      isOpen.value = false
-      emit('added')
-      resetForm()
-    }, 1500)
+    toast.add({ title: t('add.torrentAddedSuccess'), color: 'success', icon: 'i-heroicons-check-circle' })
+    isOpen.value = false
+    emit('added')
+    resetForm()
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    error.value = err.message || t('add.torrentAddFailed')
+    toast.add({ title: err.message || t('add.torrentAddFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
   finally {
     isLoading.value = false
@@ -78,32 +74,26 @@ async function handleFileUpload(file: File) {
 
 async function addMagnet() {
   if (!magnetInput.value) {
-    error.value = t('add.enterMagnet')
+    toast.add({ title: t('add.enterMagnet'), color: 'warning', icon: 'i-heroicons-exclamation-circle' })
     return
   }
 
   isLoading.value = true
-  error.value = ''
 
   try {
     await $fetch('/api/torrents', {
       method: 'POST',
-      body: {
-        type: 'magnet',
-        url: magnetInput.value,
-      },
+      body: { type: 'magnet', url: magnetInput.value },
     })
 
-    success.value = t('add.magnetAddSuccess')
-    setTimeout(() => {
-      isOpen.value = false
-      emit('added')
-      resetForm()
-    }, 1500)
+    toast.add({ title: t('add.magnetAddSuccess'), color: 'success', icon: 'i-heroicons-check-circle' })
+    isOpen.value = false
+    emit('added')
+    resetForm()
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    error.value = err.message || t('add.magnetAddFailed')
+    toast.add({ title: err.message || t('add.magnetAddFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
   finally {
     isLoading.value = false
@@ -112,32 +102,26 @@ async function addMagnet() {
 
 async function addFromUrl() {
   if (!urlInput.value) {
-    error.value = t('add.enterUrl')
+    toast.add({ title: t('add.enterUrl'), color: 'warning', icon: 'i-heroicons-exclamation-circle' })
     return
   }
 
   isLoading.value = true
-  error.value = ''
 
   try {
     await $fetch('/api/torrents', {
       method: 'POST',
-      body: {
-        type: 'url',
-        url: urlInput.value,
-      },
+      body: { type: 'url', url: urlInput.value },
     })
 
-    success.value = t('add.urlAddSuccess')
-    setTimeout(() => {
-      isOpen.value = false
-      emit('added')
-      resetForm()
-    }, 1500)
+    toast.add({ title: t('add.urlAddSuccess'), color: 'success', icon: 'i-heroicons-check-circle' })
+    isOpen.value = false
+    emit('added')
+    resetForm()
   }
   catch (e: unknown) {
     const err = e as { message?: string }
-    error.value = err.message || t('add.urlAddFailed')
+    toast.add({ title: err.message || t('add.urlAddFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   }
   finally {
     isLoading.value = false
@@ -155,7 +139,7 @@ function pasteFromClipboard() {
       activeTab.value = 'url'
     }
   }).catch(() => {
-    error.value = t('add.clipboardFailed')
+    toast.add({ title: t('add.clipboardFailed'), color: 'error', icon: 'i-heroicons-exclamation-triangle' })
   })
 }
 
@@ -163,8 +147,6 @@ function resetForm() {
   magnetInput.value = ''
   urlInput.value = ''
   activeTab.value = 'file'
-  error.value = ''
-  success.value = ''
 }
 
 watch(isOpen, (val) => {
@@ -184,20 +166,6 @@ watch(isOpen, (val) => {
       </template>
 
       <div class="space-y-4">
-        <UAlert
-          v-if="success"
-          color="success"
-          :title="success"
-          class="font-mono"
-        />
-
-        <UAlert
-          v-if="error"
-          color="error"
-          :title="error"
-          class="font-mono"
-        />
-
         <UTabs v-model="activeTab">
           <UTab value="file">
             <UIcon
