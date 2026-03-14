@@ -4,63 +4,80 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const client = body?.client || 'qBittorrent'
   const url = body?.url
-  const username = body?.username
-  const password = body?.password
+  const username = body?.username || ''
+  const password = body?.password || ''
   const host = body?.host
   const port = body?.port
 
   if (client === 'qBittorrent') {
     if (!url) {
-      throw createError({
-        statusCode: 400,
-        message: 'URL is required for qBittorrent',
-      })
+      throw createError({ statusCode: 400, message: 'URL is required for qBittorrent' })
     }
 
     try {
-      await ofetch(`${url}/api/v2/app/version`, {
-        method: 'GET',
+      // qBittorrent requires login before any authenticated endpoint
+      const loginResponse = await ofetch.raw(`${url}/api/v2/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ username, password }).toString(),
       })
+
+      const text = loginResponse._data as string
+      if (text === 'Fails.') {
+        throw createError({ statusCode: 401, message: 'Invalid qBittorrent credentials' })
+      }
+
       return { success: true, client: 'qBittorrent' }
     }
-    catch (e) {
-      throw createError({
-        statusCode: 500,
-        message: 'Failed to connect to qBittorrent',
-      })
+    catch (e: any) {
+      if (e.statusCode) throw e
+      throw createError({ statusCode: 500, message: `Failed to connect to qBittorrent: ${e.message}` })
     }
   }
 
   if (client === 'Transmission') {
     if (!url) {
-      throw createError({
-        statusCode: 400,
-        message: 'URL is required for Transmission',
-      })
+      throw createError({ statusCode: 400, message: 'URL is required for Transmission' })
     }
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+
+    if (username && password) {
+      headers['Authorization'] = `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
+    }
+
+    const rpcBody = { method: 'session-get', arguments: {} }
+
+    // Transmission uses CSRF protection: first request returns 409 with the session token
     try {
-      const response = await ofetch<{ result: string }>(`${url}/transmission/rpc`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: {
-          method: 'session-get',
-          arguments: {},
-        },
-      })
-
-      if (response.result === 'success') {
-        return { success: true, client: 'Transmission' }
-      }
-      throw new Error('Invalid response')
+      await ofetch(`${url}/transmission/rpc`, { method: 'POST', headers, body: rpcBody })
+      return { success: true, client: 'Transmission' }
     }
-    catch (e) {
-      throw createError({
-        statusCode: 500,
-        message: 'Failed to connect to Transmission',
-      })
+    catch (e: any) {
+      if (e.response?.status === 409) {
+        const sessionId = e.response.headers?.get?.('x-transmission-session-id')
+          || e.response.headers?.['x-transmission-session-id']
+
+        if (!sessionId) {
+          throw createError({ statusCode: 500, message: 'Failed to get Transmission session ID' })
+        }
+
+        try {
+          await ofetch(`${url}/transmission/rpc`, {
+            method: 'POST',
+            headers: { ...headers, 'X-Transmission-Session-Id': sessionId },
+            body: rpcBody,
+          })
+          return { success: true, client: 'Transmission' }
+        }
+        catch (e2: any) {
+          throw createError({ statusCode: 500, message: `Transmission auth failed: ${e2.message}` })
+        }
+      }
+
+      throw createError({ statusCode: 500, message: `Failed to connect to Transmission: ${e.message}` })
     }
   }
 
@@ -71,10 +88,7 @@ export default defineEventHandler(async (event) => {
     try {
       const response = await fetch(`http://${scgiHost}:${scgiPort}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'SCGI': '1',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'SCGI': '1' },
         body: `CONTENT_LENGTH18\u0000<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>`,
       })
 
@@ -83,11 +97,8 @@ export default defineEventHandler(async (event) => {
       }
       throw new Error('SCGI request failed')
     }
-    catch (e) {
-      throw createError({
-        statusCode: 500,
-        message: 'Failed to connect to rTorrent',
-      })
+    catch (e: any) {
+      throw createError({ statusCode: 500, message: `Failed to connect to rTorrent: ${e.message}` })
     }
   }
 
@@ -97,30 +108,23 @@ export default defineEventHandler(async (event) => {
     const delugePassword = password || 'admin'
 
     try {
-      const response = await ofetch<{ id: number, result: string, error?: string }>(`http://${delugeHost}:${delugePort}/json`, {
-        method: 'POST',
-        body: {
-          method: 'auth.login',
-          params: [delugePassword],
-          id: 1,
+      const response = await ofetch<{ id: number, result: boolean, error?: string }>(
+        `http://${delugeHost}:${delugePort}/json`,
+        {
+          method: 'POST',
+          body: { method: 'auth.login', params: [delugePassword], id: 1 },
         },
-      })
+      )
 
       if (!response.error) {
         return { success: true, client: 'Deluge' }
       }
       throw new Error(response.error)
     }
-    catch (e) {
-      throw createError({
-        statusCode: 500,
-        message: 'Failed to connect to Deluge',
-      })
+    catch (e: any) {
+      throw createError({ statusCode: 500, message: `Failed to connect to Deluge: ${e.message}` })
     }
   }
 
-  throw createError({
-    statusCode: 400,
-    message: `Unknown client: ${client}`,
-  })
+  throw createError({ statusCode: 400, message: `Unknown client: ${client}` })
 })

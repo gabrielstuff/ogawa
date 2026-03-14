@@ -35,30 +35,25 @@ export class TransmissionAdapter implements TorrentClientAdapter {
       headers['Authorization'] = `Basic ${credentials}`
     }
 
-    const body = {
-      jsonrpc: '2.0',
-      method,
-      params: args,
-      id: 1,
-    }
+    // Transmission RPC body: { method, arguments } — NOT jsonrpc format
+    const body = { method, arguments: args }
 
     try {
-      const response = await ofetch<{ result: T, arguments?: T, error?: { message: string } }>(`${this.baseUrl}/transmission/rpc`, {
-        method: 'POST',
-        headers,
-        body,
-      })
+      const response = await ofetch<{ result: string, arguments?: T, error?: { message: string } }>(
+        `${this.baseUrl}/transmission/rpc`,
+        { method: 'POST', headers, body },
+      )
 
-      if (response.error) {
-        throw new Error(response.error.message || 'Transmission error')
+      if (response.result !== 'success') {
+        throw new Error(response.result || 'Transmission returned non-success result')
       }
 
-      return response.result
+      return response.arguments as T
     }
     catch (e: any) {
       if (e.response?.status === 409) {
-        const sessionHeader = e.response?.headers?.['x-transmission-session-id']
-          || e.response?.headers?.get?.('x-transmission-session-id')
+        const sessionHeader = e.response?.headers?.get?.('x-transmission-session-id')
+          || e.response?.headers?.['x-transmission-session-id']
         if (sessionHeader) {
           this.sessionId = sessionHeader
           return this.request(method, args)
@@ -70,48 +65,45 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async getTorrents(): Promise<Torrent[]> {
     try {
+      // Transmission RPC method names use hyphens
       const result = await this.request<{ torrents: Array<{
-        id: number
-        hash_string: string
+        hashString: string
         name: string
-        total_size: number
-        downloaded_ever: number
-        uploaded_ever: number
-        rate_download: number
-        rate_upload: number
-        seeds_connected: number
-        peers_connected: number
+        totalSize: number
+        downloadedEver: number
+        uploadedEver: number
+        rateDownload: number
+        rateUpload: number
+        peersConnected: number
         status: number
-        date_added: number
-        done_date: number
-        upload_ratio: number
-      }> }>('torrent_get', {
+        addedDate: number
+        doneDate: number
+        uploadRatio: number
+      }> }>('torrent-get', {
         fields: [
-          'id', 'hash_string', 'name', 'total_size', 'downloaded_ever', 'uploaded_ever',
-          'rate_download', 'rate_upload', 'seeds_connected', 'peers_connected',
-          'status', 'date_added', 'done_date', 'upload_ratio',
+          'hashString', 'name', 'totalSize', 'downloadedEver', 'uploadedEver',
+          'rateDownload', 'rateUpload', 'peersConnected',
+          'status', 'addedDate', 'doneDate', 'uploadRatio',
         ],
       })
 
-      if (!result?.torrents) {
-        return []
-      }
+      if (!result?.torrents) return []
 
       return result.torrents.map(t => ({
-        hash: t.hash_string,
+        hash: t.hashString,
         name: t.name,
-        size: t.total_size,
-        completed: t.done_date > 0 ? t.total_size : 0,
-        downloaded: t.downloaded_ever,
-        uploaded: t.uploaded_ever,
-        downloadSpeed: t.rate_download,
-        uploadSpeed: t.rate_upload,
-        seeds: t.seeds_connected,
-        peers: t.peers_connected,
+        size: t.totalSize,
+        completed: t.doneDate > 0 ? t.totalSize : 0,
+        downloaded: t.downloadedEver,
+        uploaded: t.uploadedEver,
+        downloadSpeed: t.rateDownload,
+        uploadSpeed: t.rateUpload,
+        seeds: 0,
+        peers: t.peersConnected,
         state: this.mapStatus(t.status),
-        addedAt: t.date_added * 1000,
-        doneAt: t.done_date > 0 ? t.done_date * 1000 : null,
-        ratio: t.upload_ratio,
+        addedAt: t.addedDate * 1000,
+        doneAt: t.doneDate > 0 ? t.doneDate * 1000 : null,
+        ratio: t.uploadRatio,
       }))
     }
     catch (e) {
@@ -123,54 +115,53 @@ export class TransmissionAdapter implements TorrentClientAdapter {
   async getTorrentDetails(hash: string): Promise<TorrentDetails | null> {
     try {
       const result = await this.request<{ torrents: Array<{
-        id: number
-        hash_string: string
+        hashString: string
         name: string
-        total_size: number
-        downloaded_ever: number
-        uploaded_ever: number
-        rate_download: number
-        rate_upload: number
-        seeds_connected: number
-        peers_connected: number
+        totalSize: number
+        downloadedEver: number
+        uploadedEver: number
+        rateDownload: number
+        rateUpload: number
+        peersConnected: number
         status: number
-        date_added: number
-        done_date: number
-        upload_ratio: number
-        files: Array<{ name: string, length: number, bytes_completed: number, priority: number }>
+        addedDate: number
+        doneDate: number
+        uploadRatio: number
+        files: Array<{ name: string, length: number, bytesCompleted: number }>
+        fileStats: Array<{ priority: number }>
         trackers: Array<{ announce: string }>
-      }> }>('torrent_get', {
+      }> }>('torrent-get', {
         ids: [hash],
         fields: [
-          'id', 'hash_string', 'name', 'total_size', 'downloaded_ever', 'uploaded_ever',
-          'rate_download', 'rate_upload', 'seeds_connected', 'peers_connected',
-          'status', 'date_added', 'done_date', 'upload_ratio', 'files', 'trackers',
+          'hashString', 'name', 'totalSize', 'downloadedEver', 'uploadedEver',
+          'rateDownload', 'rateUpload', 'peersConnected',
+          'status', 'addedDate', 'doneDate', 'uploadRatio', 'files', 'fileStats', 'trackers',
         ],
       })
 
-      const t = result.torrents?.[0]
+      const t = result?.torrents?.[0]
       if (!t) return null
 
       return {
-        hash: t.hash_string,
+        hash: t.hashString,
         name: t.name,
-        size: t.total_size,
-        completed: t.done_date > 0 ? t.total_size : 0,
-        downloaded: t.downloaded_ever,
-        uploaded: t.uploaded_ever,
-        downloadSpeed: t.rate_download,
-        uploadSpeed: t.rate_upload,
-        seeds: t.seeds_connected,
-        peers: t.peers_connected,
+        size: t.totalSize,
+        completed: t.doneDate > 0 ? t.totalSize : 0,
+        downloaded: t.downloadedEver,
+        uploaded: t.uploadedEver,
+        downloadSpeed: t.rateDownload,
+        uploadSpeed: t.rateUpload,
+        seeds: 0,
+        peers: t.peersConnected,
         state: this.mapStatus(t.status),
-        addedAt: t.date_added * 1000,
-        doneAt: t.done_date > 0 ? t.done_date * 1000 : null,
-        ratio: t.upload_ratio,
-        files: (t.files || []).map(f => ({
+        addedAt: t.addedDate * 1000,
+        doneAt: t.doneDate > 0 ? t.doneDate * 1000 : null,
+        ratio: t.uploadRatio,
+        files: (t.files || []).map((f, i) => ({
           name: f.name,
           size: f.length,
-          completed: f.bytes_completed,
-          priority: this.mapPriority(f.priority),
+          completed: f.bytesCompleted,
+          priority: this.mapPriority(t.fileStats?.[i]?.priority ?? 0),
         })),
         trackers: (t.trackers || []).map(tr => tr.announce),
       }
@@ -183,10 +174,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async addTorrentByFile(file: Buffer): Promise<boolean> {
     try {
-      const base64 = Buffer.from(file).toString('base64')
-      await this.request('torrent_add', {
-        metainfo: base64,
-      })
+      await this.request('torrent-add', { metainfo: Buffer.from(file).toString('base64') })
       return true
     }
     catch (e) {
@@ -197,9 +185,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async addTorrentByUrl(url: string): Promise<boolean> {
     try {
-      await this.request('torrent_add', {
-        filename: url,
-      })
+      await this.request('torrent-add', { filename: url })
       return true
     }
     catch (e) {
@@ -214,9 +200,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async startTorrents(hashes: string[]): Promise<boolean> {
     try {
-      await this.request('torrent_start', {
-        ids: hashes,
-      })
+      await this.request('torrent-start', { ids: hashes })
       return true
     }
     catch (e) {
@@ -227,9 +211,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async stopTorrents(hashes: string[]): Promise<boolean> {
     try {
-      await this.request('torrent_stop', {
-        ids: hashes,
-      })
+      await this.request('torrent-stop', { ids: hashes })
       return true
     }
     catch (e) {
@@ -240,10 +222,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async deleteTorrents(hashes: string[], deleteFiles: boolean): Promise<boolean> {
     try {
-      await this.request('torrent_remove', {
-        'ids': hashes,
-        'delete-local-data': deleteFiles,
-      })
+      await this.request('torrent-remove', { ids: hashes, 'delete-local-data': deleteFiles })
       return true
     }
     catch (e) {
@@ -254,7 +233,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async testConnection(): Promise<boolean> {
     try {
-      await this.request('session_get', {})
+      await this.request('session-get', {})
       return true
     }
     catch (e) {
@@ -266,10 +245,12 @@ export class TransmissionAdapter implements TorrentClientAdapter {
   private mapStatus(status: number): Torrent['state'] {
     const statusMap: Record<number, Torrent['state']> = {
       0: 'stopped',
-      1: 'downloading',
-      2: 'downloading',
-      3: 'seeding',
-      4: 'seeding',
+      1: 'downloading', // queued to check
+      2: 'downloading', // checking
+      3: 'downloading', // queued to download
+      4: 'downloading',
+      5: 'seeding',     // queued to seed
+      6: 'seeding',
     }
     return statusMap[status] || 'stopped'
   }
