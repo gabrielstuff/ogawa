@@ -3105,16 +3105,16 @@ _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2e19e-zgI0VsLxqGsDcGIJvU0Eg5KCrSo\"",
-    "mtime": "2026-03-14T10:01:10.730Z",
-    "size": 188830,
+    "etag": "\"2e266-v6BV8yWBNJV4SvVAkNmByAVTADo\"",
+    "mtime": "2026-03-14T10:13:32.414Z",
+    "size": 189030,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"aed21-e0spkte90+H19MMBtu2OYaKMQ+s\"",
-    "mtime": "2026-03-14T10:01:10.730Z",
-    "size": 716065,
+    "etag": "\"af06f-pFw6gEge3U1VV8orTa5//03f+c4\"",
+    "mtime": "2026-03-14T10:13:32.415Z",
+    "size": 716911,
     "path": "index.mjs.map"
   }
 };
@@ -4187,30 +4187,30 @@ const schema = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   torrentTags: torrentTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-let db$1 = null;
+let db = null;
 function getDb() {
-  if (db$1) return db$1;
+  if (db) return db;
   const tursoUrl = process.env.TURSO_URL || "file:ogawa.db";
   const tursoToken = process.env.TURSO_TOKEN;
   const client = createClient({
     url: tursoUrl,
     authToken: tursoToken
   });
-  db$1 = drizzle(client, { schema });
-  return db$1;
+  db = drizzle(client, { schema });
+  return db;
 }
-const db = getDb();
+const db$1 = getDb();
 
 const index$4 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   db: getDb,
-  default: db
+  default: db$1
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const index$2 = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db.select().from(feeds).all();
+    const rows = await db$1.select().from(feeds).all();
     return rows.map((row) => ({
       id: row.id,
       url: row.url,
@@ -4228,7 +4228,7 @@ const index$2 = defineEventHandler(async (event) => {
         message: "URL is required"
       });
     }
-    const id = await db.insert(feeds).values({
+    const id = await db$1.insert(feeds).values({
       url,
       title: url,
       createdAt: /* @__PURE__ */ new Date()
@@ -4249,7 +4249,7 @@ const index$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 const settings = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db.select().from(settings$2).all();
+    const rows = await db$1.select().from(settings$2).all();
     const result = {};
     for (const row of rows) {
       const parts = row.key.split(".");
@@ -4273,7 +4273,7 @@ const settings = defineEventHandler(async (event) => {
         for (const [key, value] of Object.entries(values)) {
           const settingKey = `${category}.${key}`;
           const stringValue = String(value != null ? value : "");
-          await db.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
+          await db$1.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
         }
       }
     }
@@ -4328,6 +4328,9 @@ class QBittorrentAdapter {
     try {
       const response = await ofetch.raw(`${this.baseUrl}/api/v2/auth/login`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: new URLSearchParams({
           username: this.auth.username,
           password: this.auth.password

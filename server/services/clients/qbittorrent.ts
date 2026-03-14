@@ -71,6 +71,9 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
     try {
       const response: any = await ofetch.raw(`${this.baseUrl}/api/v2/auth/login`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         body: new URLSearchParams({
           username: this.auth.username,
           password: this.auth.password,

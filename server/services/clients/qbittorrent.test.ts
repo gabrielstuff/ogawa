@@ -8,7 +8,7 @@ const qbitSettings = {
   password: 'admin',
 }
 
-describe.skip('QBittorrentAdapter', () => {
+describe('QBittorrentAdapter', () => {
   const adapter = new QBittorrentAdapter(qbitSettings)
 
   it('should connect to qBittorrent', async () => {
