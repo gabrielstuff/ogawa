@@ -3102,7 +3102,22 @@ _4LMpcbpwdYBnIbK__Ln2kQ2fGw3CYbG7p7bFd6TDpTM,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2d7f3-4+58YHJ3u5MrbTGO1eo3JbM6ifU\"",
+    "mtime": "2026-03-14T10:00:02.942Z",
+    "size": 186355,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"ac5f9-EOUQKO5g1apN7HmTGVNz2BvMiWw\"",
+    "mtime": "2026-03-14T10:00:02.943Z",
+    "size": 706041,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -4009,29 +4024,111 @@ const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 
 const test = defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const client = (body == null ? void 0 : body.client) || "qBittorrent";
   const url = body == null ? void 0 : body.url;
   body == null ? void 0 : body.username;
-  body == null ? void 0 : body.password;
-  if (!url) {
-    throw createError({
-      statusCode: 400,
-      message: "URL is required"
-    });
+  const password = body == null ? void 0 : body.password;
+  const host = body == null ? void 0 : body.host;
+  const port = body == null ? void 0 : body.port;
+  if (client === "qBittorrent") {
+    if (!url) {
+      throw createError({
+        statusCode: 400,
+        message: "URL is required for qBittorrent"
+      });
+    }
+    try {
+      await ofetch(`${url}/api/v2/app/version`, {
+        method: "GET"
+      });
+      return { success: true, client: "qBittorrent" };
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to qBittorrent"
+      });
+    }
   }
-  try {
-    const response = await ofetch(`${url}/api/v2/app/version`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+  if (client === "Transmission") {
+    if (!url) {
+      throw createError({
+        statusCode: 400,
+        message: "URL is required for Transmission"
+      });
+    }
+    try {
+      const response = await ofetch(`${url}/transmission/rpc`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: {
+          method: "session-get",
+          arguments: {}
+        }
+      });
+      if (response.result === "success") {
+        return { success: true, client: "Transmission" };
       }
-    });
-    return { success: true, version: response };
-  } catch (e) {
-    throw createError({
-      statusCode: 500,
-      message: "Failed to connect to qBittorrent"
-    });
+      throw new Error("Invalid response");
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to Transmission"
+      });
+    }
   }
+  if (client === "rTorrent") {
+    const scgiUrl = url || "localhost:5000";
+    const [scgiHost, scgiPort] = scgiUrl.includes(":") ? scgiUrl.split(":") : [scgiUrl, "5000"];
+    try {
+      const response = await fetch(`http://${scgiHost}:${scgiPort}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "SCGI": "1"
+        },
+        body: `CONTENT_LENGTH18\0<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>`
+      });
+      if (response.ok) {
+        return { success: true, client: "rTorrent" };
+      }
+      throw new Error("SCGI request failed");
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to rTorrent"
+      });
+    }
+  }
+  if (client === "Deluge") {
+    const delugeHost = host || "localhost";
+    const delugePort = port || 58846;
+    const delugePassword = password || "admin";
+    try {
+      const response = await ofetch(`http://${delugeHost}:${delugePort}/json`, {
+        method: "POST",
+        body: {
+          method: "auth.login",
+          params: [delugePassword],
+          id: 1
+        }
+      });
+      if (!response.error) {
+        return { success: true, client: "Deluge" };
+      }
+      throw new Error(response.error);
+    } catch (e) {
+      throw createError({
+        statusCode: 500,
+        message: "Failed to connect to Deluge"
+      });
+    }
+  }
+  throw createError({
+    statusCode: 400,
+    message: `Unknown client: ${client}`
+  });
 });
 
 const test$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
@@ -4430,29 +4527,174 @@ class RTorrentAdapter {
   get baseUrl() {
     return this.settings.url || "http://localhost:8080";
   }
+  get scgiUrl() {
+    const url = this.settings.url || "localhost:5000";
+    if (url.startsWith("scgi://")) {
+      return url;
+    }
+    return `scgi://${url}`;
+  }
+  async scgiRequest(method, params = []) {
+    const scgiHost = this.scgiUrl.replace("scgi://", "");
+    const [host, port] = scgiHost.includes(":") ? scgiHost.split(":") : [scgiHost, "5000"];
+    const requestBody = this.buildScgiRequest(method, params);
+    const response = await fetch(`http://${host}:${port}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "SCGI": "1"
+      },
+      body: requestBody
+    });
+    if (!response.ok) {
+      throw new Error(`SCGI request failed: ${response.status}`);
+    }
+    const text = await response.text();
+    return this.parseXmlRpcResponse(text);
+  }
+  buildScgiRequest(method, params) {
+    let content = `<?xml version="1.0"?><methodCall><methodName>${method}</methodName><params>`;
+    for (const param of params) {
+      content += `<param><value><string>${this.escapeXml(param)}</string></value></param>`;
+    }
+    content += "</params></methodCall>";
+    const contentLength = Buffer.byteLength(content);
+    return `CONTENT_LENGTH${contentLength}\0${content}`;
+  }
+  escapeXml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+  }
+  parseXmlRpcResponse(xml) {
+    try {
+      const getValue = (str) => {
+        const stringMatch = str.match(/<string>(.*?)<\/string>/);
+        if (stringMatch && stringMatch[1]) return stringMatch[1];
+        const intMatch = str.match(/<int>(.*?)<\/int>/);
+        if (intMatch && intMatch[1]) return parseInt(intMatch[1], 10);
+        const doubleMatch = str.match(/<double>(.*?)<\/double>/);
+        if (doubleMatch && doubleMatch[1]) return parseFloat(doubleMatch[1]);
+        const booleanMatch = str.match(/<boolean>(.*?)<\/boolean>/);
+        if (booleanMatch && booleanMatch[1]) return booleanMatch[1] === "1";
+        const arrayMatch = str.match(/<array><data>(.*?)<\/data><\/array>/);
+        if (arrayMatch && arrayMatch[1]) {
+          const items = arrayMatch[1].match(/<value>.*?<\/value>/g) || [];
+          return items.map((item) => getValue(item));
+        }
+        return str;
+      };
+      const paramsMatch = xml.match(/<params>(.*?)<\/params>/s);
+      if (paramsMatch && paramsMatch[1]) {
+        const values = paramsMatch[1].match(/<value>.*?<\/value>/g) || [];
+        return values.map((v) => getValue(v));
+      }
+      return null;
+    } catch (e) {
+      console.error("Failed to parse XML-RPC response:", e);
+      return null;
+    }
+  }
   async getTorrents() {
     try {
-      const response = await ofetch(this.baseUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `<?xml version="1.0"?>
-<methodCall>
-  <methodName>download_list</methodName>
-  <params>
-    <param><value><string>all</string></value></param>
-  </params>
-</methodCall>`
-      });
-      return [];
+      const result = await this.scgiRequest("download_list", ["main"]);
+      const hashes = Array.isArray(result) ? result : [];
+      if (hashes.length === 0) return [];
+      const torrents = [];
+      for (const hash of hashes) {
+        const details = await this.getTorrentByHash(hash);
+        if (details) {
+          torrents.push(details);
+        }
+      }
+      return torrents;
     } catch (e) {
       console.error("Failed to fetch rTorrent torrents:", e);
       return [];
     }
   }
-  async getTorrentDetails(_hash) {
-    return null;
+  async getTorrentByHash(hash) {
+    try {
+      const baseParams = [
+        `d.get_hash=${hash}`,
+        `d.get_name=${hash}`,
+        `d.get_size_bytes=${hash}`,
+        `d.get_bytes_done=${hash}`,
+        `d.get_up_total=${hash}`,
+        `d.get_down_rate=${hash}`,
+        `d.get_up_rate=${hash}`,
+        `d.get_seeders=${hash}`,
+        `d.get_leechers=${hash}`,
+        `d.get_state=${hash}`,
+        `d.get_open=${hash}`,
+        `d.is_hash_checking=${hash}`,
+        `d.is_uploading=${hash}`,
+        `d.is_downloading=${hash}`,
+        `d.get_ratio=${hash}`,
+        `d.get_creation_date=${hash}`,
+        `d.get_completion_on=${hash}`,
+        `d.get_left_bytes=${hash}`
+      ];
+      const result = await this.scgiRequest("system.multicall", [baseParams.map((p) => `(${p})`).join("")]);
+      if (!result || !Array.isArray(result) || result.length === 0) {
+        return null;
+      }
+      const data = Array.isArray(result[0]) ? result[0] : [];
+      if (data.length < 18) return null;
+      const [rtHash, name, size, downloaded, uploaded, downRate, upRate, seeds, peers, state, isOpen, isHashing, isUploading, isDownloading, ratio, addedOn, completedOn, left] = data;
+      return {
+        hash: rtHash,
+        name: name || "Unknown",
+        size: size || 0,
+        completed: (size || 0) - (left || 0),
+        downloaded: downloaded || 0,
+        uploaded: uploaded || 0,
+        downloadSpeed: downRate || 0,
+        uploadSpeed: upRate || 0,
+        seeds: seeds || 0,
+        peers: peers || 0,
+        state: this.mapState(state, isOpen, isHashing, isUploading, isDownloading),
+        addedAt: addedOn ? addedOn * 1e3 : Date.now(),
+        doneAt: completedOn ? completedOn * 1e3 : null,
+        ratio: ratio || 0
+      };
+    } catch (e) {
+      console.error(`Failed to fetch rTorrent torrent ${hash}:`, e);
+      return null;
+    }
+  }
+  async getTorrentDetails(hash) {
+    const torrent = await this.getTorrentByHash(hash);
+    if (!torrent) return null;
+    try {
+      const filesParams = [
+        `d.get_hash=${hash}`,
+        `f.get_path=${hash}`,
+        `f.get_size_bytes=${hash}`,
+        `f.get_completed_bytes=${hash}`,
+        `f.get_priority=${hash}`
+      ];
+      const filesResult = await this.scgiRequest("system.multicall", [filesParams.map((p) => `(${p})`).join("")]);
+      let files = [];
+      if (filesResult && Array.isArray(filesResult) && Array.isArray(filesResult[0])) {
+        const fileData = filesResult[0];
+        files = fileData.map((fileArr) => {
+          const [path, size, completed, priority] = fileArr;
+          return {
+            name: String(path || ""),
+            size: Number(size || 0),
+            completed: Number(completed || 0),
+            priority: this.mapPriority(Number(priority))
+          };
+        });
+      }
+      return {
+        ...torrent,
+        files,
+        trackers: []
+      };
+    } catch (e) {
+      console.error(`Failed to fetch rTorrent torrent details ${hash}:`, e);
+      return null;
+    }
   }
   async addTorrentByFile(_file) {
     console.error("rTorrent: addTorrentByFile not implemented - requires SCGI protocol");
@@ -4466,29 +4708,64 @@ class RTorrentAdapter {
     console.error("rTorrent: addTorrentByMagnet not implemented - requires SCGI protocol");
     return false;
   }
-  async startTorrents(_hashes) {
-    console.error("rTorrent: startTorrents not implemented - requires SCGI protocol");
-    return false;
+  async startTorrents(hashes) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.open", [hash]);
+        await this.scgiRequest("d.start", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to start rTorrent torrents:", e);
+      return false;
+    }
   }
-  async stopTorrents(_hashes) {
-    console.error("rTorrent: stopTorrents not implemented - requires SCGI protocol");
-    return false;
+  async stopTorrents(hashes) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.stop", [hash]);
+        await this.scgiRequest("d.close", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to stop rTorrent torrents:", e);
+      return false;
+    }
   }
-  async deleteTorrents(_hashes, _deleteFiles) {
-    console.error("rTorrent: deleteTorrents not implemented - requires SCGI protocol");
-    return false;
+  async deleteTorrents(hashes, _deleteFiles) {
+    try {
+      for (const hash of hashes) {
+        await this.scgiRequest("d.stop", [hash]);
+        await this.scgiRequest("d.close", [hash]);
+        await this.scgiRequest("d.erase", [hash]);
+      }
+      return true;
+    } catch (e) {
+      console.error("Failed to delete rTorrent torrents:", e);
+      return false;
+    }
   }
   async testConnection() {
     try {
-      await ofetch(this.baseUrl, {
-        method: "POST",
-        body: '<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName></methodCall>',
-        timeout: 5e3
-      });
-      return true;
+      const result = await this.scgiRequest("system.listMethods", []);
+      return result !== null;
     } catch {
       return false;
     }
+  }
+  mapState(state, isOpen, isHashing, isUploading, isDownloading) {
+    if (!isOpen) return "stopped";
+    if (isHashing) return "downloading";
+    if (isDownloading) return "downloading";
+    if (isUploading) return "seeding";
+    return "stopped";
+  }
+  mapPriority(priority) {
+    if (priority === 0) return "skip";
+    if (priority === 1) return "low";
+    if (priority === 2) return "normal";
+    if (priority === 3) return "high";
+    return "normal";
   }
 }
 
@@ -4731,20 +5008,36 @@ class DelugeAdapter {
     };
   }
   async request(method, params = []) {
-    const response = await ofetch("http://localhost:8112/json", {
-      method: "POST",
-      body: {
-        method,
-        params,
-        id: 1
+    const { host, port, password } = this.connection;
+    const url = `http://${host}:${port}/json`;
+    try {
+      const response = await ofetch(url, {
+        method: "POST",
+        body: {
+          method,
+          params,
+          id: 1
+        }
+      });
+      if (response.error) {
+        throw new Error(response.error);
       }
-    });
-    if (response.error) {
-      throw new Error(response.error);
+      return response.result;
+    } catch (e) {
+      console.error("Deluge request failed:", e);
+      throw e;
     }
-    return response.result;
+  }
+  async ensureAuth() {
+    const { password } = this.connection;
+    try {
+      await this.request("auth.login", [password]);
+    } catch (e) {
+      console.error("Deluge auth failed:", e);
+    }
   }
   async getTorrents() {
+    await this.ensureAuth();
     try {
       const result = await this.request("core.get_torrents_status", [{}, [
         "hash",
@@ -4783,6 +5076,7 @@ class DelugeAdapter {
     }
   }
   async getTorrentDetails(hash) {
+    await this.ensureAuth();
     try {
       const result = await this.request("core.get_torrents_status", [[hash], [
         "hash",
@@ -4832,6 +5126,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByFile(file) {
+    await this.ensureAuth();
     try {
       const base64 = Buffer.from(file).toString("base64");
       await this.request("core.add_torrent_file", ["torrent.torrent", base64, {}]);
@@ -4842,6 +5137,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByUrl(url) {
+    await this.ensureAuth();
     try {
       await this.request("core.add_torrent_url", [url, {}]);
       return true;
@@ -4851,6 +5147,7 @@ class DelugeAdapter {
     }
   }
   async addTorrentByMagnet(magnet) {
+    await this.ensureAuth();
     try {
       await this.request("core.add_torrent_url", [magnet, {}]);
       return true;
@@ -4860,6 +5157,7 @@ class DelugeAdapter {
     }
   }
   async startTorrents(hashes) {
+    await this.ensureAuth();
     try {
       await this.request("core.resume_torrents", [hashes]);
       return true;
@@ -4869,6 +5167,7 @@ class DelugeAdapter {
     }
   }
   async stopTorrents(hashes) {
+    await this.ensureAuth();
     try {
       await this.request("core.pause_torrents", [hashes]);
       return true;
@@ -4878,6 +5177,7 @@ class DelugeAdapter {
     }
   }
   async deleteTorrents(hashes, deleteFiles) {
+    await this.ensureAuth();
     try {
       await this.request("core.remove_torrents", [hashes, deleteFiles]);
       return true;

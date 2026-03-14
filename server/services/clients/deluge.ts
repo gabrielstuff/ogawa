@@ -18,23 +18,41 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   private async request<T>(method: string, params: unknown[] = []): Promise<T> {
-    const response = await ofetch<{ id: number; result: T; error?: string }>('http://localhost:8112/json', {
-      method: 'POST',
-      body: {
-        method,
-        params,
-        id: 1,
-      },
-    })
+    const { host, port, password } = this.connection
+    const url = `http://${host}:${port}/json`
+    
+    try {
+      const response = await ofetch<{ id: number; result: T; error?: string }>(url, {
+        method: 'POST',
+        body: {
+          method,
+          params,
+          id: 1,
+        },
+      })
 
-    if (response.error) {
-      throw new Error(response.error)
+      if (response.error) {
+        throw new Error(response.error)
+      }
+
+      return response.result
+    } catch (e) {
+      console.error('Deluge request failed:', e)
+      throw e
     }
+  }
 
-    return response.result
+  private async ensureAuth(): Promise<void> {
+    const { password } = this.connection
+    try {
+      await this.request('auth.login', [password])
+    } catch (e) {
+      console.error('Deluge auth failed:', e)
+    }
   }
 
   async getTorrents(): Promise<Torrent[]> {
+    await this.ensureAuth()
     try {
       const result = await this.request<Array<{
         hash: string
@@ -79,6 +97,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async getTorrentDetails(hash: string): Promise<TorrentDetails | null> {
+    await this.ensureAuth()
     try {
       const result = await this.request<Array<{
         hash: string
@@ -136,6 +155,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async addTorrentByFile(file: Buffer): Promise<boolean> {
+    await this.ensureAuth()
     try {
       const base64 = Buffer.from(file).toString('base64')
       await this.request('core.add_torrent_file', ['torrent.torrent', base64, {}])
@@ -147,6 +167,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async addTorrentByUrl(url: string): Promise<boolean> {
+    await this.ensureAuth()
     try {
       await this.request('core.add_torrent_url', [url, {}])
       return true
@@ -157,6 +178,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async addTorrentByMagnet(magnet: string): Promise<boolean> {
+    await this.ensureAuth()
     try {
       await this.request('core.add_torrent_url', [magnet, {}])
       return true
@@ -167,6 +189,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async startTorrents(hashes: string[]): Promise<boolean> {
+    await this.ensureAuth()
     try {
       await this.request('core.resume_torrents', [hashes])
       return true
@@ -177,6 +200,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async stopTorrents(hashes: string[]): Promise<boolean> {
+    await this.ensureAuth()
     try {
       await this.request('core.pause_torrents', [hashes])
       return true
@@ -187,6 +211,7 @@ export class DelugeAdapter implements TorrentClientAdapter {
   }
 
   async deleteTorrents(hashes: string[], deleteFiles: boolean): Promise<boolean> {
+    await this.ensureAuth()
     try {
       await this.request('core.remove_torrents', [hashes, deleteFiles])
       return true

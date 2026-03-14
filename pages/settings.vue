@@ -16,9 +16,12 @@ const testStatus = ref<'idle' | 'testing' | 'success' | 'error'>('idle')
 const testMessage = ref('')
 
 // Connection settings
+const clientType = ref('qBittorrent')
 const clientUrl = ref('')
 const clientUsername = ref('')
 const clientPassword = ref('')
+const clientHost = ref('')
+const clientPort = ref(58846)
 
 // UI settings
 const theme = ref('system')
@@ -36,11 +39,26 @@ const themeOptions = [
   { value: 'dark', label: 'Dark' },
 ]
 
+const clientOptions = [
+  { value: 'qBittorrent', label: 'qBittorrent' },
+  { value: 'Transmission', label: 'Transmission' },
+  { value: 'rTorrent', label: 'rTorrent' },
+  { value: 'Deluge', label: 'Deluge' },
+]
+
+const showQBitFields = computed(() => clientType.value === 'qBittorrent')
+const showTransmissionFields = computed(() => clientType.value === 'Transmission')
+const showRTorrentFields = computed(() => clientType.value === 'rTorrent')
+const showDelugeFields = computed(() => clientType.value === 'Deluge')
+
 onMounted(() => {
   if (settings.value) {
+    clientType.value = settings.value.client?.client || 'qBittorrent'
     clientUrl.value = settings.value.client?.url || ''
     clientUsername.value = settings.value.client?.username || ''
     clientPassword.value = settings.value.client?.password || ''
+    clientHost.value = (settings.value.client as any)?.host || ''
+    clientPort.value = (settings.value.client as any)?.port || 58846
     theme.value = settings.value.ui?.theme || 'system'
     itemsPerPage.value = settings.value.ui?.itemsPerPage || 20
     defaultDownloadPath.value = settings.value.download?.defaultPath || ''
@@ -53,14 +71,30 @@ onMounted(() => {
 async function saveSettings() {
   isLoading.value = true
   try {
+    const clientData: Record<string, any> = {
+      client: clientType.value,
+    }
+
+    if (showQBitFields.value) {
+      clientData.url = clientUrl.value
+      clientData.username = clientUsername.value
+      clientData.password = clientPassword.value
+    } else if (showTransmissionFields.value) {
+      clientData.url = clientUrl.value
+      clientData.username = clientUsername.value
+      clientData.password = clientPassword.value
+    } else if (showRTorrentFields.value) {
+      clientData.url = clientUrl.value
+    } else if (showDelugeFields.value) {
+      clientData.host = clientHost.value
+      clientData.port = clientPort.value
+      clientData.password = clientPassword.value
+    }
+
     await $fetch('/api/settings', {
       method: 'PATCH',
       body: {
-        client: {
-          url: clientUrl.value,
-          username: clientUsername.value,
-          password: clientPassword.value,
-        },
+        client: clientData,
         ui: {
           theme: theme.value,
           itemsPerPage: itemsPerPage.value,
@@ -89,9 +123,12 @@ async function testConnection() {
     await $fetch('/api/client/test', {
       method: 'POST',
       body: {
+        client: clientType.value,
         url: clientUrl.value,
         username: clientUsername.value,
         password: clientPassword.value,
+        host: clientHost.value,
+        port: clientPort.value,
       },
     })
     testStatus.value = 'success'
@@ -123,28 +160,109 @@ async function testConnection() {
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium mb-2">qBittorrent URL</label>
-            <UInput
-              v-model="clientUrl"
-              placeholder="http://localhost:8080"
+            <label class="block text-sm font-medium mb-2">Torrent Client</label>
+            <USelect
+              v-model="clientType"
+              :options="clientOptions"
+              option-attribute="label"
+              value-attribute="value"
             />
           </div>
 
-          <div>
-            <label class="block text-sm font-medium mb-2">Username</label>
-            <UInput
-              v-model="clientUsername"
-              placeholder="admin"
-            />
+          <!-- qBittorrent Fields -->
+          <div v-if="showQBitFields">
+            <div>
+              <label class="block text-sm font-medium mb-2">qBittorrent URL</label>
+              <UInput
+                v-model="clientUrl"
+                placeholder="http://localhost:8080"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Username</label>
+              <UInput
+                v-model="clientUsername"
+                placeholder="admin"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Password</label>
+              <UInput
+                v-model="clientPassword"
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium mb-2">Password</label>
-            <UInput
-              v-model="clientPassword"
-              type="password"
-              placeholder="••••••••"
-            />
+          <!-- Transmission Fields -->
+          <div v-if="showTransmissionFields">
+            <div>
+              <label class="block text-sm font-medium mb-2">Transmission URL</label>
+              <UInput
+                v-model="clientUrl"
+                placeholder="http://localhost:9091"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Username</label>
+              <UInput
+                v-model="clientUsername"
+                placeholder="admin"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Password</label>
+              <UInput
+                v-model="clientPassword"
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+
+          <!-- rTorrent Fields -->
+          <div v-if="showRTorrentFields">
+            <div>
+              <label class="block text-sm font-medium mb-2">rTorrent SCGI URL</label>
+              <UInput
+                v-model="clientUrl"
+                placeholder="localhost:5000"
+              />
+            </div>
+          </div>
+
+          <!-- Deluge Fields -->
+          <div v-if="showDelugeFields">
+            <div>
+              <label class="block text-sm font-medium mb-2">Host</label>
+              <UInput
+                v-model="clientHost"
+                placeholder="localhost"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Port</label>
+              <UInput
+                v-model="clientPort"
+                type="number"
+                placeholder="58846"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">Password</label>
+              <UInput
+                v-model="clientPassword"
+                type="password"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
 
           <div class="flex gap-2">
