@@ -369,6 +369,8 @@ body {
 .input-bracket {
   position: relative;
   display: inline-block;
+  width: 100%;
+  max-width: 260px;
 }
 
 .input-bracket input {
@@ -379,7 +381,8 @@ body {
   border-bottom: 1px solid var(--line-strong);
   color: var(--ink-1);
   padding: 9px 22px;
-  width: 260px;
+  width: 100%;
+  max-width: 260px;
   outline: none;
   display: block;
   -webkit-appearance: none;
