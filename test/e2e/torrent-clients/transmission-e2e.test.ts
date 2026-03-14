@@ -1,16 +1,16 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { QBittorrentAdapter } from './qbittorrent'
+import { describe, it, expect } from 'vitest'
+import { TransmissionAdapter } from '../../../server/services/clients/transmission'
 
-const qbitSettings = {
-  client: 'qBittorrent' as const,
-  url: 'http://localhost:9090',
+const transmissionSettings = {
+  client: 'Transmission' as const,
+  url: 'http://localhost:9091',
   username: 'admin',
   password: 'pasdemdp',
 }
 
 const MAGNET_SINTEL = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
 
-async function waitForTorrent(adapter: QBittorrentAdapter, timeoutMs: number = 30000) {
+async function waitForTorrent(adapter: TransmissionAdapter, timeoutMs: number = 30000) {
   const start = Date.now()
   while (Date.now() - start < timeoutMs) {
     const torrents = await adapter.getTorrents()
@@ -22,10 +22,10 @@ async function waitForTorrent(adapter: QBittorrentAdapter, timeoutMs: number = 3
   throw new Error('Torrent not found after timeout')
 }
 
-describe('QBittorrentAdapter E2E', () => {
-  const adapter = new QBittorrentAdapter(qbitSettings)
+describe('TransmissionAdapter E2E', () => {
+  const adapter = new TransmissionAdapter(transmissionSettings)
 
-  it('should connect to qBittorrent', async () => {
+  it('should connect to Transmission', async () => {
     const result = await adapter.testConnection()
     expect(result).toBe(true)
   })
