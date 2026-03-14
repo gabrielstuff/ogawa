@@ -25,7 +25,7 @@ const appVersion = '1.0.0'
 </script>
 
 <template>
-  <div class="min-h-screen min-h-[100dvh] bg-blue text-phosphor font-karla">
+  <div class="min-h-screen min-h-[100dvh] bg-bg text-ink-1 font-karla">
     <!-- Main Content -->
     <main class="pb-20 md:pb-16 md:ml-14">
       <slot />
@@ -34,7 +34,7 @@ const appVersion = '1.0.0'
     <!-- Mobile Bottom Navigation -->
     <nav
       v-if="isMobile"
-      class="fixed bottom-0 left-0 right-0 bg-deep/95 backdrop-blur-sm border-t border-scan/20 safe-area-inset-bottom z-50"
+      class="fixed bottom-0 left-0 right-0 bg-surface-h/95 backdrop-blur-sm border-t border-line safe-area-inset-bottom z-50"
     >
       <div class="flex justify-around items-center h-16">
         <NuxtLink
@@ -42,13 +42,13 @@ const appVersion = '1.0.0'
           :key="item.path"
           :to="item.path"
           class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200"
-          :class="route.path === item.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
+          :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
         >
           <UIcon
             :name="item.icon"
             class="w-6 h-6"
           />
-          <span class="text-[10px] mt-1 font-bold uppercase tracking-wide">{{ item.name }}</span>
+          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
         </NuxtLink>
       </div>
     </nav>
@@ -56,12 +56,12 @@ const appVersion = '1.0.0'
     <!-- Desktop Sidebar - Narrow navigation rail -->
     <aside
       v-if="!isMobile"
-      class="fixed left-0 top-0 bottom-0 w-14 bg-deep border-r border-scan/20 p-2 hidden md:flex flex-col"
+      class="fixed left-0 top-0 bottom-0 w-14 bg-surface-h border-r border-line p-2 hidden md:flex flex-col"
     >
       <div class="flex items-center justify-center h-12 mb-4">
         <UIcon
           name="i-heroicons-cloud-arrow-down"
-          class="w-6 h-6 text-halation"
+          class="w-6 h-6 text-accent"
         />
       </div>
 
@@ -71,13 +71,13 @@ const appVersion = '1.0.0'
           :key="item.path"
           :to="item.path"
           class="flex flex-col items-center justify-center py-3 transition-colors"
-          :class="route.path === item.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
+          :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
         >
           <UIcon
             :name="item.icon"
             class="w-5 h-5"
           />
-          <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
+          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
         </NuxtLink>
       </nav>
 
@@ -86,13 +86,13 @@ const appVersion = '1.0.0'
         <NuxtLink
           :to="settingsItem.path"
           class="flex flex-col items-center justify-center py-3 transition-colors"
-          :class="route.path === settingsItem.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
+          :class="route.path === settingsItem.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
         >
           <UIcon
             :name="settingsItem.icon"
             class="w-5 h-5"
           />
-          <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ settingsItem.name.charAt(0) }}</span>
+          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ settingsItem.name.charAt(0) }}</span>
         </NuxtLink>
       </div>
     </aside>

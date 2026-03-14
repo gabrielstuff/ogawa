@@ -2,80 +2,79 @@
 @import "@nuxt/ui";
 
 /* ===========================================
-   CRT SIGNAL DESIGN SYSTEM
-   Torrent Client UI - Electric Cobalt Theme
+   FLOOD LIGHT DESIGN SYSTEM
+   Torrent Client UI - Light Theme
+   Based on docs/flood_light_theme_guidelines.md
    =========================================== */
 
 @theme {
   /* Font families */
   --font-karla: 'Karla', sans-serif;
   --font-mono: 'Inconsolata', monospace;
-  
-  /* Custom colors - CRT Signal palette */
-  --color-signal-blue: #1633CC;
-  --color-deep-field: #0E1E8A;
-  --color-void: #071266;
-  --color-phosphor: #EFF3FF;
-  --color-halation: #B8C8FF;
-  --color-ghost: #96AAFF;
-  --color-electric: #2845E8;
-  --color-scan: #4464F5;
-  --color-drift: #6685FF;
-  --color-flicker: #C8D5FF;
-  --color-static: #E0E8FF;
-  
-  /* Error/Success colors - CRT Signal */
-  --color-coral: #FF4466;
-  --color-mint: #44FF99;
 }
 
 /* ===========================================
-   CSS CUSTOM PROPERTIES
+   CSS CUSTOM PROPERTIES - FLOOD LIGHT
    =========================================== */
 :root {
-  /* Core colors */
-  --blue: #1633CC;
-  --deep: #0E1E8A;
-  --void: #071266;
-  --phosphor: #EFF3FF;
-  --halation: #B8C8FF;
-  --ghost: #96AAFF;
+  /* Surfaces */
+  --bg: #F4F5FD;
+  --surface: #EBEEFF;
+  --surface-2: #DEE3FF;
+  --surface-3: #CED5FA;
+  --surface-h: #C2CAF4;
 
-  /* Extended tones */
-  --electric: #2845E8;
-  --scan: #4464F5;
-  --drift: #6685FF;
-  --flicker: #C8D5FF;
-  --static: #E0E8FF;
+  /* Lines & Borders */
+  --line: #B4BDE8;
+  --line-strong: #8695D8;
+
+  /* Ink (Text) */
+  --ink-0: #0A1250;
+  --ink-1: #101B73;
+  --ink-2: #263AAA;
+  --ink-3: #4558B8;
+  --ink-4: #6272BA;
+
+  /* Accent */
+  --accent: #1838D0;
+  --accent-h: #0F2AAE;
+  --accent-t: #E4EAFF;
+
+  /* Semantic */
+  --red: #C52B2B;
+  --red-bg: #FFF0F0;
+  --red-line: #F5BFBF;
+  --green: #1A7A3A;
+  --green-bg: #EDFBF2;
+  --green-line: #B3E6C4;
+  --amber: #956A00;
+  --amber-bg: #FFF9E6;
+  --amber-line: #F0D97A;
 
   /* Typography */
   --font-karla: 'Karla', sans-serif;
   --font-mono: 'Inconsolata', monospace;
 
-  /* Error/Success - CRT Signal */
-  --coral: #FF4466;
-  --mint: #44FF99;
-
-  /* Semantic mappings */
-  --color-background: var(--blue);
-  --color-foreground: var(--phosphor);
-  --color-primary: var(--phosphor);
-  --color-primary-foreground: var(--deep);
-  --color-secondary: var(--deep);
-  --color-secondary-foreground: var(--phosphor);
-  --color-muted: var(--electric);
-  --color-muted-foreground: var(--ghost);
-  --color-accent: var(--halation);
-  --color-accent-foreground: var(--void);
-  --color-destructive: #EF4444;
+  /* Semantic mappings for Nuxt UI */
+  --color-background: var(--bg);
+  --color-foreground: var(--ink-1);
+  --color-primary: var(--accent);
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: var(--surface-2);
+  --color-secondary-foreground: var(--ink-1);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-foreground: #FFFFFF;
+  --color-destructive: var(--red);
   --color-destructive-foreground: #FFFFFF;
-  --color-border: var(--scan);
-  --color-input: var(--scan);
-  --color-ring: var(--halation);
-  --color-card: var(--deep);
-  --color-card-foreground: var(--phosphor);
-  --color-popover: var(--deep);
-  --color-popover-foreground: var(--phosphor);
+  --color-border: var(--line);
+  --color-input: var(--line-strong);
+  --color-ring: var(--accent);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink-1);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink-1);
 }
 
 /* ===========================================
@@ -180,7 +179,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation);
+  border-color: var(--ink-4);
   border-style: solid;
   pointer-events: none;
 }
@@ -222,7 +221,7 @@ select {
   position: absolute;
   width: 12px;
   height: 12px;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--line-strong);
   border-style: solid;
   pointer-events: none;
 }
@@ -294,16 +293,16 @@ select {
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--halation);
+  background: var(--accent-t);
+  border-color: var(--accent);
 }
 
 .btn-bracket {
   background: transparent;
-  color: var(--phosphor);
+  color: var(--ink-2);
   border: none !important;
   font-family: var(--font-karla);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -323,7 +322,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation) !important;
+  border-color: var(--ink-4) !important;
   border-style: solid !important;
   pointer-events: none;
   border-radius: 0 !important;
@@ -347,7 +346,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation) !important;
+  border-color: var(--ink-4) !important;
   border-style: solid !important;
   pointer-events: none;
   border-radius: 0 !important;
@@ -379,8 +378,8 @@ select {
   font-size: 13px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--phosphor);
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--ink-1);
   padding: 9px 22px;
   width: 260px;
   outline: none;
@@ -389,7 +388,7 @@ select {
 }
 
 .input-bracket input::placeholder {
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-4);
 }
 
 .input-bracket::before,
@@ -400,7 +399,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: rgba(200, 215, 255, 0.35);
+  border-color: var(--line-strong);
   border-style: solid;
 }
 
@@ -413,7 +412,7 @@ select {
 .input-bracket::after {
   top: 0;
   right: 0;
-  border-width: 1px 1pxpx 0 0;
+  border-width: 1px 1px 0 0;
 }
 
 .input-bracket .bl {
@@ -524,15 +523,15 @@ body {
    Persistent bottom bar with system info
    =========================================== */
 .status-strip {
-  background: var(--deep);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
   padding: 8px 18px;
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-3);
 }
 
 .status-strip span {
@@ -544,7 +543,7 @@ body {
 .status-strip .status-dot {
   width: 4px;
   height: 4px;
-  background: var(--halation);
+  background: var(--green);
 }
 
 /* ===========================================
@@ -554,7 +553,7 @@ body {
 .header-meta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.35);
+  color: var(--ink-3);
   margin-top: 2px;
 }
 
@@ -569,23 +568,23 @@ body {
 .empty-state-title {
   font-family: var(--font-karla);
   font-size: 15px;
-  font-weight: 700;
-  color: var(--phosphor);
+  font-weight: 600;
+  color: var(--ink-0);
   margin-bottom: 5px;
 }
 
 .empty-state-sub {
   font-family: var(--font-karla);
   font-size: 13px;
-  font-weight: 300;
-  color: rgba(200, 215, 255, 0.5);
+  font-weight: 400;
+  color: var(--ink-3);
   margin-bottom: 1.5rem;
 }
 
 .empty-state-meta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-4);
 }
 
 /* ===========================================
@@ -601,25 +600,25 @@ body {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(200, 215, 255, 0.35);
+  color: var(--ink-3);
   text-align: left;
   padding: 8px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--line);
 }
 
 .crt-table td {
   font-family: var(--font-karla);
   font-size: 13px;
-  color: var(--ghost);
+  color: var(--ink-2);
   padding: 9px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 
 .crt-table td.mono {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--phosphor);
+  color: var(--ink-1);
   white-space: nowrap;
 }
 

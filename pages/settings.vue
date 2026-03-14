@@ -166,7 +166,7 @@ async function testConnection() {
   <div class="p-4 max-w-2xl mx-auto">
     <!-- Header -->
     <div class="mb-6 bracket-lg px-4 py-3">
-      <h1 class="text-2xl font-bold text-phosphor">
+      <h1 class="text-2xl font-bold text-ink-0">
         {{ t('settings.title') }}
       </h1>
       <p class="header-meta">
@@ -181,7 +181,7 @@ async function testConnection() {
     >
       <UIcon
         name="i-heroicons-arrow-path"
-        class="w-8 h-8 animate-spin text-halation"
+        class="w-8 h-8 animate-spin text-accent"
       />
     </div>
 
@@ -194,14 +194,14 @@ async function testConnection() {
         <div class="flex items-center gap-2 mb-4">
           <UIcon
             name="i-heroicons-server-stack"
-            class="w-5 h-5 text-halation"
+            class="w-5 h-5 text-accent"
           />
-          <h2 class="text-lg font-bold text-phosphor">{{ t('settings.connection') }}</h2>
+          <h2 class="text-lg font-bold text-ink-0">{{ t('settings.connection') }}</h2>
         </div>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.torrentClient') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.torrentClient') }}</label>
             <USelect
               v-model="clientType"
               :options="clientOptions"
@@ -216,7 +216,7 @@ async function testConnection() {
           <!-- qBittorrent Fields -->
           <div v-if="showQBitFields" class="space-y-3">
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.clientUrl', { client: 'qBittorrent' }) }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.clientUrl', { client: 'qBittorrent' }) }}</label>
               <UInput
                 v-model="clientUrl"
                 placeholder="http://localhost:8080"
@@ -225,7 +225,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.username') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.username') }}</label>
               <UInput
                 v-model="clientUsername"
                 placeholder="admin"
@@ -234,7 +234,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.password') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.password') }}</label>
               <UInput
                 v-model="clientPassword"
                 type="password"
@@ -248,7 +248,7 @@ async function testConnection() {
           <!-- Transmission Fields -->
           <div v-if="showTransmissionFields" class="space-y-3">
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.clientUrl', { client: 'Transmission' }) }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.clientUrl', { client: 'Transmission' }) }}</label>
               <UInput
                 v-model="clientUrl"
                 placeholder="http://localhost:9091"
@@ -257,7 +257,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.username') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.username') }}</label>
               <UInput
                 v-model="clientUsername"
                 placeholder="admin"
@@ -266,7 +266,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.password') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.password') }}</label>
               <UInput
                 v-model="clientPassword"
                 type="password"
@@ -279,7 +279,7 @@ async function testConnection() {
 
           <!-- rTorrent Fields -->
           <div v-if="showRTorrentFields">
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.scgiUrl') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.scgiUrl') }}</label>
             <UInput
               v-model="clientUrl"
               placeholder="localhost:5000"
@@ -291,7 +291,7 @@ async function testConnection() {
           <!-- Deluge Fields -->
           <div v-if="showDelugeFields" class="space-y-3">
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.host') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.host') }}</label>
               <UInput
                 v-model="clientHost"
                 placeholder="localhost"
@@ -300,7 +300,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.port') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.port') }}</label>
               <UInput
                 v-model="clientPort"
                 type="number"
@@ -310,7 +310,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.password') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.password') }}</label>
               <UInput
                 v-model="clientPassword"
                 type="password"
@@ -357,14 +357,14 @@ async function testConnection() {
         <div class="flex items-center gap-2 mb-4">
           <UIcon
             name="i-heroicons-paint-brush"
-            class="w-5 h-5 text-halation"
+            class="w-5 h-5 text-accent"
           />
-          <h2 class="text-lg font-bold text-phosphor">{{ t('settings.interface') }}</h2>
+          <h2 class="text-lg font-bold text-ink-0">{{ t('settings.interface') }}</h2>
         </div>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.theme') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.theme') }}</label>
             <USelect
               v-model="theme"
               :options="themeOptions"
@@ -377,7 +377,7 @@ async function testConnection() {
           </div>
 
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.language') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.language') }}</label>
             <USelect
               v-model="currentLocale"
               :items="localeOptions"
@@ -390,7 +390,7 @@ async function testConnection() {
           </div>
 
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.itemsPerPage') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.itemsPerPage') }}</label>
             <UInput
               v-model="itemsPerPage"
               type="number"
@@ -409,14 +409,14 @@ async function testConnection() {
         <div class="flex items-center gap-2 mb-4">
           <UIcon
             name="i-heroicons-arrow-down-circle"
-            class="w-5 h-5 text-halation"
+            class="w-5 h-5 text-accent"
           />
-          <h2 class="text-lg font-bold text-phosphor">{{ t('settings.downloads') }}</h2>
+          <h2 class="text-lg font-bold text-ink-0">{{ t('settings.downloads') }}</h2>
         </div>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.defaultDownloadPath') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.defaultDownloadPath') }}</label>
             <UInput
               v-model="defaultDownloadPath"
               placeholder="/downloads"
@@ -426,7 +426,7 @@ async function testConnection() {
           </div>
 
           <div>
-            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.maxActiveDownloads') }}</label>
+            <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.maxActiveDownloads') }}</label>
             <UInput
               v-model="maxActiveDownloads"
               type="number"
@@ -439,7 +439,7 @@ async function testConnection() {
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.downloadSpeedLimit') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.downloadSpeedLimit') }}</label>
               <UInput
                 v-model="downloadSpeedLimit"
                 type="number"
@@ -450,7 +450,7 @@ async function testConnection() {
               />
             </div>
             <div>
-              <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.uploadSpeedLimit') }}</label>
+              <label class="block text-sm font-bold mb-2 text-ink-3">{{ t('settings.uploadSpeedLimit') }}</label>
               <UInput
                 v-model="uploadSpeedLimit"
                 type="number"

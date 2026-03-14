@@ -1,21 +1,21 @@
 export default defineAppConfig({
   ui: {
-    primary: 'phosphor',
+    primary: 'accent',
     gray: 'slate',
-    
+
     button: {
       slots: {
-        base: 'font-karla font-bold tracking-wide uppercase text-xs',
+        base: 'font-karla font-semibold tracking-wide uppercase text-xs',
       },
       variants: {
         color: {
-          primary: 'bg-phosphor text-deep-field hover:bg-static',
-          neutral: 'bg-transparent border border-white/25 text-phosphor hover:bg-white/5',
+          primary: 'bg-accent text-white hover:bg-accent-h',
+          neutral: 'bg-white border border-line-strong text-ink-1 hover:bg-accent-t',
         },
         variant: {
           solid: '',
-          outline: 'border border-scan text-phosphor',
-          ghost: 'text-phosphor hover:bg-white/5',
+          outline: 'border border-line-strong text-ink-1 bg-white',
+          ghost: 'text-ink-0 bg-white/50 border border-white/85 hover:bg-white/78',
         },
         size: {
           xs: 'px-2 py-1 text-[10px]',
@@ -33,7 +33,7 @@ export default defineAppConfig({
 
     input: {
       slots: {
-        base: 'font-mono text-sm bg-transparent border-b border-white/20 text-phosphor placeholder:text-flicker/50 focus:border-halation',
+        base: 'font-mono text-sm bg-white border border-line-strong text-ink-1 placeholder:text-ink-4 focus:border-accent',
       },
       variants: {
         size: {
@@ -47,17 +47,17 @@ export default defineAppConfig({
 
     select: {
       slots: {
-        base: 'font-mono text-sm bg-transparent border border-scan text-phosphor rounded-none',
-        placeholder: 'text-ghost/60',
-        value: 'text-phosphor',
-        trailingIcon: 'text-ghost/60',
-        content: 'bg-deep-field border border-scan/50 rounded-none shadow-lg',
-        viewport: 'divide-y divide-scan/20',
-        item: 'font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor rounded-none',
-        itemLabel: 'text-ghost',
-        itemTrailingIcon: 'text-halation',
-        label: 'font-karla text-sm text-ghost',
-        separator: 'bg-scan/30',
+        base: 'font-mono text-sm bg-white border border-line-strong text-ink-1',
+        placeholder: 'text-ink-4',
+        value: 'text-ink-1',
+        trailingIcon: 'text-ink-4',
+        content: 'bg-surface border border-line-strong shadow-lg',
+        viewport: 'divide-y divide-line/20',
+        item: 'font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1',
+        itemLabel: 'text-ink-3',
+        itemTrailingIcon: 'text-accent',
+        label: 'font-karla text-sm text-ink-3',
+        separator: 'bg-line/30',
       },
       variants: {
         size: {
@@ -70,8 +70,8 @@ export default defineAppConfig({
           primary: '',
         },
         variant: {
-          outline: 'border-scan text-phosphor',
-          ghost: 'border-transparent text-phosphor hover:bg-electric/20',
+          outline: 'border-line-strong text-ink-1',
+          ghost: 'border-transparent text-ink-1 hover:bg-surface',
         },
       },
       defaultVariants: {
@@ -83,58 +83,58 @@ export default defineAppConfig({
 
     card: {
       slots: {
-        root: 'bg-deep-field border border-scan/30',
-        header: 'p-3 border-b border-scan/20',
+        root: 'bg-surface border border-line',
+        header: 'p-3 border-b border-line',
         body: 'p-3',
-        footer: 'p-3 border-t border-scan/20',
+        footer: 'p-3 border-t border-line',
       },
     },
 
     tabs: {
       slots: {
-        list: 'gap-0 border-b border-scan/30',
-        trigger: 'font-karla text-xs font-bold uppercase tracking-wide text-ghost hover:text-phosphor data-[active=true]:text-halation data-[active=true]:border-b-2 data-[active=true]:border-halation -mb-px',
+        list: 'gap-0 border-b border-line',
+        trigger: 'font-karla text-xs font-semibold uppercase tracking-wide text-ink-3 hover:text-ink-1 data-[active=true]:text-accent data-[active=true]:border-b-2 data-[active=true]:border-accent -mb-px',
       },
     },
 
     modal: {
       slots: {
-        overlay: 'bg-void/80',
-        content: 'bg-deep-field border border-scan/50',
-        header: 'p-4 border-b border-scan/30',
+        overlay: 'bg-ink-0/50',
+        content: 'bg-surface border border-line-strong',
+        header: 'p-4 border-b border-line',
         body: 'p-4',
-        footer: 'p-4 border-t border-scan/30',
+        footer: 'p-4 border-t border-line',
       },
     },
 
     dropdown: {
       slots: {
-        root: 'bg-deep-field border border-scan/50',
-        label: 'font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor',
+        root: 'bg-surface border border-line-strong',
+        label: 'font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1',
       },
     },
 
     table: {
       slots: {
         root: 'border-collapse',
-        th: 'font-mono text-[10px] uppercase tracking-widest text-ghost/60 border-b border-scan/30 px-3 py-2 text-left',
-        td: 'font-karla text-sm text-ghost border-b border-scan/20 px-3 py-2',
+        th: 'font-mono text-[10px] uppercase tracking-widest text-ink-3 border-b border-line px-3 py-2 text-left',
+        td: 'font-karla text-sm text-ink-2 border-b border-line/50 px-3 py-2',
       },
     },
 
     alert: {
       slots: {
-        root: 'border font-mono text-xs rounded-none',
-        title: 'font-bold text-phosphor',
-        description: 'text-ghost',
+        root: 'border font-mono text-xs',
+        title: 'font-semibold text-ink-1',
+        description: 'text-ink-2',
         icon: 'shrink-0',
       },
       variants: {
         color: {
-          error: 'bg-[#EFF3FF] text-[#0E1E8A] border-[#EFF3FF]',
-          success: 'bg-[rgba(100,255,180,0.1)] text-[#80FFB8] border-[rgba(100,255,180,0.2)]',
-          warning: 'bg-[rgba(255,209,102,0.1)] text-[#FFD166] border-[rgba(255,209,102,0.25)]',
-          info: 'bg-[rgba(150,170,255,0.1)] text-[#96AAFF] border-[rgba(150,170,255,0.2)]',
+          error: 'bg-red-bg text-red border-red-line',
+          success: 'bg-green-bg text-green border-green-line',
+          warning: 'bg-amber-bg text-amber border-amber-line',
+          info: 'bg-surface text-ink-3 border-line',
         },
         variant: {
           solid: '',
@@ -155,7 +155,7 @@ export default defineAppConfig({
 
     tooltip: {
       slots: {
-        content: 'bg-deep-field border border-scan/50 font-karla text-xs text-phosphor',
+        content: 'bg-surface border border-line-strong font-karla text-xs text-ink-1',
       },
     },
   }

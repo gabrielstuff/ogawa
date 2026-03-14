@@ -148,7 +148,7 @@ function pasteFromClipboard() {
   <div class="p-4">
     <!-- Header with bracket -->
     <div class="mb-6 bracket-lg px-4 py-3">
-      <h1 class="text-2xl font-bold text-phosphor">
+      <h1 class="text-2xl font-bold text-ink-0">
         {{ t('add.title') }}
       </h1>
       <p class="header-meta">
@@ -225,12 +225,12 @@ function pasteFromClipboard() {
         >
         <UIcon
           name="i-heroicons-cloud-arrow-up"
-          class="w-12 h-12 mx-auto text-ghost/50 mb-4"
+          class="w-12 h-12 mx-auto text-ink-3/50 mb-4"
         />
-        <p class="text-ghost mb-2 font-bold">
+        <p class="text-ink-3 mb-2 font-bold">
           {{ t('add.dragDrop') }}
         </p>
-        <p class="text-ghost/50 text-sm font-mono">
+        <p class="text-ink-3/50 text-sm font-mono">
           {{ t('add.orClickToBrowse') }}
         </p>
         <span class="bl"></span><span class="br2"></span>
