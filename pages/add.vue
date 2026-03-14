@@ -3,8 +3,10 @@ definePageMeta({
   layout: 'default',
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Add Torrent - Ogawa',
+  title: computed(() => `${t('add.title')} - Ogawa`),
 })
 
 const activeTab = ref('file')
@@ -35,7 +37,7 @@ function handleFileSelect(event: Event) {
 
 async function handleFileUpload(file: File) {
   if (!file.name.endsWith('.torrent')) {
-    error.value = 'Please select a .torrent file'
+    error.value = t('add.invalidFile')
     return
   }
 
@@ -51,13 +53,13 @@ async function handleFileUpload(file: File) {
       body: formData,
     })
 
-    success.value = 'Torrent added successfully!'
+    success.value = t('add.torrentAddedSuccess')
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
   }
   catch (e: any) {
-    error.value = e.message || 'Failed to add torrent'
+    error.value = e.message || t('add.torrentAddFailed')
   }
   finally {
     isLoading.value = false
@@ -66,7 +68,7 @@ async function handleFileUpload(file: File) {
 
 async function addMagnet() {
   if (!magnetInput.value) {
-    error.value = 'Please enter a magnet link'
+    error.value = t('add.enterMagnet')
     return
   }
 
@@ -82,13 +84,13 @@ async function addMagnet() {
       },
     })
 
-    success.value = 'Magnet link added successfully!'
+    success.value = t('add.magnetAddSuccess')
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
   }
   catch (e: any) {
-    error.value = e.message || 'Failed to add magnet link'
+    error.value = e.message || t('add.magnetAddFailed')
   }
   finally {
     isLoading.value = false
@@ -97,7 +99,7 @@ async function addMagnet() {
 
 async function addFromUrl() {
   if (!urlInput.value) {
-    error.value = 'Please enter a URL'
+    error.value = t('add.enterUrl')
     return
   }
 
@@ -113,13 +115,13 @@ async function addFromUrl() {
       },
     })
 
-    success.value = 'Torrent added from URL successfully!'
+    success.value = t('add.urlAddSuccess')
     setTimeout(() => {
       navigateTo('/')
     }, 1500)
   }
   catch (e: any) {
-    error.value = e.message || 'Failed to add torrent from URL'
+    error.value = e.message || t('add.urlAddFailed')
   }
   finally {
     isLoading.value = false
@@ -137,7 +139,7 @@ function pasteFromClipboard() {
       activeTab.value = 'url'
     }
   }).catch(() => {
-    error.value = 'Failed to read clipboard'
+    error.value = t('add.clipboardFailed')
   })
 }
 </script>
@@ -145,7 +147,7 @@ function pasteFromClipboard() {
 <template>
   <div class="p-4">
     <h1 class="text-2xl font-bold mb-6">
-      Add Torrent
+      {{ t('add.title') }}
     </h1>
 
     <!-- Success Message -->
@@ -178,21 +180,21 @@ function pasteFromClipboard() {
           name="i-heroicons-document-arrow-up"
           class="w-5 h-5 mr-2"
         />
-        File
+        {{ t('add.file') }}
       </UTab>
       <UTab value="magnet">
         <UIcon
           name="i-heroicons-link"
           class="w-5 h-5 mr-2"
         />
-        Magnet
+        {{ t('add.magnet') }}
       </UTab>
       <UTab value="url">
         <UIcon
           name="i-heroicons-globe-alt"
           class="w-5 h-5 mr-2"
         />
-        URL
+        {{ t('add.url') }}
       </UTab>
     </UTabs>
 
@@ -219,10 +221,10 @@ function pasteFromClipboard() {
           class="w-12 h-12 mx-auto text-gray-500 mb-4"
         />
         <p class="text-gray-300 mb-2">
-          Drag & drop a .torrent file here
+          {{ t('add.dragDrop') }}
         </p>
         <p class="text-gray-500 text-sm">
-          or click to browse
+          {{ t('add.orClickToBrowse') }}
         </p>
       </div>
 
@@ -245,7 +247,7 @@ function pasteFromClipboard() {
     >
       <UInput
         v-model="magnetInput"
-        placeholder="magnet:?xt=urn:btih:..."
+        :placeholder="t('add.magnetPlaceholder')"
         size="lg"
       />
 
@@ -255,7 +257,7 @@ function pasteFromClipboard() {
           :disabled="!magnetInput"
           @click="addMagnet"
         >
-          Add Magnet
+          {{ t('add.addMagnet') }}
         </UButton>
         <UButton
           variant="ghost"
@@ -276,7 +278,7 @@ function pasteFromClipboard() {
     >
       <UInput
         v-model="urlInput"
-        placeholder="https://example.com/torrent.torrent"
+        :placeholder="t('add.urlPlaceholder')"
         size="lg"
       />
 
@@ -285,7 +287,7 @@ function pasteFromClipboard() {
         :disabled="!urlInput"
         @click="addFromUrl"
       >
-        Add from URL
+        {{ t('add.addFromUrl') }}
       </UButton>
     </div>
   </div>

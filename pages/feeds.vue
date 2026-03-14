@@ -5,8 +5,10 @@ definePageMeta({
   layout: 'default',
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Feeds - Ogawa',
+  title: computed(() => `${t('feeds.title')} - Ogawa`),
 })
 
 const { data: feeds, refresh } = await useFetch<Feed[]>('/api/feeds')
@@ -33,7 +35,7 @@ async function addFeed() {
     refresh()
   }
   catch (e: any) {
-    error.value = e.message || 'Failed to add feed'
+    error.value = e.message || t('feeds.addFailed')
   }
   finally {
     isLoading.value = false
@@ -48,7 +50,7 @@ async function deleteFeed(id: number) {
     refresh()
   }
   catch (e: any) {
-    error.value = e.message || 'Failed to delete feed'
+    error.value = e.message || t('feeds.deleteFailed')
   }
 }
 </script>
@@ -57,13 +59,13 @@ async function deleteFeed(id: number) {
   <div class="p-4">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold">
-        RSS Feeds
+        {{ t('feeds.title') }}
       </h1>
       <UButton
         icon="i-heroicons-plus"
         @click="showAddModal = true"
       >
-        Add Feed
+        {{ t('feeds.addFeed') }}
       </UButton>
     </div>
 
@@ -87,10 +89,10 @@ async function deleteFeed(id: number) {
         class="w-16 h-16 mx-auto text-gray-600 mb-4"
       />
       <p class="text-gray-400 mb-4">
-        No RSS feeds yet
+        {{ t('feeds.noFeeds') }}
       </p>
       <UButton @click="showAddModal = true">
-        Add your first feed
+        {{ t('feeds.addFirstFeed') }}
       </UButton>
     </div>
 
@@ -112,8 +114,8 @@ async function deleteFeed(id: number) {
             {{ feed.url }}
           </p>
           <div class="flex gap-2 mt-2 text-xs text-gray-500">
-            <span>{{ feed.items?.length || 0 }} items</span>
-            <span>Last updated: {{ feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : 'Never' }}</span>
+            <span>{{ t('feeds.items', { count: feed.items?.length || 0 }) }}</span>
+            <span>{{ t('feeds.lastUpdated', { date: feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : t('feeds.never') }) }}</span>
           </div>
         </div>
         <div class="flex gap-2 ml-4">
@@ -132,14 +134,14 @@ async function deleteFeed(id: number) {
       <UCard>
         <template #header>
           <h2 class="text-lg font-bold">
-            Add RSS Feed
+            {{ t('feeds.addRssFeed') }}
           </h2>
         </template>
 
         <div class="space-y-4">
           <UInput
             v-model="newFeedUrl"
-            placeholder="https://example.com/feed.xml"
+            :placeholder="t('feeds.feedUrlPlaceholder')"
             size="lg"
           />
         </div>
@@ -150,14 +152,14 @@ async function deleteFeed(id: number) {
               variant="ghost"
               @click="showAddModal = false"
             >
-              Cancel
+              {{ t('feeds.cancel') }}
             </UButton>
             <UButton
               :loading="isLoading"
               :disabled="!newFeedUrl"
               @click="addFeed"
             >
-              Add Feed
+              {{ t('feeds.addFeed') }}
             </UButton>
           </div>
         </template>
