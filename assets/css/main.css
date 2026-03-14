@@ -10,6 +10,17 @@
   /* Font families */
   --font-karla: 'Karla', sans-serif;
   --font-mono: 'Inconsolata', monospace;
+
+  /* Semantic colors — references CSS vars so utilities resolve per-theme */
+  --color-red: var(--red);
+  --color-red-bg: var(--red-bg);
+  --color-red-line: var(--red-line);
+  --color-green: var(--green);
+  --color-green-bg: var(--green-bg);
+  --color-green-line: var(--green-line);
+  --color-amber: var(--amber);
+  --color-amber-bg: var(--amber-bg);
+  --color-amber-line: var(--amber-line);
 }
 
 /* ===========================================
@@ -41,15 +52,18 @@
   --accent-t: #E4EAFF;
 
   /* Semantic */
-  --red: #C52B2B;
-  --red-bg: #FFF0F0;
-  --red-line: #F5BFBF;
+  --red: #D4244A;
+  --red-bg: rgba(255, 68, 102, 0.08);
+  --red-line: rgba(255, 68, 102, 0.30);
   --green: #1A7A3A;
   --green-bg: #EDFBF2;
   --green-line: #B3E6C4;
   --amber: #956A00;
   --amber-bg: #FFF9E6;
   --amber-line: #F0D97A;
+
+  /* Override Nuxt UI error token → coral instead of harsh red */
+  --ui-error: #D4244A;
 
   /* Semantic mappings for Nuxt UI */
   --color-background: var(--bg);
@@ -104,6 +118,9 @@
   --red: #FF4466;
   --red-bg: rgba(255, 68, 102, 0.15);
   --red-line: #FF4466;
+
+  /* Override Nuxt UI error token → coral */
+  --ui-error: #FF4466;
   --green: #44FF99;
   --green-bg: rgba(68, 255, 153, 0.15);
   --green-line: #44FF99;
@@ -833,172 +850,3 @@ div[data-role="alert"],
   margin-top: 4px;
 }
 
-/* UAlert error (non-critical) */
-[data-color="error"],
-[data-variant="error"],
-div[data-color="error"] {
-  background: rgba(255, 68, 102, 0.08) !important;
-  border-color: rgba(255, 68, 102, 0.5) !important;
-  color: #FF8899 !important;
-}
-
-[data-color="error"] * {
-  color: #FF8899 !important;
-}
-
-[data-color="error"] svg {
-  color: #FF4466 !important;
-}
-
-/* ===========================================
-   SUCCESS STATE
-   Mint green at 10% fill + 20% border + #80FFB8 text
-   =========================================== */
-[data-color="success"],
-[data-variant="success"],
-div[data-color="success"] {
-  background: rgba(100, 255, 180, 0.1) !important;
-  border-color: rgba(100, 255, 180, 0.2) !important;
-  color: #80FFB8 !important;
-}
-
-[data-color="success"] * {
-  color: #80FFB8 !important;
-}
-
-[data-color="success"] svg {
-  color: #44FF99 !important;
-}
-
-/* ===========================================
-   WARNING STATE
-   Amber - same low-opacity treatment as coral
-   =========================================== */
-[data-color="warning"],
-[data-variant="warning"],
-div[data-color="warning"] {
-  background: rgba(255, 209, 102, 0.1) !important;
-  border-color: rgba(255, 209, 102, 0.25) !important;
-  color: #FFD166 !important;
-}
-
-[data-color="warning"] * {
-  color: #FFD166 !important;
-}
-
-[data-color="warning"] svg {
-  color: #FFD166 !important;
-}
-
-/* ===========================================
-   INFO STATE
-   Ghost/scan at low opacity
-   =========================================== */
-[data-color="info"],
-[data-variant="info"],
-div[data-color="info"] {
-  background: rgba(150, 170, 255, 0.1) !important;
-  border-color: rgba(150, 170, 255, 0.2) !important;
-  color: #96AAFF !important;
-}
-
-[data-color="info"] * {
-  color: #96AAFF !important;
-}
-
-/* Error alerts - coral at low opacity */
-[data-color="error"],
-[data-variant="error"],
-.color-error,
-.bg-red-500\/,
-[class*="bg-red-"] {
-  --alert-bg: rgba(255, 68, 102, 0.15) !important;
-  --alert-border: rgba(255, 68, 102, 0.3) !important;
-  --alert-text: #FF4466 !important;
-}
-
-div[data-color="error"],
-.bg-red-500,
-.bg-red-600,
-.bg-red-700 {
-  background: rgba(255, 68, 102, 0.15) !important;
-  border-color: rgba(255, 68, 102, 0.3) !important;
-  color: #FF4466 !important;
-}
-
-div[data-color="error"] * {
-  color: inherit !important;
-}
-
-/* Success alerts - mint at low opacity */
-[data-color="success"],
-[data-variant="success"],
-.color-success,
-.bg-green-500,
-.bg-green-600 {
-  background: rgba(68, 255, 153, 0.15) !important;
-  border-color: rgba(68, 255, 153, 0.3) !important;
-  color: #44FF99 !important;
-}
-
-div[data-color="success"] * {
-  color: inherit !important;
-}
-
-/* Warning alerts - halation at low opacity */
-[data-color="warning"],
-[data-variant="warning"],
-.color-warning,
-.bg-yellow-500,
-.bg-amber-500 {
-  background: rgba(184, 200, 255, 0.15) !important;
-  border-color: rgba(184, 200, 255, 0.3) !important;
-  color: #B8C8FF !important;
-}
-
-div[data-color="warning"] * {
-  color: inherit !important;
-}
-
-/* Info alerts - scan/ghost at low opacity */
-[data-color="info"],
-[data-variant="info"],
-.color-info,
-.bg-blue-500 {
-  background: rgba(68, 100, 245, 0.15) !important;
-  border-color: rgba(68, 100, 245, 0.3) !important;
-  color: #96AAFF !important;
-}
-
-/* Alert icons */
-div[data-color="error"] svg,
-[data-color="error"] .icon,
-[data-color="error"] [class*="icon"] {
-  color: #FF4466 !important;
-}
-
-div[data-color="success"] svg,
-[data-color="success"] .icon,
-[data-color="success"] [class*="icon"] {
-  color: #44FF99 !important;
-}
-
-/* Solid variant alerts - phosphor white with deep blue (critical) */
-[data-variant="solid"][data-color="error"],
-[data-variant="solid"].bg-red-500 {
-  background: #EFF3FF !important;
-  color: #0E1E8A !important;
-  border-color: #EFF3FF !important;
-}
-
-[data-variant="solid"][data-color="error"] svg,
-[data-variant="solid"].bg-red-500 svg {
-  color: #0E1E8A !important;
-}
-
-[data-variant="solid"][data-color="success"],
-[data-variant="solid"].bg-green-500 {
-  background: rgba(68, 255, 153, 0.2) !important;
-  color: #44FF99 !important;
-  border-color: rgba(68, 255, 153, 0.4) !important;
-}

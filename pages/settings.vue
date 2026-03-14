@@ -195,20 +195,16 @@ async function handleTestConnection() {
         <UAlert
           v-if="testStatus === 'success'"
           color="success"
-          variant="solid"
+          :title="testMessage"
           class="font-mono mt-2"
-        >
-          {{ testMessage }}
-        </UAlert>
+        />
 
         <UAlert
           v-if="testStatus === 'error'"
           color="error"
-          variant="solid"
+          :title="testMessage"
           class="font-mono mt-2"
-        >
-          {{ testMessage }}
-        </UAlert>
+        />
       </SettingsSection>
 
       <SettingsSection

@@ -140,25 +140,12 @@ export default defineAppConfig({
     alert: {
       slots: {
         root: 'border font-mono text-xs',
-        title: 'font-semibold text-ink-1',
-        description: 'text-ink-2',
+        title: 'font-semibold',
+        description: 'opacity-80',
         icon: 'shrink-0',
       },
-      variants: {
-        color: {
-          error: 'bg-red-bg text-red border-red-line',
-          success: 'bg-green-bg text-green border-green-line',
-          warning: 'bg-amber-bg text-amber border-amber-line',
-          info: 'bg-surface text-ink-3 border-line',
-        },
-        variant: {
-          solid: '',
-          outline: 'bg-transparent',
-        },
-      },
       defaultVariants: {
-        color: 'error',
-        variant: 'outline',
+        variant: 'soft',
       },
     },
 

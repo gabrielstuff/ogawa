@@ -114,11 +114,9 @@ async function handleDeleteFeed(id: number) {
     <UAlert
       v-if="error"
       color="error"
-      variant="solid"
+      :title="error"
       class="mb-4 font-mono"
-    >
-      {{ error }}
-    </UAlert>
+    />
 
     <EmptyState
       v-if="!feeds || feeds.length === 0"

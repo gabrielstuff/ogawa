@@ -187,20 +187,16 @@ watch(isOpen, (val) => {
         <UAlert
           v-if="success"
           color="success"
-          variant="solid"
+          :title="success"
           class="font-mono"
-        >
-          {{ success }}
-        </UAlert>
+        />
 
         <UAlert
           v-if="error"
           color="error"
-          variant="solid"
+          :title="error"
           class="font-mono"
-        >
-          {{ error }}
-        </UAlert>
+        />
 
         <UTabs v-model="activeTab">
           <UTab value="file">
