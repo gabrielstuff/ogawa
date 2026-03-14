@@ -19,7 +19,11 @@
     "percent": "%",
     "added": "Añadido",
     "unknown": "Desconocido",
-    "seedsPeers": "{seeds}S / {peers}P"
+    "seedsPeers": "{seeds}S / {peers}P",
+    "inQueue": "en cola",
+    "pasteMagnet": "Pegar magnet",
+    "addTorrent": "Añadir torrent",
+    "noResultsHint": "Añade un archivo .torrent, pega un enlace magnet, o importa desde un feed."
   },
   "status": {
     "all": "Todos",

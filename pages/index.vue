@@ -54,20 +54,37 @@ const queueCount = computed(() => count.value)
 
 <template>
   <div class="p-2 sm:p-3">
-    <div class="mb-4 bracket-lg px-4 py-3">
-      <div class="flex items-center justify-between">
-        <div>
+    <div class="mb-3 bracket-lg px-4 py-3">
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
           <h1 class="text-2xl font-bold text-ink-0">
             {{ t('torrents.title') }}
           </h1>
           <p class="header-meta">
-            {{ queueCount }} in queue · rtorrent connected · 0.0 MB/s ↓ · 0.0 MB/s ↑
+            {{ queueCount }} {{ t('torrents.inQueue') }}
           </p>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 shrink-0">
+          <UButton
+            variant="ghost"
+            class="btn-ghost font-mono text-xs"
+            @click="openMagnetTab"
+          >
+            {{ t('torrents.pasteMagnet') }}
+          </UButton>
+          <UButtonBracket
+            variant="bracket"
+            icon="i-heroicons-plus"
+            @click="showAddModal = true"
+          >
+            {{ t('torrents.addTorrent') }}
+          </UButtonBracket>
         </div>
         <UButtonBracket
           variant="bracket"
           icon="i-heroicons-arrow-path"
           size="sm"
+          class="sm:hidden"
           @click="refresh()"
         />
       </div>
@@ -94,26 +111,8 @@ const queueCount = computed(() => count.value)
     <EmptyState
       v-else-if="filteredTorrents.length === 0"
       :title="t('torrents.noResults')"
-      subtitle="Add a .torrent file, paste a magnet link, or pull items from a feed."
-    >
-      <div class="flex gap-3 justify-center mb-4">
-        <UButtonBracket
-          variant="bracket"
-          @click="showAddModal = true"
-        >
-          + Add torrent
-        </UButtonBracket>
-        <UButtonBracket
-          variant="bracket"
-          @click="openMagnetTab"
-        >
-          Paste magnet <span class="opacity-60">↗</span>
-        </UButtonBracket>
-      </div>
-      <div class="empty-state-meta">
-        rtorrent connected · watch folder off · disk free --
-      </div>
-    </EmptyState>
+      :subtitle="t('torrents.noResultsHint')"
+    />
 
     <TorrentList
       v-else
@@ -131,6 +130,7 @@ const queueCount = computed(() => count.value)
     </button>
 
     <AddTorrentModal
+      v-if="showAddModal"
       v-model="showAddModal"
       @added="handleTorrentAdded"
     />

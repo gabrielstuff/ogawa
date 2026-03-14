@@ -19,7 +19,11 @@
     "percent": "%",
     "added": "添加时间",
     "unknown": "未知",
-    "seedsPeers": "{seeds}S / {peers}P"
+    "seedsPeers": "{seeds}S / {peers}P",
+    "inQueue": "个任务",
+    "pasteMagnet": "粘贴磁力链",
+    "addTorrent": "添加种子",
+    "noResultsHint": "添加 .torrent 文件、粘贴磁力链接或从订阅拉取内容。"
   },
   "status": {
     "all": "全部",

@@ -19,7 +19,11 @@
     "percent": "%",
     "added": "जोड़ा गया",
     "unknown": "अज्ञात",
-    "seedsPeers": "{seeds}S / {peers}P"
+    "seedsPeers": "{seeds}S / {peers}P",
+    "inQueue": "कतार में",
+    "pasteMagnet": "मैगनेट पेस्ट करें",
+    "addTorrent": "टॉरेंट जोड़ें",
+    "noResultsHint": "एक .torrent फ़ाइल जोड़ें, मैगनेट लिंक पेस्ट करें, या फ़ीड से आइटम लाएं।"
   },
   "status": {
     "all": "सभी",
