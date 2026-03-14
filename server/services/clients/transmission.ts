@@ -42,9 +42,13 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
       return response.arguments
     } catch (e: any) {
-      if (e.response?.status === 409 && e.response?.headers?.['x-transmission-session-id']) {
-        this.sessionId = e.response.headers['x-transmission-session-id']
-        return this.request(method, args)
+      if (e.response?.status === 409) {
+        const sessionHeader = e.response?.headers?.['x-transmission-session-id'] 
+          || e.response?.headers?.get?.('x-transmission-session-id')
+        if (sessionHeader) {
+          this.sessionId = sessionHeader
+          return this.request(method, args)
+        }
       }
       throw e
     }
