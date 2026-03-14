@@ -31,6 +31,7 @@ export default defineAppConfig({
           solid: '',
           outline: 'border border-line-strong text-ink-1 bg-white',
           ghost: 'text-ink-0 bg-white/50 border border-white/85 hover:bg-white/78',
+          link: '!bg-transparent !border-transparent !shadow-none p-0',
         },
         size: {
           xs: 'px-2 py-1 text-[10px]',
@@ -146,7 +147,7 @@ export default defineAppConfig({
         icon: 'shrink-0 size-4 mt-0.5',
         actions: 'flex gap-1.5 shrink-0',
         progress: 'absolute inset-x-0 bottom-0 h-[2px]',
-        close: 'p-0 text-ink-3 hover:text-ink-0',
+        close: 'p-0 text-ink-3 hover:text-ink-0 self-center',
       },
       variants: {
         color: {
