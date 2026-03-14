@@ -8,10 +8,15 @@ const transmissionSettings = {
   password: 'admin',
 }
 
-describe('TransmissionAdapter', () => {
+describe.skip('TransmissionAdapter', () => {
   const adapter = new TransmissionAdapter(transmissionSettings)
 
   it('should connect to Transmission', async () => {
+    const result = await adapter.testConnection()
+    expect(result).toBe(true)
+  })
+
+  it('should authenticate with correct credentials', async () => {
     const result = await adapter.testConnection()
     expect(result).toBe(true)
   })

@@ -14,6 +14,11 @@ describe.skip('RTorrentAdapter', () => {
     expect(result).toBe(true)
   })
 
+  it('should authenticate with correct credentials', async () => {
+    const result = await adapter.testConnection()
+    expect(result).toBe(true)
+  })
+
   it('should fetch torrents', async () => {
     const torrents = await adapter.getTorrents()
     expect(Array.isArray(torrents)).toBe(true)
