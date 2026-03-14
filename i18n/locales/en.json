@@ -7,8 +7,8 @@
   },
   "torrents": {
     "title": "Torrents",
-    "search": "Search...",
-    "noResults": "No torrents yet",
+    "search": "Search torrents...",
+    "noResults": "No torrents in queue",
     "addFirst": "Add torrent",
     "name": "Name",
     "size": "Size",

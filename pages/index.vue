@@ -54,6 +54,7 @@ const queueCount = computed(() => count.value)
 
 <template>
   <div class="p-2 sm:p-3">
+    <!-- Header -->
     <div class="mb-3 bracket-lg px-4 py-3">
       <div class="flex items-center justify-between gap-3">
         <div class="min-w-0">
@@ -61,17 +62,16 @@ const queueCount = computed(() => count.value)
             {{ t('torrents.title') }}
           </h1>
           <p class="header-meta">
-            {{ queueCount }} {{ t('torrents.inQueue') }}
+            {{ queueCount }} {{ t('torrents.inQueue') }} · rtorrent connected · 0.0 MB/s ↓ · 0.0 MB/s ↑
           </p>
         </div>
         <div class="hidden sm:flex items-center gap-2 shrink-0">
-          <UButton
-            variant="ghost"
-            class="btn-ghost font-mono text-xs"
+          <UButtonBracket
+            variant="bracket"
             @click="openMagnetTab"
           >
             {{ t('torrents.pasteMagnet') }}
-          </UButton>
+          </UButtonBracket>
           <UButtonBracket
             variant="bracket"
             icon="i-heroicons-plus"
@@ -80,17 +80,11 @@ const queueCount = computed(() => count.value)
             {{ t('torrents.addTorrent') }}
           </UButtonBracket>
         </div>
-        <UButtonBracket
-          variant="bracket"
-          icon="i-heroicons-arrow-path"
-          size="sm"
-          class="sm:hidden"
-          @click="refresh()"
-        />
       </div>
       <span class="bl" /><span class="br2" />
     </div>
 
+    <!-- Search + filter -->
     <SearchFilter
       v-model:search-model-value="searchQuery"
       v-model:status-model-value="statusFilter"
@@ -98,6 +92,7 @@ const queueCount = computed(() => count.value)
       class="mb-3"
     />
 
+    <!-- Loading -->
     <div
       v-if="pending"
       class="flex justify-center py-8"
@@ -108,17 +103,38 @@ const queueCount = computed(() => count.value)
       />
     </div>
 
+    <!-- Empty state with contextual CTAs -->
     <EmptyState
       v-else-if="filteredTorrents.length === 0"
       :title="t('torrents.noResults')"
       :subtitle="t('torrents.noResultsHint')"
-    />
+    >
+      <div class="flex gap-3 justify-center mt-4 mb-3">
+        <UButtonBracket
+          variant="bracket"
+          @click="showAddModal = true"
+        >
+          {{ t('torrents.addTorrent') }}
+        </UButtonBracket>
+        <UButtonBracket
+          variant="bracket"
+          @click="openMagnetTab"
+        >
+          {{ t('torrents.pasteMagnet') }} <span class="opacity-60 ml-1">↗</span>
+        </UButtonBracket>
+      </div>
+      <p class="empty-state-meta">
+        rtorrent connected · watch folder off · disk free --
+      </p>
+    </EmptyState>
 
+    <!-- Torrent list -->
     <TorrentList
       v-else
       :torrents="filteredTorrents"
     />
 
+    <!-- Mobile FAB -->
     <button
       class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 flex items-center justify-center shadow-lg transition-colors md:hidden btn-primary"
       @click="showAddModal = true"
