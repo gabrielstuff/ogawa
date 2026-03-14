@@ -3105,16 +3105,16 @@ _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2e266-v6BV8yWBNJV4SvVAkNmByAVTADo\"",
-    "mtime": "2026-03-14T10:13:32.414Z",
-    "size": 189030,
+    "etag": "\"2e2e1-J2zriGQXk+u6pwLwdZgiz2ugN/g\"",
+    "mtime": "2026-03-14T10:24:17.510Z",
+    "size": 189153,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"af06f-pFw6gEge3U1VV8orTa5//03f+c4\"",
-    "mtime": "2026-03-14T10:13:32.415Z",
-    "size": 716911,
+    "etag": "\"af261-TSN95du6CDRbBBxMHpbb4HwcojQ\"",
+    "mtime": "2026-03-14T10:24:17.511Z",
+    "size": 717409,
     "path": "index.mjs.map"
   }
 };
@@ -4489,7 +4489,8 @@ class QBittorrentAdapter {
   }
   async testConnection() {
     try {
-      await ofetch(`${this.baseUrl}/api/v2/app/version`);
+      await this.ensureAuth();
+      await this.request("/app/version");
       return true;
     } catch (e) {
       return false;

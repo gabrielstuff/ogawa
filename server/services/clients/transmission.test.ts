@@ -5,10 +5,10 @@ const transmissionSettings = {
   client: 'Transmission' as const,
   url: 'http://localhost:9091',
   username: 'admin',
-  password: 'admin',
+  password: 'pasdemdp',
 }
 
-describe.skip('TransmissionAdapter', () => {
+describe('TransmissionAdapter', () => {
   const adapter = new TransmissionAdapter(transmissionSettings)
 
   it('should connect to Transmission', async () => {

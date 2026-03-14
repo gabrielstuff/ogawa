@@ -6,7 +6,7 @@ const rtorrentSettings = {
   url: 'localhost:5000',
 }
 
-describe.skip('RTorrentAdapter', () => {
+describe('RTorrentAdapter', () => {
   const adapter = new RTorrentAdapter(rtorrentSettings)
 
   it('should connect to rTorrent', async () => {

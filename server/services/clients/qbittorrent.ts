@@ -255,7 +255,8 @@ export class QBittorrentAdapter implements TorrentClientAdapter {
 
   async testConnection(): Promise<boolean> {
     try {
-      await ofetch(`${this.baseUrl}/api/v2/app/version`)
+      await this.ensureAuth()
+      await this.request('/app/version')
       return true
     } catch (e) {
       return false

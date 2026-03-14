@@ -5,10 +5,10 @@ const qbitSettings = {
   client: 'qBittorrent' as const,
   url: 'http://localhost:9090',
   username: 'admin',
-  password: 'admin',
+  password: 'pasdemdp',
 }
 
-describe.skip('QBittorrentAdapter', () => {
+describe('QBittorrentAdapter', () => {
   const adapter = new QBittorrentAdapter(qbitSettings)
 
   it('should connect to qBittorrent', async () => {
