@@ -9,12 +9,17 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/i18n',
     '@vite-pwa/nuxt',
+    '@nuxtjs/color-mode',
   ],
 
   devtools: { enabled: true },
 
   fonts: {
-    families: [{ name: 'Inter', provider: 'google' }],
+    families: [
+      { name: 'Inter', provider: 'google' },
+      { name: 'Karla', provider: 'google' },
+      { name: 'Inconsolata', provider: 'google' },
+    ],
   },
 
   devServer: {
@@ -27,7 +32,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Modern torrent web client' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' },
-        { name: 'theme-color', content: '#0f172a' },
+        { name: 'theme-color', content: '#1633CC' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -38,6 +43,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   ui: {},
+
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
+  },
 
   runtimeConfig: {
     // Server-side only
@@ -106,8 +116,8 @@ export default defineNuxtConfig({
       name: 'Ogawa - Torrent Client',
       short_name: 'Ogawa',
       description: 'Modern torrent web client',
-      theme_color: '#0f172a',
-      background_color: '#0f172a',
+      theme_color: '#1633CC',
+      background_color: '#1633CC',
       display: 'standalone',
       orientation: 'portrait',
       icons: [

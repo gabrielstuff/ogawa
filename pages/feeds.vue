@@ -57,16 +57,24 @@ async function deleteFeed(id: number) {
 
 <template>
   <div class="p-4">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold">
-        {{ t('feeds.title') }}
-      </h1>
-      <UButton
-        icon="i-heroicons-plus"
-        @click="showAddModal = true"
-      >
-        {{ t('feeds.addFeed') }}
-      </UButton>
+    <!-- Header -->
+    <div class="mb-6 bracket-lg px-4 py-3">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-phosphor">
+          {{ t('feeds.title') }}
+        </h1>
+        <UButton
+          class="btn-primary"
+          icon="i-heroicons-plus"
+          @click="showAddModal = true"
+        >
+          {{ t('feeds.addFeed') }}
+        </UButton>
+      </div>
+      <p class="header-meta">
+        RSS feed management for automated torrent downloads
+      </p>
+      <span class="bl"></span><span class="br2"></span>
     </div>
 
     <!-- Error -->
@@ -74,7 +82,7 @@ async function deleteFeed(id: number) {
       v-if="error"
       color="error"
       variant="solid"
-      class="mb-4"
+      class="mb-4 font-mono"
     >
       {{ error }}
     </UAlert>
@@ -82,18 +90,25 @@ async function deleteFeed(id: number) {
     <!-- Empty State -->
     <div
       v-if="!feeds || feeds.length === 0"
-      class="text-center py-12"
+      class="empty-state bracket-lg"
     >
       <UIcon
         name="i-heroicons-rss"
-        class="w-16 h-16 mx-auto text-gray-600 mb-4"
+        class="w-16 h-16 mx-auto text-ghost/30 mb-4"
       />
-      <p class="text-gray-400 mb-4">
+      <div class="empty-state-title">
         {{ t('feeds.noFeeds') }}
-      </p>
-      <UButton @click="showAddModal = true">
+      </div>
+      <div class="empty-state-sub">
+        Add RSS feeds to automatically download torrents
+      </div>
+      <UButton
+        class="btn-primary"
+        @click="showAddModal = true"
+      >
         {{ t('feeds.addFirstFeed') }}
       </UButton>
+      <span class="bl"></span><span class="br2"></span>
     </div>
 
     <!-- Feed List -->
@@ -104,28 +119,31 @@ async function deleteFeed(id: number) {
       <div
         v-for="feed in feeds"
         :key="feed.id"
-        class="bg-gray-800 rounded-lg p-4 flex items-center justify-between"
+        class="bracket p-4"
       >
-        <div class="flex-1 min-w-0">
-          <h3 class="font-medium truncate">
-            {{ feed.title }}
-          </h3>
-          <p class="text-sm text-gray-400 truncate">
-            {{ feed.url }}
-          </p>
-          <div class="flex gap-2 mt-2 text-xs text-gray-500">
-            <span>{{ t('feeds.items', { count: feed.items?.length || 0 }) }}</span>
-            <span>{{ t('feeds.lastUpdated', { date: feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : t('feeds.never') }) }}</span>
+        <div class="flex items-center justify-between">
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-phosphor truncate">
+              {{ feed.title }}
+            </h3>
+            <p class="text-sm font-mono text-ghost/60 truncate">
+              {{ feed.url }}
+            </p>
+            <div class="flex gap-4 mt-2 text-xs font-mono text-ghost/40">
+              <span>{{ feed.items?.length || 0 }} items</span>
+              <span>{{ feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : 'never' }}</span>
+            </div>
+          </div>
+          <div class="flex gap-2 ml-4">
+            <UButton
+              variant="ghost"
+              color="error"
+              icon="i-heroicons-trash"
+              @click="deleteFeed(feed.id)"
+            />
           </div>
         </div>
-        <div class="flex gap-2 ml-4">
-          <UButton
-            variant="ghost"
-            color="error"
-            icon="i-heroicons-trash"
-            @click="deleteFeed(feed.id)"
-          />
-        </div>
+        <span class="bl"></span><span class="br2"></span>
       </div>
     </div>
 
@@ -133,28 +151,33 @@ async function deleteFeed(id: number) {
     <UModal v-model="showAddModal">
       <UCard>
         <template #header>
-          <h2 class="text-lg font-bold">
+          <h2 class="text-lg font-bold text-phosphor">
             {{ t('feeds.addRssFeed') }}
           </h2>
         </template>
 
         <div class="space-y-4">
-          <UInput
-            v-model="newFeedUrl"
-            :placeholder="t('feeds.feedUrlPlaceholder')"
-            size="lg"
-          />
+          <div class="input-bracket">
+            <UInput
+              v-model="newFeedUrl"
+              :placeholder="t('feeds.feedUrlPlaceholder')"
+              size="lg"
+              class="w-full"
+            />
+            <span class="bl"></span><span class="br2"></span>
+          </div>
         </div>
 
         <template #footer>
           <div class="flex justify-end gap-2">
             <UButton
-              variant="ghost"
+              class="btn-ghost"
               @click="showAddModal = false"
             >
               {{ t('feeds.cancel') }}
             </UButton>
             <UButton
+              class="btn-primary"
               :loading="isLoading"
               :disabled="!newFeedUrl"
               @click="addFeed"

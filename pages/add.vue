@@ -146,16 +146,23 @@ function pasteFromClipboard() {
 
 <template>
   <div class="p-4">
-    <h1 class="text-2xl font-bold mb-6">
-      {{ t('add.title') }}
-    </h1>
+    <!-- Header with bracket -->
+    <div class="mb-6 bracket-lg px-4 py-3">
+      <h1 class="text-2xl font-bold text-phosphor">
+        {{ t('add.title') }}
+      </h1>
+      <p class="header-meta">
+        Add torrents via file upload, magnet link, or URL
+      </p>
+      <span class="bl"></span><span class="br2"></span>
+    </div>
 
     <!-- Success Message -->
     <UAlert
       v-if="success"
       color="success"
       variant="solid"
-      class="mb-4"
+      class="mb-4 font-mono"
     >
       {{ success }}
     </UAlert>
@@ -165,7 +172,7 @@ function pasteFromClipboard() {
       v-if="error"
       color="error"
       variant="solid"
-      class="mb-4"
+      class="mb-4 font-mono"
     >
       {{ error }}
     </UAlert>
@@ -178,21 +185,21 @@ function pasteFromClipboard() {
       <UTab value="file">
         <UIcon
           name="i-heroicons-document-arrow-up"
-          class="w-5 h-5 mr-2"
+          class="w-4 h-4 mr-2"
         />
         {{ t('add.file') }}
       </UTab>
       <UTab value="magnet">
         <UIcon
           name="i-heroicons-link"
-          class="w-5 h-5 mr-2"
+          class="w-4 h-4 mr-2"
         />
         {{ t('add.magnet') }}
       </UTab>
       <UTab value="url">
         <UIcon
           name="i-heroicons-globe-alt"
-          class="w-5 h-5 mr-2"
+          class="w-4 h-4 mr-2"
         />
         {{ t('add.url') }}
       </UTab>
@@ -205,7 +212,7 @@ function pasteFromClipboard() {
     >
       <div
         v-if="isDropzoneSupported"
-        class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center hover:border-primary-500 transition-colors cursor-pointer"
+        class="bracket p-8 text-center cursor-pointer transition-colors hover:bg-electric/10"
         @drop="handleDrop"
         @dragover.prevent
         @dragenter.prevent
@@ -218,14 +225,15 @@ function pasteFromClipboard() {
         >
         <UIcon
           name="i-heroicons-cloud-arrow-up"
-          class="w-12 h-12 mx-auto text-gray-500 mb-4"
+          class="w-12 h-12 mx-auto text-ghost/50 mb-4"
         />
-        <p class="text-gray-300 mb-2">
+        <p class="text-ghost mb-2 font-bold">
           {{ t('add.dragDrop') }}
         </p>
-        <p class="text-gray-500 text-sm">
+        <p class="text-ghost/50 text-sm font-mono">
           {{ t('add.orClickToBrowse') }}
         </p>
+        <span class="bl"></span><span class="br2"></span>
       </div>
 
       <div
@@ -245,27 +253,32 @@ function pasteFromClipboard() {
       v-if="activeTab === 'magnet'"
       class="space-y-4"
     >
-      <UInput
-        v-model="magnetInput"
-        :placeholder="t('add.magnetPlaceholder')"
-        size="lg"
-      />
+      <div class="input-bracket">
+        <UInput
+          v-model="magnetInput"
+          :placeholder="t('add.magnetPlaceholder')"
+          size="lg"
+          class="w-full"
+        />
+        <span class="bl"></span><span class="br2"></span>
+      </div>
 
       <div class="flex gap-2">
         <UButton
+          class="btn-primary"
           :loading="isLoading"
           :disabled="!magnetInput"
           @click="addMagnet"
         >
-          {{ t('add.addMagnet') }}
+          Add magnet
         </UButton>
         <UButton
-          variant="ghost"
+          class="btn-ghost"
           @click="pasteFromClipboard"
         >
           <UIcon
             name="i-heroicons-clipboard"
-            class="w-5 h-5"
+            class="w-4 h-4"
           />
         </UButton>
       </div>
@@ -276,13 +289,18 @@ function pasteFromClipboard() {
       v-if="activeTab === 'url'"
       class="space-y-4"
     >
-      <UInput
-        v-model="urlInput"
-        :placeholder="t('add.urlPlaceholder')"
-        size="lg"
-      />
+      <div class="input-bracket">
+        <UInput
+          v-model="urlInput"
+          :placeholder="t('add.urlPlaceholder')"
+          size="lg"
+          class="w-full"
+        />
+        <span class="bl"></span><span class="br2"></span>
+      </div>
 
       <UButton
+        class="btn-primary"
         :loading="isLoading"
         :disabled="!urlInput"
         @click="addFromUrl"

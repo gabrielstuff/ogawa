@@ -71,57 +71,52 @@ function getProgressColor(state: string | undefined): string {
   }
 }
 
-const selectedTorrents = ref<Set<string>>(new Set())
-
-function toggleSelect(hash: string) {
-  if (selectedTorrents.value.has(hash)) {
-    selectedTorrents.value.delete(hash)
-  }
-  else {
-    selectedTorrents.value.add(hash)
-  }
-}
-
-function toggleAll() {
-  if (selectedTorrents.value.size === filteredTorrents.value.length) {
-    selectedTorrents.value.clear()
-  }
-  else {
-    selectedTorrents.value = new Set(filteredTorrents.value.map(t => t.hash))
-  }
-}
+const queueCount = computed(() => filteredTorrents.value.length)
 </script>
 
 <template>
   <div class="p-2 sm:p-3">
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-3">
-      <h1 class="text-xl font-semibold">
-        {{ t('torrents.title') }}
-      </h1>
-      <UButton
-        icon="i-heroicons-arrow-path"
-        variant="ghost"
-        size="sm"
-        @click="refresh()"
-      />
+    <!-- Header with operational metadata -->
+    <div class="mb-4 bracket-lg px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-phosphor">
+            {{ t('torrents.title') }}
+          </h1>
+          <p class="header-meta">
+            {{ queueCount }} in queue · rtorrent connected · 0.0 MB/s ↓ · 0.0 MB/s ↑
+          </p>
+        </div>
+        <UButton
+          icon="i-heroicons-arrow-path"
+          variant="ghost"
+          size="sm"
+          @click="refresh()"
+        />
+      </div>
+      <span class="bl"></span><span class="br2"></span>
     </div>
 
     <!-- Search and Filter -->
     <div class="flex flex-col sm:flex-row gap-2 mb-3">
-      <UInput
-        v-model="searchQuery"
-        :placeholder="t('torrents.search')"
-        icon="i-heroicons-magnifying-glass"
-        size="sm"
-        class="flex-1"
-      />
+      <div class="input-bracket flex-1">
+        <UInput
+          v-model="searchQuery"
+          :placeholder="t('torrents.search')"
+          icon="i-heroicons-magnifying-glass"
+          size="sm"
+          class="w-full"
+        />
+        <span class="bl"></span><span class="br2"></span>
+      </div>
       <USelect
         v-model="statusFilter"
         :options="statusOptions"
         option-attribute="label"
         value-attribute="value"
         size="sm"
+        color="neutral"
+        variant="outline"
         class="w-full sm:w-32"
       />
     </div>
@@ -133,31 +128,44 @@ function toggleAll() {
     >
       <UIcon
         name="i-heroicons-arrow-path"
-        class="w-6 h-6 animate-spin text-primary-500"
+        class="w-6 h-6 animate-spin text-halation"
       />
     </div>
 
     <!-- Empty State -->
     <div
       v-else-if="filteredTorrents.length === 0"
-      class="text-center py-12"
+      class="empty-state bracket-lg"
     >
-      <UIcon
-        name="i-heroicons-cloud-arrow-down"
-        class="w-12 h-12 mx-auto text-gray-600 mb-3"
-      />
-      <p class="text-gray-400 text-sm mb-4">
+      <div class="empty-state-title">
         {{ t('torrents.noResults') }}
-      </p>
-      <NuxtLink to="/add">
-        <UButton size="sm">{{ t('torrents.addFirst') }}</UButton>
-      </NuxtLink>
+      </div>
+      <div class="empty-state-sub">
+        Add a .torrent file, paste a magnet link, or pull items from a feed.
+      </div>
+      <div class="flex gap-3 justify-center mb-4">
+        <NuxtLink to="/add">
+          <UButton class="btn-primary">
+            + Add torrent
+          </UButton>
+        </NuxtLink>
+        <NuxtLink to="/add?tab=magnet">
+          <UButton class="btn-bracket">
+            Paste magnet <span class="opacity-60">↗</span>
+            <span class="bl"></span><span class="br2"></span>
+          </UButton>
+        </NuxtLink>
+      </div>
+      <div class="empty-state-meta">
+        rtorrent connected · watch folder off · disk free --
+      </div>
+      <span class="bl"></span><span class="br2"></span>
     </div>
 
     <!-- Torrent List -->
     <div v-else>
       <!-- Desktop Table Header -->
-      <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[11px] text-gray-500 font-medium uppercase tracking-wide">
+      <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[10px] text-ghost font-mono uppercase tracking-widest">
         <div class="col-span-4">
           {{ t('torrents.name') }}
         </div>
@@ -189,55 +197,60 @@ function toggleAll() {
         <div
           v-for="torrent in filteredTorrents"
           :key="torrent.hash"
-          class="grid grid-cols-12 gap-2 px-2 py-1.5 text-xs rounded hover:bg-gray-800/60 transition-colors items-center"
+          class="grid grid-cols-12 gap-2 px-2 py-2 text-xs transition-colors items-center border-b border-scan/10 hover:bg-electric/20"
         >
           <!-- Name with inline progress -->
           <div class="col-span-4 flex items-center gap-2 min-w-0">
-            <div class="w-14 h-1.5 bg-gray-700 rounded-full overflow-hidden flex-shrink-0">
+            <div class="w-14 h-1.5 bg-scan/30 overflow-hidden flex-shrink-0">
               <div
                 class="h-full transition-all"
-                :class="`bg-${getProgressColor(torrent.state)}-500`"
+                :class="{
+                  'bg-halation': torrent.state === 'downloading',
+                  'bg-phosphor': torrent.state === 'seeding',
+                  'bg-flicker': torrent.state === 'paused',
+                  'bg-red-500': torrent.state === 'error',
+                }"
                 :style="{ width: `${getProgressPercent(torrent.completed, torrent.size)}%` }"
               />
             </div>
-            <span class="truncate">{{ torrent.name || t('torrents.unknown') }}</span>
+            <span class="truncate text-ghost">{{ torrent.name || t('torrents.unknown') }}</span>
           </div>
 
           <!-- Size -->
-          <div class="col-span-1 text-right text-gray-400">
+          <div class="col-span-1 text-right font-mono text-ghost/70">
             {{ formatSize(torrent.size) }}
           </div>
 
           <!-- Down -->
-          <div class="col-span-1 text-right text-gray-400">
-            {{ formatSpeed(torrent.downloadSpeed) }}
+          <div class="col-span-1 text-right font-mono text-halation">
+            {{ formatSpeed(torrent.downloadSpeed) }}/s
           </div>
 
           <!-- Up -->
-          <div class="col-span-1 text-right text-gray-400">
-            {{ formatSpeed(torrent.uploadSpeed) }}
+          <div class="col-span-1 text-right font-mono text-ghost/70">
+            {{ formatSpeed(torrent.uploadSpeed) }}/s
           </div>
 
           <!-- Seeds/Peers -->
-          <div class="col-span-1 text-right text-gray-400">
+          <div class="col-span-1 text-right font-mono text-ghost/60">
             {{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }}
           </div>
 
           <!-- Ratio -->
-          <div class="col-span-1 text-right text-gray-400">
+          <div class="col-span-1 text-right font-mono text-ghost/70">
             {{ (torrent.ratio || 0).toFixed(2) }}
           </div>
 
           <!-- Progress -->
           <div class="col-span-1 text-center">
             <span
-              class="text-[10px] font-medium px-1.5 py-0.5 rounded"
+              class="text-[10px] font-mono font-medium px-1.5 py-0.5"
               :class="{
-                'bg-primary-500/20 text-primary-400': torrent.state === 'downloading',
-                'bg-success-500/20 text-success-400': torrent.state === 'seeding',
-                'bg-warning-500/20 text-warning-400': torrent.state === 'paused',
-                'bg-error-500/20 text-error-400': torrent.state === 'error',
-                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped',
+                'bg-halation/20 text-halation': torrent.state === 'downloading',
+                'bg-phosphor/20 text-phosphor': torrent.state === 'seeding',
+                'bg-flicker/20 text-flicker': torrent.state === 'paused',
+                'bg-red-500/20 text-red-400': torrent.state === 'error',
+                'bg-scan/30 text-ghost/50': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ getProgressPercent(torrent.completed, torrent.size) }}%
@@ -245,7 +258,7 @@ function toggleAll() {
           </div>
 
           <!-- Added -->
-          <div class="col-span-2 text-right text-gray-500">
+          <div class="col-span-2 text-right font-mono text-ghost/50">
             {{ torrent.addedAt ? new Date(torrent.addedAt).toLocaleDateString() : '-' }}
           </div>
         </div>
@@ -256,7 +269,7 @@ function toggleAll() {
         <div
           v-for="torrent in filteredTorrents"
           :key="torrent.hash"
-          class="bg-gray-800/50 rounded-lg p-3"
+          class="bracket p-3"
         >
           <div class="flex items-center gap-3">
             <!-- Progress Ring -->
@@ -267,14 +280,19 @@ function toggleAll() {
                   viewBox="0 0 36 36"
                 >
                   <path
-                    class="text-gray-700"
+                    class="text-scan/30"
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="3"
                   />
                   <path
-                    :class="`text-${getProgressColor(torrent.state)}-500`"
+                    :class="{
+                      'text-halation': torrent.state === 'downloading',
+                      'text-phosphor': torrent.state === 'seeding',
+                      'text-flicker': torrent.state === 'paused',
+                      'text-red-400': torrent.state === 'error',
+                    }"
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
                     stroke="currentColor"
@@ -282,7 +300,7 @@ function toggleAll() {
                     :stroke-dasharray="`${getProgressPercent(torrent.completed, torrent.size)}, 100`"
                   />
                 </svg>
-                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-medium">
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-mono font-medium text-phosphor">
                   {{ getProgressPercent(torrent.completed, torrent.size) }}%
                 </span>
               </div>
@@ -290,31 +308,32 @@ function toggleAll() {
 
             <!-- Info -->
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium truncate">
+              <p class="text-sm font-bold truncate text-phosphor">
                 {{ torrent.name || t('torrents.unknown') }}
               </p>
-              <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-400 mt-1">
+              <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-mono text-ghost/60 mt-1">
                 <span>{{ formatSize(torrent.size) }}</span>
-                <span v-if="torrent.downloadSpeed">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
+                <span v-if="torrent.downloadSpeed" class="text-halation">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
                 <span v-if="torrent.uploadSpeed">↑ {{ formatSpeed(torrent.uploadSpeed) }}/s</span>
-                <span>{{ t('torrents.seedsPeers', { seeds: torrent.seeds || 0, peers: torrent.peers || 0 }) }}</span>
+                <span>{{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }} peers</span>
               </div>
             </div>
 
             <!-- State Badge -->
             <span
-              class="text-[10px] font-medium px-2 py-1 rounded flex-shrink-0"
+              class="text-[10px] font-mono font-medium px-2 py-1 flex-shrink-0"
               :class="{
-                'bg-primary-500/20 text-primary-400': torrent.state === 'downloading',
-                'bg-success-500/20 text-success-400': torrent.state === 'seeding',
-                'bg-warning-500/20 text-warning-400': torrent.state === 'paused',
-                'bg-error-500/20 text-error-400': torrent.state === 'error',
-                'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped',
+                'bg-halation/20 text-halation': torrent.state === 'downloading',
+                'bg-phosphor/20 text-phosphor': torrent.state === 'seeding',
+                'bg-flicker/20 text-flicker': torrent.state === 'paused',
+                'bg-red-500/20 text-red-400': torrent.state === 'error',
+                'bg-scan/30 text-ghost/50': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ torrent.state ? t(`status.${torrent.state}`) : t('status.stopped') }}
             </span>
           </div>
+          <span class="bl"></span><span class="br2"></span>
         </div>
       </div>
     </div>
@@ -322,7 +341,7 @@ function toggleAll() {
     <!-- Floating Action Button (Mobile) -->
     <NuxtLink
       to="/add"
-      class="fixed right-3 bottom-16 sm:bottom-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center shadow-lg hover:bg-primary-400 transition-colors md:hidden"
+      class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 bg-phosphor text-deep-field flex items-center justify-center shadow-lg hover:bg-static transition-colors md:hidden"
     >
       <UIcon
         name="i-heroicons-plus"

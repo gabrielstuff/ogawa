@@ -32,12 +32,15 @@ onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
 })
+
+const appName = 'Ogawa'
+const appVersion = '1.0.0'
 </script>
 
 <template>
-  <div class="min-h-screen min-h-[100dvh] bg-surface-900 text-surface-100">
+  <div class="min-h-screen min-h-[100dvh] bg-blue text-phosphor font-karla">
     <!-- Main Content -->
-    <main class="pb-20 md:pb-4 md:ml-56">
+    <main class="pb-20 md:pb-16 md:ml-14">
       <!-- Mobile Language Switcher -->
       <div
         v-if="isMobile"
@@ -49,6 +52,8 @@ onMounted(() => {
           option-attribute="label"
           value-attribute="value"
           size="xs"
+          color="neutral"
+          variant="outline"
           class="w-28"
         />
       </div>
@@ -58,7 +63,7 @@ onMounted(() => {
     <!-- Mobile Bottom Navigation -->
     <nav
       v-if="isMobile"
-      class="fixed bottom-0 left-0 right-0 bg-surface-800/95 backdrop-blur-sm border-t border-surface-700 safe-area-inset-bottom z-50"
+      class="fixed bottom-0 left-0 right-0 bg-deep/95 backdrop-blur-sm border-t border-scan/20 safe-area-inset-bottom z-50"
     >
       <div class="flex justify-around items-center h-16">
         <NuxtLink
@@ -66,58 +71,69 @@ onMounted(() => {
           :key="item.path"
           :to="item.path"
           class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200"
-          :class="route.path === item.path ? 'text-primary-500' : 'text-surface-400 hover:text-surface-200'"
+          :class="route.path === item.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
         >
           <UIcon
             :name="item.icon"
             class="w-6 h-6"
           />
-          <span class="text-xs mt-1">{{ item.name }}</span>
+          <span class="text-[10px] mt-1 font-bold uppercase tracking-wide">{{ item.name }}</span>
         </NuxtLink>
       </div>
     </nav>
 
-    <!-- Desktop Sidebar -->
+    <!-- Desktop Sidebar - Narrow navigation rail -->
     <aside
       v-if="!isMobile"
-      class="fixed left-0 top-0 bottom-0 w-56 bg-surface-800 border-r border-surface-700 p-3 hidden md:block"
+      class="fixed left-0 top-0 bottom-0 w-14 bg-deep border-r border-scan/20 p-2 hidden md:flex flex-col"
     >
-      <div class="flex items-center gap-2 mb-6 px-2">
+      <div class="flex items-center justify-center h-12 mb-4">
         <UIcon
           name="i-heroicons-cloud-arrow-down"
-          class="w-6 h-6 text-primary-500"
+          class="w-6 h-6 text-halation"
         />
-        <h1 class="text-lg font-semibold">
-          Ogawa
-        </h1>
       </div>
 
-      <nav class="space-y-0.5">
+      <nav class="flex-1 space-y-0">
         <NuxtLink
           v-for="item in navItems"
           :key="item.path"
           :to="item.path"
-          class="flex items-center gap-2.5 px-3 py-2 rounded-md transition-colors text-sm"
-          :class="route.path === item.path ? 'bg-primary-500/20 text-primary-400' : 'text-surface-400 hover:bg-surface-700 hover:text-surface-200'"
+          class="flex flex-col items-center justify-center py-3 transition-colors"
+          :class="route.path === item.path ? 'text-halation' : 'text-ghost hover:text-phosphor'"
         >
           <UIcon
             :name="item.icon"
-            class="w-4 h-4"
+            class="w-5 h-5"
           />
-          <span>{{ item.name }}</span>
+          <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
         </NuxtLink>
       </nav>
 
       <!-- Language Switcher -->
-      <div class="absolute bottom-4 left-3 right-3">
+      <div class="mt-auto">
         <USelect
           v-model="currentLocale"
           :items="localeOptions"
           option-attribute="label"
           value-attribute="value"
-          size="sm"
+          size="xs"
+          color="neutral"
+          variant="outline"
         />
       </div>
     </aside>
+
+    <!-- Status Strip - Always visible -->
+    <footer class="fixed bottom-0 left-0 right-0 md:left-14 status-strip z-40">
+      <div class="flex items-center gap-2">
+        <span class="status-dot"></span>
+        <span>daemon: connected</span>
+      </div>
+      <span>feeds: 0</span>
+      <span>watch: off</span>
+      <span>disk: -- GB free</span>
+      <span class="ml-auto">{{ appName }} v{{ appVersion }}</span>
+    </footer>
   </div>
 </template>

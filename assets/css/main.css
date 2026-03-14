@@ -1,47 +1,97 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* ===========================================
+   CRT SIGNAL DESIGN SYSTEM
+   Torrent Client UI - Electric Cobalt Theme
+   =========================================== */
+
 @theme {
-  --font-sans: 'Inter', system-ui, sans-serif;
+  /* Font families */
+  --font-karla: 'Karla', sans-serif;
+  --font-mono: 'Inconsolata', monospace;
+  
+  /* Custom colors - CRT Signal palette */
+  --color-signal-blue: #1633CC;
+  --color-deep-field: #0E1E8A;
+  --color-void: #071266;
+  --color-phosphor: #EFF3FF;
+  --color-halation: #B8C8FF;
+  --color-ghost: #96AAFF;
+  --color-electric: #2845E8;
+  --color-scan: #4464F5;
+  --color-drift: #6685FF;
+  --color-flicker: #C8D5FF;
+  --color-static: #E0E8FF;
+  
+  /* Error/Success colors - CRT Signal */
+  --color-coral: #FF4466;
+  --color-mint: #44FF99;
 }
 
+/* ===========================================
+   CSS CUSTOM PROPERTIES
+   =========================================== */
 :root {
-  --color-background: rgb(15 23 42);
-  --color-foreground: rgb(241 245 249);
+  /* Core colors */
+  --blue: #1633CC;
+  --deep: #0E1E8A;
+  --void: #071266;
+  --phosphor: #EFF3FF;
+  --halation: #B8C8FF;
+  --ghost: #96AAFF;
+
+  /* Extended tones */
+  --electric: #2845E8;
+  --scan: #4464F5;
+  --drift: #6685FF;
+  --flicker: #C8D5FF;
+  --static: #E0E8FF;
+
+  /* Typography */
+  --font-karla: 'Karla', sans-serif;
+  --font-mono: 'Inconsolata', monospace;
+
+  /* Error/Success - CRT Signal */
+  --coral: #FF4466;
+  --mint: #44FF99;
+
+  /* Semantic mappings */
+  --color-background: var(--blue);
+  --color-foreground: var(--phosphor);
+  --color-primary: var(--phosphor);
+  --color-primary-foreground: var(--deep);
+  --color-secondary: var(--deep);
+  --color-secondary-foreground: var(--phosphor);
+  --color-muted: var(--electric);
+  --color-muted-foreground: var(--ghost);
+  --color-accent: var(--halation);
+  --color-accent-foreground: var(--void);
+  --color-destructive: #EF4444;
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: var(--scan);
+  --color-input: var(--scan);
+  --color-ring: var(--halation);
+  --color-card: var(--deep);
+  --color-card-foreground: var(--phosphor);
+  --color-popover: var(--deep);
+  --color-popover-foreground: var(--phosphor);
 }
 
-/* Dark mode - softer contrast */
-.dark {
-  --color-background: rgb(15 23 42);
-  --color-foreground: rgb(241 245 249);
-  --color-card: rgb(30 41 59);
-  --color-card-foreground: rgb(241 245 249);
-  --color-popover: rgb(30 41 59);
-  --color-popover-foreground: rgb(241 245 249);
-  --color-primary: rgb(16 185 129);
-  --color-primary-foreground: rgb(255 255 255);
-  --color-secondary: rgb(51 65 85);
-  --color-secondary-foreground: rgb(241 245 249);
-  --color-muted: rgb(51 65 85);
-  --color-muted-foreground: rgb(148 163 184);
-  --color-accent: rgb(51 65 85);
-  --color-accent-foreground: rgb(241 245 249);
-  --color-destructive: rgb(239 68 68);
-  --color-destructive-foreground: rgb(255 255 255);
-  --color-border: rgb(51 65 85);
-  --color-input: rgb(51 65 85);
-  --color-ring: rgb(16 185 129);
-}
-
+/* ===========================================
+   GLOBAL RESET
+   Zero border-radius everywhere - sharp corners only
+   =========================================== */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  border-radius: 0 !important;
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-karla);
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,7 +106,312 @@ body {
   color: var(--color-foreground);
 }
 
-/* Mobile-first responsive utilities */
+/* ===========================================
+   FORCE DARK MODE
+   Override any light mode styles
+   =========================================== */
+html {
+  color-scheme: dark;
+}
+
+html.dark,
+.dark {
+  --color-bg: var(--blue);
+  --color-text: var(--phosphor);
+}
+
+/* Force all surfaces to use dark colors */
+.bg-default,
+.bg-surface-50,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100,
+.bg-gray-200 {
+  background-color: var(--deep) !important;
+}
+
+.text-default,
+.text-gray-50,
+.text-gray-100,
+.text-gray-200,
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-gray-900 {
+  color: var(--ghost) !important;
+}
+
+.text-highlighted {
+  color: var(--phosphor) !important;
+}
+
+/* Override light mode borders */
+.border-default,
+.border-gray-100,
+.border-gray-200,
+.border-gray-300,
+.border-gray-400 {
+  border-color: var(--scan) !important;
+}
+
+/* Input backgrounds */
+input,
+textarea,
+select {
+  background-color: transparent !important;
+}
+
+/* ===========================================
+   CORNER BRACKETS
+   The signature detail - 4-corner tick marks
+   =========================================== */
+.bracket {
+  position: relative;
+}
+
+.bracket::before,
+.bracket::after,
+.bracket .bl,
+.bracket .br2 {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--halation);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.bracket::before {
+  top: 0;
+  left: 0;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.bracket::after {
+  top: 0;
+  right: 0;
+  border-width: 1.5px 1.5px 0 0;
+}
+
+.bracket .bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1.5px 1.5px;
+}
+
+.bracket .br2 {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+/* Larger brackets for panels */
+.bracket-lg {
+  position: relative;
+}
+
+.bracket-lg::before,
+.bracket-lg::after,
+.bracket-lg .bl,
+.bracket-lg .br2 {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(255, 255, 255, 0.4);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.bracket-lg::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.bracket-lg::after {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.bracket-lg .bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.bracket-lg .br2 {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* ===========================================
+   BUTTON STYLES
+   Three types: Primary, Ghost, Bracketed
+   =========================================== */
+.btn-primary {
+  background: var(--phosphor);
+  color: var(--deep);
+  border: none;
+  font-family: var(--font-karla);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-primary:hover {
+  background: var(--static);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--phosphor);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: var(--font-karla);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--halation);
+}
+
+.btn-bracket {
+  background: transparent;
+  color: var(--phosphor);
+  border: none;
+  font-family: var(--font-karla);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===========================================
+   INPUT STYLES
+   With corner brackets
+   =========================================== */
+.input-bracket {
+  position: relative;
+  display: inline-block;
+}
+
+.input-bracket input {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--phosphor);
+  padding: 9px 22px;
+  width: 260px;
+  outline: none;
+  display: block;
+  -webkit-appearance: none;
+}
+
+.input-bracket input::placeholder {
+  color: rgba(200, 215, 255, 0.3);
+}
+
+.input-bracket::before,
+.input-bracket::after,
+.input-bracket .bl,
+.input-bracket .br2 {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(200, 215, 255, 0.35);
+  border-style: solid;
+}
+
+.input-bracket::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.input-bracket::after {
+  top: 0;
+  right: 0;
+  border-width: 1px 1pxpx 0 0;
+}
+
+.input-bracket .bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.input-bracket .br2 {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* ===========================================
+   TYPOGRAPHY HELPERS
+   =========================================== */
+.font-karla {
+  font-family: var(--font-karla);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.text-phosphor {
+  color: var(--phosphor);
+}
+
+.text-ghost {
+  color: var(--ghost);
+}
+
+.text-halation {
+  color: var(--halation);
+}
+
+.bg-deep {
+  background-color: var(--deep);
+}
+
+.bg-blue {
+  background-color: var(--blue);
+}
+
+/* ===========================================
+   RESPONSIVE UTILITIES
+   =========================================== */
 @layer utilities {
   .touch-manipulation {
     touch-action: manipulation;
@@ -79,26 +434,30 @@ a,
   min-width: 44px;
 }
 
-/* Custom scrollbar - refined for dark mode */
+/* ===========================================
+   CUSTOM SCROLLBAR
+   CRT Signal palette
+   =========================================== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(30 41 59);
+  background: var(--deep);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(71 85 105);
-  border-radius: 4px;
+  background: var(--scan);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(100 116 139);
+  background: var(--drift);
 }
 
-/* Prevent overscroll bounce on iOS */
+/* ===========================================
+   PREVENT OVERSCROLL BOUNCE ON IOS
+   =========================================== */
 html {
   overflow: hidden;
   height: 100%;
@@ -108,4 +467,458 @@ body {
   overflow-y: auto;
   height: 100%;
   overscroll-behavior-y: none;
+}
+
+/* ===========================================
+   STATUS STRIP
+   Persistent bottom bar with system info
+   =========================================== */
+.status-strip {
+  background: var(--deep);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 18px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(200, 215, 255, 0.3);
+}
+
+.status-strip span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-strip .status-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--halation);
+}
+
+/* ===========================================
+   HEADER METADATA LINE
+   Inconsolata for system status
+   =========================================== */
+.header-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(200, 215, 255, 0.35);
+  margin-top: 2px;
+}
+
+/* ===========================================
+   EMPTY STATE
+   =========================================== */
+.empty-state {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.empty-state-title {
+  font-family: var(--font-karla);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--phosphor);
+  margin-bottom: 5px;
+}
+
+.empty-state-sub {
+  font-family: var(--font-karla);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(200, 215, 255, 0.5);
+  margin-bottom: 1.5rem;
+}
+
+.empty-state-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(200, 215, 255, 0.3);
+}
+
+/* ===========================================
+   TABLE STYLES
+   =========================================== */
+.crt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.crt-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 215, 255, 0.35);
+  text-align: left;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.crt-table td {
+  font-family: var(--font-karla);
+  font-size: 13px;
+  color: var(--ghost);
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+}
+
+.crt-table td.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--phosphor);
+  white-space: nowrap;
+}
+
+.crt-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===========================================
+   PANEL CARD
+   With corner brackets
+   =========================================== */
+.panel-card {
+  background: var(--deep);
+  padding: 18px 22px;
+  position: relative;
+}
+
+.panel-card .panel-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(200, 215, 255, 0.35);
+  margin-bottom: 8px;
+}
+
+.panel-card .panel-value {
+  font-family: var(--font-karla);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--phosphor);
+  margin-bottom: 3px;
+}
+
+.panel-card .panel-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(200, 215, 255, 0.4);
+}
+
+/* ===========================================
+   SELECT DROPDOWN OVERRIDES
+   CRT Signal styling for USelect component
+   =========================================== */
+
+/* Select trigger */
+button[type="button"].inline-flex {
+  font-family: var(--font-mono) !important;
+  background: transparent !important;
+  border: 1px solid var(--scan) !important;
+  color: var(--phosphor) !important;
+  border-radius: 0 !important;
+}
+
+button[type="button"].inline-flex:hover {
+  border-color: var(--halation) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+button[type="button"].inline-flex:focus {
+  border-color: var(--halation) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Select placeholder */
+button[type="button"].inline-flex .truncate {
+  color: var(--ghost) !important;
+  opacity: 0.6;
+}
+
+/* Select value */
+button[type="button"].inline-flex .text-highlighted {
+  color: var(--phosphor) !important;
+}
+
+/* Select chevron icon */
+button[type="button"].inline-flex svg[data-name="chevron-down"],
+button[type="button"].inline-flex svg[data-name="ChevronDown"] {
+  color: var(--ghost) !important;
+}
+
+/* Select dropdown content */
+[data-radix-popper-content-wrapper] > div[data-state="open"] > div[id*="radix"],
+div[data-variant="select"] {
+  background: var(--deep) !important;
+  border: 1px solid var(--scan) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Select dropdown items */
+div[data-variant="select"] [data-radix-collection-item],
+div[data-variant="select"] [role="option"] {
+  font-family: var(--font-karla) !important;
+  color: var(--ghost) !important;
+  padding: 8px 12px !important;
+}
+
+div[data-variant="select"] [data-radix-collection-item]:hover,
+div[data-variant="select"] [role="option"]:hover,
+div[data-variant="select"] [data-highlighted],
+div[data-variant="select"] [data-state="highlighted"] {
+  background: var(--electric) !important;
+  color: var(--phosphor) !important;
+  outline: none !important;
+}
+
+/* Select item text */
+div[data-variant="select"] [data-radix-collection-item] span,
+div[data-variant="select"] [role="option"] span {
+  color: inherit !important;
+}
+
+/* Select checkmark when selected */
+div[data-variant="select"] [data-radix-collection-item][data-state="checked"] svg,
+div[data-variant="select"] [role="option"][data-state="checked"] svg {
+  color: var(--halation) !important;
+}
+
+/* Select separator */
+div[data-variant="select"] [role="separator"],
+div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator] {
+  background: var(--scan) !important;
+  height: 1px !important;
+  margin: 4px 0 !important;
+}
+
+/* Select group label */
+div[data-variant="select"] [role="group"] span,
+div[data-variant="select"] [data-radix-collection-item][data-disabled] {
+  color: var(--ghost) !important;
+  opacity: 0.5 !important;
+}
+
+/* ===========================================
+   ALERT / NOTIFICATION STYLING
+   CRT Signal - Error/Success design from docs
+   =========================================== */
+
+/* Base alert - remove rounded corners */
+div[data-role="alert"],
+[class*="alert"] {
+  border-radius: 0 !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* ===========================================
+   CRITICAL BANNER
+   Phosphor white with dark blue text - maximum contrast
+   =========================================== */
+[data-color="error"][data-variant="solid"],
+[data-color="error"].variant-solid,
+.alert-critical {
+  background: #EFF3FF !important;
+  color: #0E1E8A !important;
+  border-color: #EFF3FF !important;
+  font-weight: 500;
+}
+
+[data-color="error"][data-variant="solid"] svg,
+.alert-critical svg {
+  color: #0E1E8A !important;
+}
+
+/* ===========================================
+   INLINE FIELD ERROR
+   Coral at 8% fill + 50% border + #FF8899 text
+   =========================================== */
+.field-error {
+  border-color: rgba(255, 68, 102, 0.5) !important;
+  background: rgba(255, 68, 102, 0.08) !important;
+  color: #FF8899 !important;
+}
+
+.field-error-message {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #FF8899;
+  letter-spacing: 0.02em;
+  margin-top: 4px;
+}
+
+/* UAlert error (non-critical) */
+[data-color="error"],
+[data-variant="error"],
+div[data-color="error"] {
+  background: rgba(255, 68, 102, 0.08) !important;
+  border-color: rgba(255, 68, 102, 0.5) !important;
+  color: #FF8899 !important;
+}
+
+[data-color="error"] * {
+  color: #FF8899 !important;
+}
+
+[data-color="error"] svg {
+  color: #FF4466 !important;
+}
+
+/* ===========================================
+   SUCCESS STATE
+   Mint green at 10% fill + 20% border + #80FFB8 text
+   =========================================== */
+[data-color="success"],
+[data-variant="success"],
+div[data-color="success"] {
+  background: rgba(100, 255, 180, 0.1) !important;
+  border-color: rgba(100, 255, 180, 0.2) !important;
+  color: #80FFB8 !important;
+}
+
+[data-color="success"] * {
+  color: #80FFB8 !important;
+}
+
+[data-color="success"] svg {
+  color: #44FF99 !important;
+}
+
+/* ===========================================
+   WARNING STATE
+   Amber - same low-opacity treatment as coral
+   =========================================== */
+[data-color="warning"],
+[data-variant="warning"],
+div[data-color="warning"] {
+  background: rgba(255, 209, 102, 0.1) !important;
+  border-color: rgba(255, 209, 102, 0.25) !important;
+  color: #FFD166 !important;
+}
+
+[data-color="warning"] * {
+  color: #FFD166 !important;
+}
+
+[data-color="warning"] svg {
+  color: #FFD166 !important;
+}
+
+/* ===========================================
+   INFO STATE
+   Ghost/scan at low opacity
+   =========================================== */
+[data-color="info"],
+[data-variant="info"],
+div[data-color="info"] {
+  background: rgba(150, 170, 255, 0.1) !important;
+  border-color: rgba(150, 170, 255, 0.2) !important;
+  color: #96AAFF !important;
+}
+
+[data-color="info"] * {
+  color: #96AAFF !important;
+}
+
+/* Error alerts - coral at low opacity */
+[data-color="error"],
+[data-variant="error"],
+.color-error,
+.bg-red-500\/,
+[class*="bg-red-"] {
+  --alert-bg: rgba(255, 68, 102, 0.15) !important;
+  --alert-border: rgba(255, 68, 102, 0.3) !important;
+  --alert-text: #FF4466 !important;
+}
+
+div[data-color="error"],
+.bg-red-500,
+.bg-red-600,
+.bg-red-700 {
+  background: rgba(255, 68, 102, 0.15) !important;
+  border-color: rgba(255, 68, 102, 0.3) !important;
+  color: #FF4466 !important;
+}
+
+div[data-color="error"] * {
+  color: inherit !important;
+}
+
+/* Success alerts - mint at low opacity */
+[data-color="success"],
+[data-variant="success"],
+.color-success,
+.bg-green-500,
+.bg-green-600 {
+  background: rgba(68, 255, 153, 0.15) !important;
+  border-color: rgba(68, 255, 153, 0.3) !important;
+  color: #44FF99 !important;
+}
+
+div[data-color="success"] * {
+  color: inherit !important;
+}
+
+/* Warning alerts - halation at low opacity */
+[data-color="warning"],
+[data-variant="warning"],
+.color-warning,
+.bg-yellow-500,
+.bg-amber-500 {
+  background: rgba(184, 200, 255, 0.15) !important;
+  border-color: rgba(184, 200, 255, 0.3) !important;
+  color: #B8C8FF !important;
+}
+
+div[data-color="warning"] * {
+  color: inherit !important;
+}
+
+/* Info alerts - scan/ghost at low opacity */
+[data-color="info"],
+[data-variant="info"],
+.color-info,
+.bg-blue-500 {
+  background: rgba(68, 100, 245, 0.15) !important;
+  border-color: rgba(68, 100, 245, 0.3) !important;
+  color: #96AAFF !important;
+}
+
+/* Alert icons */
+div[data-color="error"] svg,
+[data-color="error"] .icon,
+[data-color="error"] [class*="icon"] {
+  color: #FF4466 !important;
+}
+
+div[data-color="success"] svg,
+[data-color="success"] .icon,
+[data-color="success"] [class*="icon"] {
+  color: #44FF99 !important;
+}
+
+/* Solid variant alerts - phosphor white with deep blue (critical) */
+[data-variant="solid"][data-color="error"],
+[data-variant="solid"].bg-red-500 {
+  background: #EFF3FF !important;
+  color: #0E1E8A !important;
+  border-color: #EFF3FF !important;
+}
+
+[data-variant="solid"][data-color="error"] svg,
+[data-variant="solid"].bg-red-500 svg {
+  color: #0E1E8A !important;
+}
+
+[data-variant="solid"][data-color="success"],
+[data-variant="solid"].bg-green-500 {
+  background: rgba(68, 255, 153, 0.2) !important;
+  color: #44FF99 !important;
+  border-color: rgba(68, 255, 153, 0.4) !important;
 }
