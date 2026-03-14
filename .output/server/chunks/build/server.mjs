@@ -1,13 +1,13 @@
 import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import * as Vue from 'vue';
-import { computed, inject, toValue, mergeProps, unref, createVNode, resolveDynamicComponent, ref, watch, withCtx, renderSlot, openBlock, createBlock, toDisplayString as toDisplayString$1, useSlots, createCommentVNode, toRef, provide, hasInjectionContext, useModel, createTextVNode, mergeModels, defineComponent, shallowRef, h, resolveComponent, isRef, getCurrentInstance as getCurrentInstance$1, onServerPrefetch, nextTick, createElementBlock, cloneVNode, reactive, defineAsyncComponent, useSSRContext, shallowReactive, Suspense, Fragment, createApp, Text, renderList, useId, onErrorCaptured, effectScope, useTemplateRef, withModifiers, getCurrentScope, markRaw, isReadonly, toRaw, isShallow, isReactive, customRef } from 'vue';
-import { A as serialize, B as klona, C as defu, D as hasProtocol, E as isScriptProtocol, y as joinURL, F as parseQuery, G as defuFn, H as withQuery, I as sanitizeStatusCode, J as parseURL, K as encodePath, L as decodePath, M as isEqual, N as getContext, O as withTrailingSlash, P as withoutTrailingSlash, c as createError$1, $ as $fetch$1, Q as baseURL, R as hash, S as executeAsync, T as getRequestURL, U as getRequestHeader, V as getCookie, W as parse$1, X as createDefu, Y as parsePath, Z as setCookie, _ as deleteCookie } from '../nitro/nitro.mjs';
+import { useSlots, ref, inject, computed, mergeProps, unref, withCtx, renderSlot, openBlock, createBlock, createCommentVNode, toDisplayString as toDisplayString$1, createVNode, resolveDynamicComponent, toRef, provide, toValue, watch, useModel, createTextVNode, mergeModels, isRef, hasInjectionContext, defineComponent, shallowRef, h, resolveComponent, onServerPrefetch, getCurrentInstance as getCurrentInstance$1, nextTick, createElementBlock, cloneVNode, reactive, defineAsyncComponent, useSSRContext, shallowReactive, Suspense, Fragment, createApp, Text, renderList, useId, onErrorCaptured, effectScope, useTemplateRef, withModifiers, getCurrentScope, markRaw, isReadonly, toRaw, isShallow, isReactive, customRef } from 'vue';
+import { A as serialize, B as defu, C as klona, D as isEqual, E as parseQuery, F as defuFn, G as hasProtocol, y as joinURL, H as parseURL, I as encodePath, J as decodePath, K as withQuery, L as isScriptProtocol, M as getContext, N as withTrailingSlash, O as withoutTrailingSlash, P as sanitizeStatusCode, c as createError$1, $ as $fetch$1, Q as baseURL, R as hash, S as executeAsync, T as getRequestURL, U as getRequestHeader, V as getCookie, W as parse$1, X as createDefu, Y as parsePath, Z as setCookie, _ as deleteCookie } from '../nitro/nitro.mjs';
 import { setActivePinia, createPinia, shouldHydrate } from 'pinia';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import { debounce } from 'perfect-debounce';
 import { isPlainObject as isPlainObject$1 } from '@vue/shared';
 import { Icon, getIcon, loadIcon as loadIcon$1, _api, addAPIProvider, setCustomIconsLoader } from '@iconify/vue';
 import colors from 'tailwindcss/colors';
-import { ssrRenderComponent, ssrRenderVNode, ssrRenderSlot, ssrRenderClass, ssrInterpolate, ssrRenderList, ssrRenderSuspense, ssrRenderStyle } from 'vue/server-renderer';
+import { ssrRenderComponent, ssrRenderSlot, ssrRenderClass, ssrInterpolate, ssrRenderVNode, ssrRenderList, ssrRenderSuspense, ssrRenderStyle } from 'vue/server-renderer';
 import { useForwardProps, Primitive, Slot, createContext, ToastProvider, ToastPortal, ToastViewport, ConfigProvider, TooltipProvider, useForwardPropsEmits, ToastRoot, ToastTitle, ToastDescription, ToastAction, ToastClose, ProgressRoot, ProgressIndicator } from 'reka-ui';
 import { reactivePick, useDebounceFn, reactiveOmit, createSharedComposable } from '@vueuse/core';
 import { createTV } from 'tailwind-variants';
@@ -712,9 +712,6 @@ const unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU = /* @__PURE__ */ defin
 function toArray$3(value) {
   return Array.isArray(value) ? value : [value];
 }
-const __nuxt_page_meta$3 = {
-  layout: "default"
-};
 const __nuxt_page_meta$2 = {
   layout: "default"
 };
@@ -726,28 +723,22 @@ const __nuxt_page_meta = {
 };
 const _routes = [
   {
-    name: "add",
-    path: "/add",
-    meta: __nuxt_page_meta$3 || {},
-    component: () => import('./add-DIrxMdKf.mjs')
-  },
-  {
     name: "feeds",
     path: "/feeds",
     meta: __nuxt_page_meta$2 || {},
-    component: () => import('./feeds-D0M3LYU0.mjs')
+    component: () => import('./feeds-BmtHXhnp.mjs')
   },
   {
     name: "settings",
     path: "/settings",
     meta: __nuxt_page_meta$1 || {},
-    component: () => import('./settings-tmJqJTUy.mjs')
+    component: () => import('./settings-z29COg3G.mjs')
   },
   {
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-BWWOelHf.mjs')
+    component: () => import('./index-MaIfCQKN.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -2018,21 +2009,21 @@ function applyTrailingSlashBehavior(to, trailingSlash) {
 }
 const cfg0 = defineAppConfig({
   ui: {
-    primary: "phosphor",
+    primary: "accent",
     gray: "slate",
     button: {
       slots: {
-        base: "font-karla font-bold tracking-wide uppercase text-xs"
+        base: "font-karla font-semibold tracking-wide uppercase text-xs"
       },
       variants: {
         color: {
-          primary: "bg-phosphor text-deep-field hover:bg-static",
-          neutral: "bg-transparent border border-white/25 text-phosphor hover:bg-white/5"
+          primary: "bg-accent text-white hover:bg-accent-h",
+          neutral: "bg-white border border-line-strong text-ink-1 hover:bg-accent-t"
         },
         variant: {
           solid: "",
-          outline: "border border-scan text-phosphor",
-          ghost: "text-phosphor hover:bg-white/5"
+          outline: "border border-line-strong text-ink-1 bg-white",
+          ghost: "text-ink-0 bg-white/50 border border-white/85 hover:bg-white/78"
         },
         size: {
           xs: "px-2 py-1 text-[10px]",
@@ -2049,7 +2040,7 @@ const cfg0 = defineAppConfig({
     },
     input: {
       slots: {
-        base: "font-mono text-sm bg-transparent border-b border-white/20 text-phosphor placeholder:text-flicker/50 focus:border-halation"
+        base: "font-mono text-sm bg-white border border-line-strong text-ink-1 placeholder:text-ink-4 focus:border-accent"
       },
       variants: {
         size: {
@@ -2062,17 +2053,17 @@ const cfg0 = defineAppConfig({
     },
     select: {
       slots: {
-        base: "font-mono text-sm bg-transparent border border-scan text-phosphor rounded-none",
-        placeholder: "text-ghost/60",
-        value: "text-phosphor",
-        trailingIcon: "text-ghost/60",
-        content: "bg-deep-field border border-scan/50 rounded-none shadow-lg",
-        viewport: "divide-y divide-scan/20",
-        item: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor rounded-none",
-        itemLabel: "text-ghost",
-        itemTrailingIcon: "text-halation",
-        label: "font-karla text-sm text-ghost",
-        separator: "bg-scan/30"
+        base: "font-mono text-sm bg-white border border-line-strong text-ink-1",
+        placeholder: "text-ink-4",
+        value: "text-ink-1",
+        trailingIcon: "text-ink-4",
+        content: "bg-surface border border-line-strong shadow-lg",
+        viewport: "divide-y divide-line/20",
+        item: "font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1",
+        itemLabel: "text-ink-3",
+        itemTrailingIcon: "text-accent",
+        label: "font-karla text-sm text-ink-3",
+        separator: "bg-line/30"
       },
       variants: {
         size: {
@@ -2085,8 +2076,8 @@ const cfg0 = defineAppConfig({
           primary: ""
         },
         variant: {
-          outline: "border-scan text-phosphor",
-          ghost: "border-transparent text-phosphor hover:bg-electric/20"
+          outline: "border-line-strong text-ink-1",
+          ghost: "border-transparent text-ink-1 hover:bg-surface"
         }
       },
       defaultVariants: {
@@ -2097,53 +2088,53 @@ const cfg0 = defineAppConfig({
     },
     card: {
       slots: {
-        root: "bg-deep-field border border-scan/30",
-        header: "p-3 border-b border-scan/20",
+        root: "bg-surface border border-line",
+        header: "p-3 border-b border-line",
         body: "p-3",
-        footer: "p-3 border-t border-scan/20"
+        footer: "p-3 border-t border-line"
       }
     },
     tabs: {
       slots: {
-        list: "gap-0 border-b border-scan/30",
-        trigger: "font-karla text-xs font-bold uppercase tracking-wide text-ghost hover:text-phosphor data-[active=true]:text-halation data-[active=true]:border-b-2 data-[active=true]:border-halation -mb-px"
+        list: "gap-0 border-b border-line",
+        trigger: "font-karla text-xs font-semibold uppercase tracking-wide text-ink-3 hover:text-ink-1 data-[active=true]:text-accent data-[active=true]:border-b-2 data-[active=true]:border-accent -mb-px"
       }
     },
     modal: {
       slots: {
-        overlay: "bg-void/80",
-        content: "bg-deep-field border border-scan/50",
-        header: "p-4 border-b border-scan/30",
+        overlay: "bg-ink-0/50",
+        content: "bg-surface border border-line-strong",
+        header: "p-4 border-b border-line",
         body: "p-4",
-        footer: "p-4 border-t border-scan/30"
+        footer: "p-4 border-t border-line"
       }
     },
     dropdown: {
       slots: {
-        root: "bg-deep-field border border-scan/50",
-        label: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor"
+        root: "bg-surface border border-line-strong",
+        label: "font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1"
       }
     },
     table: {
       slots: {
         root: "border-collapse",
-        th: "font-mono text-[10px] uppercase tracking-widest text-ghost/60 border-b border-scan/30 px-3 py-2 text-left",
-        td: "font-karla text-sm text-ghost border-b border-scan/20 px-3 py-2"
+        th: "font-mono text-[10px] uppercase tracking-widest text-ink-3 border-b border-line px-3 py-2 text-left",
+        td: "font-karla text-sm text-ink-2 border-b border-line/50 px-3 py-2"
       }
     },
     alert: {
       slots: {
-        root: "border font-mono text-xs rounded-none",
-        title: "font-bold text-phosphor",
-        description: "text-ghost",
+        root: "border font-mono text-xs",
+        title: "font-semibold text-ink-1",
+        description: "text-ink-2",
         icon: "shrink-0"
       },
       variants: {
         color: {
-          error: "bg-[#EFF3FF] text-[#0E1E8A] border-[#EFF3FF]",
-          success: "bg-[rgba(100,255,180,0.1)] text-[#80FFB8] border-[rgba(100,255,180,0.2)]",
-          warning: "bg-[rgba(255,209,102,0.1)] text-[#FFD166] border-[rgba(255,209,102,0.25)]",
-          info: "bg-[rgba(150,170,255,0.1)] text-[#96AAFF] border-[rgba(150,170,255,0.2)]"
+          error: "bg-red-bg text-red border-red-line",
+          success: "bg-green-bg text-green border-green-line",
+          warning: "bg-amber-bg text-amber border-amber-line",
+          info: "bg-surface text-ink-3 border-line"
         },
         variant: {
           solid: "",
@@ -2162,7 +2153,7 @@ const cfg0 = defineAppConfig({
     },
     tooltip: {
       slots: {
-        content: "bg-deep-field border border-scan/50 font-karla text-xs text-phosphor"
+        content: "bg-surface border border-line-strong font-karla text-xs text-ink-1"
       }
     }
   }
@@ -2912,7 +2903,7 @@ const localeLoaders = {
     {
       key: "locale_en_46json_64595a20",
       load: () => import(
-        './en-Ml-yluM3.mjs'
+        './en-DUyMcIoY.mjs'
         /* webpackChunkName: "locale_en_46json_64595a20" */
       ),
       cache: true
@@ -2922,7 +2913,7 @@ const localeLoaders = {
     {
       key: "locale_fr_46json_821f442b",
       load: () => import(
-        './fr-ptF-5kRL.mjs'
+        './fr-BRsq6K4L.mjs'
         /* webpackChunkName: "locale_fr_46json_821f442b" */
       ),
       cache: true
@@ -2932,7 +2923,7 @@ const localeLoaders = {
     {
       key: "locale_es_46json_e61a49f1",
       load: () => import(
-        './es-DUqkvZdC.mjs'
+        './es-DYIUckQ-.mjs'
         /* webpackChunkName: "locale_es_46json_e61a49f1" */
       ),
       cache: true
@@ -2942,7 +2933,7 @@ const localeLoaders = {
     {
       key: "locale_zh_46json_893763b0",
       load: () => import(
-        './zh-DrmxFSe1.mjs'
+        './zh-BUDWqYQg.mjs'
         /* webpackChunkName: "locale_zh_46json_893763b0" */
       ),
       cache: true
@@ -2952,7 +2943,7 @@ const localeLoaders = {
     {
       key: "locale_hi_46json_e2842f6b",
       load: () => import(
-        './hi-PG_q1NUH.mjs'
+        './hi-BLZ9anxL.mjs'
         /* webpackChunkName: "locale_hi_46json_e2842f6b" */
       ),
       cache: true
@@ -3150,7 +3141,7 @@ function createNuxtI18nContext(nuxt, vueI18n, defaultLocale) {
       return;
     }
     const headers = getLocaleConfig(locale)?.cacheable ? {} : { "Cache-Control": "no-cache" };
-    const messages = await $fetch(`${"/_i18n/hobWfAbA"}/${locale}/messages.json`, { headers });
+    const messages = await $fetch(`${"/_i18n/IiIeh9uo"}/${locale}/messages.json`, { headers });
     for (const k of Object.keys(messages)) {
       i18n.mergeLocaleMessage(k, messages[k]);
     }
@@ -7409,7 +7400,7 @@ const i18n_EI7LsD1KYQADczz5hrChviGQCdVM8yUkvFEZLJpmnvM = /* @__PURE__ */ defineN
     {
       localeConfigs.value = useRequestEvent().context.nuxtI18n?.localeConfigs || {};
     }
-    prerenderRoutes(localeCodes.map((locale) => `${"/_i18n/hobWfAbA"}/${locale}/messages.json`));
+    prerenderRoutes(localeCodes.map((locale) => `${"/_i18n/IiIeh9uo"}/${locale}/messages.json`));
     const i18n = createI18n(optionsI18n);
     const detectors = useDetectors(useRequestEvent(nuxt), useI18nDetection(nuxt), nuxt);
     const ctx = createNuxtI18nContext(nuxt, i18n, optionsI18n.defaultLocale);
@@ -11009,7 +11000,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-1dxY_FKM.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-Ddp57XZa.mjs').then((m) => m.default || m))
 };
 const routeRulesMatcher = _routeRulesMatcher;
 const LayoutLoader = defineComponent({
@@ -11390,5 +11381,5 @@ let entry;
 }
 const entry_default = ((ssrContext) => entry(ssrContext));
 
-export { __nuxt_component_0$2 as _, useAppConfig as a, useComponentUI as b, useFieldGroup as c, useComponentIcons as d, entry_default as default, _sfc_main$d as e, _sfc_main$b as f, get as g, useI18n as h, _sfc_main$8 as i, useLocale as j, usePortal as k, useFetch as l, useFormField as m, navigateTo as n, looseToNumber as o, useRoute as p, isArrayOfArray as q, _sfc_main$c as r, getDisplayValue as s, tv as t, useHead as u };
+export { __nuxt_component_0$2 as _, _sfc_main$8 as a, useFetch as b, useI18n as c, _sfc_main$d as d, entry_default as default, useLocale as e, useAppConfig as f, get as g, useComponentUI as h, usePortal as i, useFormField as j, useFieldGroup as k, useComponentIcons as l, isArrayOfArray as m, compare as n, _sfc_main$b as o, _sfc_main$c as p, looseToNumber as q, getDisplayValue as r, useState as s, tv as t, useHead as u, useRoute as v };
 //# sourceMappingURL=server.mjs.map

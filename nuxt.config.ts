@@ -10,21 +10,10 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@vite-pwa/nuxt',
     '@nuxtjs/color-mode',
+    '@nuxtjs/device',
   ],
 
   devtools: { enabled: true },
-
-  fonts: {
-    families: [
-      { name: 'Inter', provider: 'google' },
-      { name: 'Karla', provider: 'google' },
-      { name: 'Inconsolata', provider: 'google' },
-    ],
-  },
-
-  devServer: {
-    port: 3000,
-  },
 
   app: {
     head: {
@@ -42,12 +31,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  ui: {},
-
   colorMode: {
     preference: 'dark',
     fallback: 'dark',
   },
+
+  ui: {},
 
   runtimeConfig: {
     // Server-side only
@@ -64,6 +53,10 @@ export default defineNuxtConfig({
       appName: 'Ogawa',
       appVersion: '1.0.0',
     },
+  },
+
+  devServer: {
+    port: 3000,
   },
 
   future: {
@@ -95,6 +88,14 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
     shim: false,
+  },
+
+  fonts: {
+    families: [
+      { name: 'Inter', provider: 'google' },
+      { name: 'Karla', provider: 'google' },
+      { name: 'Inconsolata', provider: 'google' },
+    ],
   },
 
   i18n: {

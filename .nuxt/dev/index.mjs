@@ -586,22 +586,36 @@ const cachedEventHandler = defineCachedEventHandler;
 const defineAppConfig = (config) => config;
 
 const appConfig0 = defineAppConfig({
+  layout: {
+    mobileBreakpoint: 768,
+    sidebarWidth: 56,
+    mobileNavItems: [
+      { name: "nav.torrents", path: "/", icon: "i-heroicons-arrow-down-circle" },
+      { name: "nav.add", icon: "i-heroicons-plus-circle", action: "addTorrent" },
+      { name: "nav.feeds", path: "/feeds", icon: "i-heroicons-rss" }
+    ],
+    desktopNavItems: [
+      { name: "nav.torrents", path: "/", icon: "i-heroicons-arrow-down-circle" },
+      { name: "nav.feeds", path: "/feeds", icon: "i-heroicons-rss" }
+    ],
+    settingsItem: { name: "nav.settings", path: "/settings", icon: "i-heroicons-cog-6-tooth" }
+  },
   ui: {
-    primary: "phosphor",
+    primary: "accent",
     gray: "slate",
     button: {
       slots: {
-        base: "font-karla font-bold tracking-wide uppercase text-xs"
+        base: "font-karla font-semibold tracking-wide uppercase text-xs"
       },
       variants: {
         color: {
-          primary: "bg-phosphor text-deep-field hover:bg-static",
-          neutral: "bg-transparent border border-white/25 text-phosphor hover:bg-white/5"
+          primary: "bg-accent text-white hover:bg-accent-h",
+          neutral: "bg-white border border-line-strong text-ink-1 hover:bg-accent-t"
         },
         variant: {
           solid: "",
-          outline: "border border-scan text-phosphor",
-          ghost: "text-phosphor hover:bg-white/5"
+          outline: "border border-line-strong text-ink-1 bg-white",
+          ghost: "text-ink-0 bg-white/50 border border-white/85 hover:bg-white/78"
         },
         size: {
           xs: "px-2 py-1 text-[10px]",
@@ -618,7 +632,7 @@ const appConfig0 = defineAppConfig({
     },
     input: {
       slots: {
-        base: "font-mono text-sm bg-transparent border-b border-white/20 text-phosphor placeholder:text-flicker/50 focus:border-halation"
+        base: "font-mono text-sm bg-white border border-line-strong text-ink-1 placeholder:text-ink-4 focus:border-accent"
       },
       variants: {
         size: {
@@ -631,17 +645,17 @@ const appConfig0 = defineAppConfig({
     },
     select: {
       slots: {
-        base: "font-mono text-sm bg-transparent border border-scan text-phosphor rounded-none",
-        placeholder: "text-ghost/60",
-        value: "text-phosphor",
-        trailingIcon: "text-ghost/60",
-        content: "bg-deep-field border border-scan/50 rounded-none shadow-lg",
-        viewport: "divide-y divide-scan/20",
-        item: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor rounded-none",
-        itemLabel: "text-ghost",
-        itemTrailingIcon: "text-halation",
-        label: "font-karla text-sm text-ghost",
-        separator: "bg-scan/30"
+        base: "font-mono text-sm bg-white border border-line-strong text-ink-1",
+        placeholder: "text-ink-4",
+        value: "text-ink-1",
+        trailingIcon: "text-ink-4",
+        content: "bg-surface border border-line-strong shadow-lg",
+        viewport: "divide-y divide-line/20",
+        item: "font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1",
+        itemLabel: "text-ink-3",
+        itemTrailingIcon: "text-accent",
+        label: "font-karla text-sm text-ink-3",
+        separator: "bg-line/30"
       },
       variants: {
         size: {
@@ -654,8 +668,8 @@ const appConfig0 = defineAppConfig({
           primary: ""
         },
         variant: {
-          outline: "border-scan text-phosphor",
-          ghost: "border-transparent text-phosphor hover:bg-electric/20"
+          outline: "border-line-strong text-ink-1",
+          ghost: "border-transparent text-ink-1 hover:bg-surface"
         }
       },
       defaultVariants: {
@@ -666,53 +680,53 @@ const appConfig0 = defineAppConfig({
     },
     card: {
       slots: {
-        root: "bg-deep-field border border-scan/30",
-        header: "p-3 border-b border-scan/20",
+        root: "bg-surface border border-line",
+        header: "p-3 border-b border-line",
         body: "p-3",
-        footer: "p-3 border-t border-scan/20"
+        footer: "p-3 border-t border-line"
       }
     },
     tabs: {
       slots: {
-        list: "gap-0 border-b border-scan/30",
-        trigger: "font-karla text-xs font-bold uppercase tracking-wide text-ghost hover:text-phosphor data-[active=true]:text-halation data-[active=true]:border-b-2 data-[active=true]:border-halation -mb-px"
+        list: "gap-0 border-b border-line",
+        trigger: "font-karla text-xs font-semibold uppercase tracking-wide text-ink-3 hover:text-ink-1 data-[active=true]:text-accent data-[active=true]:border-b-2 data-[active=true]:border-accent -mb-px"
       }
     },
     modal: {
       slots: {
-        overlay: "bg-void/80",
-        content: "bg-deep-field border border-scan/50",
-        header: "p-4 border-b border-scan/30",
+        overlay: "bg-ink-0/50",
+        content: "bg-surface border border-line-strong",
+        header: "p-4 border-b border-line",
         body: "p-4",
-        footer: "p-4 border-t border-scan/30"
+        footer: "p-4 border-t border-line"
       }
     },
     dropdown: {
       slots: {
-        root: "bg-deep-field border border-scan/50",
-        label: "font-karla text-sm text-ghost hover:bg-electric hover:text-phosphor"
+        root: "bg-surface border border-line-strong",
+        label: "font-karla text-sm text-ink-3 hover:bg-accent-t hover:text-ink-1"
       }
     },
     table: {
       slots: {
         root: "border-collapse",
-        th: "font-mono text-[10px] uppercase tracking-widest text-ghost/60 border-b border-scan/30 px-3 py-2 text-left",
-        td: "font-karla text-sm text-ghost border-b border-scan/20 px-3 py-2"
+        th: "font-mono text-[10px] uppercase tracking-widest text-ink-3 border-b border-line px-3 py-2 text-left",
+        td: "font-karla text-sm text-ink-2 border-b border-line/50 px-3 py-2"
       }
     },
     alert: {
       slots: {
-        root: "border font-mono text-xs rounded-none",
-        title: "font-bold text-phosphor",
-        description: "text-ghost",
+        root: "border font-mono text-xs",
+        title: "font-semibold text-ink-1",
+        description: "text-ink-2",
         icon: "shrink-0"
       },
       variants: {
         color: {
-          error: "bg-[#EFF3FF] text-[#0E1E8A] border-[#EFF3FF]",
-          success: "bg-[rgba(100,255,180,0.1)] text-[#80FFB8] border-[rgba(100,255,180,0.2)]",
-          warning: "bg-[rgba(255,209,102,0.1)] text-[#FFD166] border-[rgba(255,209,102,0.25)]",
-          info: "bg-[rgba(150,170,255,0.1)] text-[#96AAFF] border-[rgba(150,170,255,0.2)]"
+          error: "bg-red-bg text-red border-red-line",
+          success: "bg-green-bg text-green border-green-line",
+          warning: "bg-amber-bg text-amber border-amber-line",
+          info: "bg-surface text-ink-3 border-line"
         },
         variant: {
           solid: "",
@@ -731,7 +745,7 @@ const appConfig0 = defineAppConfig({
     },
     tooltip: {
       slots: {
-        content: "bg-deep-field border border-scan/50 font-karla text-xs text-phosphor"
+        content: "bg-surface border border-line-strong font-karla text-xs text-ink-1"
       }
     }
   }
@@ -1113,6 +1127,9 @@ const _inlineRuntimeConfig = {
   "public": {
     "appName": "Ogawa",
     "appVersion": "1.0.0",
+    "device": {
+      "defaultUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36"
+    },
     "i18n": {
       "baseUrl": "",
       "defaultLocale": "en",
@@ -2728,6 +2745,7 @@ var add$4 = {
 };
 var settings$7 = {
 	title: "Settings",
+	language: "Language",
 	connection: "Connection",
 	torrentClient: "Torrent Client",
 	clientUrl: "{client} URL",
@@ -2837,6 +2855,7 @@ var add$3 = {
 };
 var settings$6 = {
 	title: "Paramètres",
+	language: "Langue",
 	connection: "Connexion",
 	torrentClient: "Client Torrent",
 	clientUrl: "URL {client}",
@@ -2946,6 +2965,7 @@ var add$2 = {
 };
 var settings$5 = {
 	title: "Ajustes",
+	language: "Idioma",
 	connection: "Conexión",
 	torrentClient: "Cliente Torrent",
 	clientUrl: "URL de {client}",
@@ -3055,6 +3075,7 @@ var add$1 = {
 };
 var settings$4 = {
 	title: "设置",
+	language: "语言",
 	connection: "连接",
 	torrentClient: "BT客户端",
 	clientUrl: "{client} 链接",
@@ -3164,6 +3185,7 @@ var add = {
 };
 var settings$3 = {
 	title: "सेटिंग्स",
+	language: "भाषा",
 	connection: "कनेक्शन",
 	torrentClient: "टॉरेंट क्लाइंट",
 	clientUrl: "{client} URL",
@@ -3766,7 +3788,7 @@ const _PoqAkneXbtjxxd7hx2mJPS8crrTR7gtDbVVQBsJxo = defineNitroPlugin(async (nitr
     const localeSegment = detector.route(event.path);
     const pathLocale = isSupportedLocale(localeSegment) && localeSegment || void 0;
     const path = (pathLocale && url.pathname.slice(pathLocale.length + 1)) ?? url.pathname;
-    if (!url.pathname.includes("/_i18n/KvcY7oEv") && !isExistingNuxtRoute(path)) {
+    if (!url.pathname.includes("/_i18n/F_DW8ltc") && !isExistingNuxtRoute(path)) {
       return;
     }
     const resolved = resolveRedirectPath(event, path, pathLocale, ctx.vueI18nOptions.defaultLocale, detector);
@@ -3888,7 +3910,22 @@ _4LMpcbpwdYBnIbK__Ln2kQ2fGw3CYbG7p7bFd6TDpTM,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"33bac-0s4umoLBFDeeULoLrrAyVVHcgrQ\"",
+    "mtime": "2026-03-14T20:34:35.065Z",
+    "size": 211884,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"b5e90-NPx95xJlwS2edMUsLr9oPGTSrOA\"",
+    "mtime": "2026-03-14T20:34:35.065Z",
+    "size": 745104,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -4958,30 +4995,30 @@ const schema = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   torrentTags: torrentTags
 }, Symbol.toStringTag, { value: 'Module' }));
 
-let db = null;
+let db$1 = null;
 function getDb() {
-  if (db) return db;
+  if (db$1) return db$1;
   const tursoUrl = process.env.TURSO_URL || "file:ogawa.db";
   const tursoToken = process.env.TURSO_TOKEN;
   const client = createClient({
     url: tursoUrl,
     authToken: tursoToken
   });
-  db = drizzle(client, { schema });
-  return db;
+  db$1 = drizzle(client, { schema });
+  return db$1;
 }
-const db$1 = getDb();
+const db = getDb();
 
 const index$4 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   db: getDb,
-  default: db$1
+  default: db
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const index$2 = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db$1.select().from(feeds).all();
+    const rows = await db.select().from(feeds).all();
     return rows.map((row) => ({
       id: row.id,
       url: row.url,
@@ -4999,7 +5036,7 @@ const index$2 = defineEventHandler(async (event) => {
         message: "URL is required"
       });
     }
-    const id = await db$1.insert(feeds).values({
+    const id = await db.insert(feeds).values({
       url,
       title: url,
       createdAt: /* @__PURE__ */ new Date()
@@ -5020,7 +5057,7 @@ const index$3 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
 const settings = defineEventHandler(async (event) => {
   const method = event.method;
   if (method === "GET") {
-    const rows = await db$1.select().from(settings$2).all();
+    const rows = await db.select().from(settings$2).all();
     const result = {};
     for (const row of rows) {
       const parts = row.key.split(".");
@@ -5044,7 +5081,7 @@ const settings = defineEventHandler(async (event) => {
         for (const [key, value] of Object.entries(values)) {
           const settingKey = `${category}.${key}`;
           const stringValue = String(value != null ? value : "");
-          await db$1.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
+          await db.update(settings$2).set({ value: stringValue, updatedAt: /* @__PURE__ */ new Date() }).where(eq(settings$2.key, settingKey)).run();
         }
       }
     }

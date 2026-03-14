@@ -1,0 +1,105 @@
+const resource = {
+  "nav": {
+    "torrents": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Torrents" } },
+    "add": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter" } },
+    "feeds": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Flux" } },
+    "settings": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Paramètres" } }
+  },
+  "torrents": {
+    "title": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Torrents" } },
+    "search": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Rechercher..." } },
+    "noResults": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Aucun torrent" } },
+    "addFirst": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter un torrent" } },
+    "name": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Nom" } },
+    "size": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Taille" } },
+    "down": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Réception" } },
+    "up": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Envoi" } },
+    "sp": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "S/P" } },
+    "ratio": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ratio" } },
+    "percent": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "%" } },
+    "added": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouté" } },
+    "unknown": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Inconnu" } },
+    "seedsPeers": { "t": 0, "b": { "t": 2, "i": [{ "t": 4, "k": "seeds" }, { "t": 3, "v": "S / " }, { "t": 4, "k": "peers" }, { "t": 3, "v": "P" }] } }
+  },
+  "status": {
+    "all": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Tous" } },
+    "downloading": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Téléchargement" } },
+    "seeding": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Seed" } },
+    "paused": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "En pause" } },
+    "stopped": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Arrêté" } },
+    "error": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Erreur" } }
+  },
+  "add": {
+    "title": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter un torrent" } },
+    "file": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Fichier" } },
+    "magnet": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Magnet" } },
+    "url": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "URL" } },
+    "dragDrop": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Glissez-déposez un fichier .torrent ici" } },
+    "orClickToBrowse": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "ou cliquez pour parcourir" } },
+    "magnetPlaceholder": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "magnet:?xt=urn:btih:..." } },
+    "urlPlaceholder": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "https://exemple.com/torrent.torrent" } },
+    "addMagnet": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter Magnet" } },
+    "addFromUrl": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter depuis URL" } },
+    "paste": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Coller" } },
+    "invalidFile": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Veuillez sélectionner un fichier .torrent" } },
+    "torrentAddedSuccess": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Torrent ajouté avec succès !" } },
+    "torrentAddFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de l'ajout du torrent" } },
+    "enterMagnet": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Veuillez entrer un lien magnet" } },
+    "magnetAddSuccess": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Lien magnet ajouté avec succès !" } },
+    "magnetAddFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de l'ajout du lien magnet" } },
+    "enterUrl": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Veuillez entrer une URL" } },
+    "urlAddSuccess": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Torrent ajouté depuis l'URL avec succès !" } },
+    "urlAddFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de l'ajout du torrent depuis l'URL" } },
+    "clipboardFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de la lecture du presse-papiers" } }
+  },
+  "settings": {
+    "title": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Paramètres" } },
+    "language": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Langue" } },
+    "connection": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Connexion" } },
+    "torrentClient": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Client Torrent" } },
+    "clientUrl": { "t": 0, "b": { "t": 2, "i": [{ "t": 3, "v": "URL " }, { "t": 4, "k": "client" }] } },
+    "username": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Nom d'utilisateur" } },
+    "password": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Mot de passe" } },
+    "host": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Hôte" } },
+    "port": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Port" } },
+    "scgiUrl": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "URL SCGI" } },
+    "testConnection": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Tester la connexion" } },
+    "connectionSuccess": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Connexion réussie !" } },
+    "connectionFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de la connexion" } },
+    "interface": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Interface" } },
+    "theme": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Thème" } },
+    "themeSystem": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Système" } },
+    "themeLight": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Clair" } },
+    "themeDark": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Sombre" } },
+    "itemsPerPage": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Éléments par page" } },
+    "downloads": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Téléchargements" } },
+    "defaultDownloadPath": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Chemin de téléchargement par défaut" } },
+    "maxActiveDownloads": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Téléchargements actifs max" } },
+    "downloadSpeedLimit": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Limite de réception (Ko/s)" } },
+    "uploadSpeedLimit": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Limite d'envoi (Ko/s)" } },
+    "unlimited": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "0 = illimité" } },
+    "save": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Enregistrer" } }
+  },
+  "feeds": {
+    "title": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Flux RSS" } },
+    "addFeed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter un flux" } },
+    "noFeeds": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Aucun flux RSS" } },
+    "addFirstFeed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajoutez votre premier flux" } },
+    "items": { "t": 0, "b": { "t": 2, "i": [{ "t": 4, "k": "count" }, { "t": 3, "v": " éléments" }] } },
+    "lastUpdated": { "t": 0, "b": { "t": 2, "i": [{ "t": 3, "v": "Dernière mise à jour : " }, { "t": 4, "k": "date" }] } },
+    "never": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Jamais" } },
+    "addRssFeed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Ajouter un flux RSS" } },
+    "feedUrlPlaceholder": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "https://exemple.com/feed.xml" } },
+    "cancel": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Annuler" } },
+    "addFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de l'ajout du flux" } },
+    "deleteFailed": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Échec de la suppression du flux" } }
+  },
+  "common": {
+    "loading": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Chargement..." } },
+    "error": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Erreur" } },
+    "success": { "t": 0, "b": { "t": 2, "i": [{ "t": 3 }], "s": "Succès" } }
+  }
+};
+
+export { resource as default };
+//# sourceMappingURL=fr-BRsq6K4L.mjs.map

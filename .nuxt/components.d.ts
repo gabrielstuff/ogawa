@@ -14,6 +14,24 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const AddTorrentModal: typeof import("../components/AddTorrentModal.vue")['default']
+export const AppBottomNav: typeof import("../components/AppBottomNav.vue")['default']
+export const AppSidebar: typeof import("../components/AppSidebar.vue")['default']
+export const CircularProgress: typeof import("../components/CircularProgress.vue")['default']
+export const ClientConfigForm: typeof import("../components/ClientConfigForm.vue")['default']
+export const DownloadSettings: typeof import("../components/DownloadSettings.vue")['default']
+export const EmptyState: typeof import("../components/EmptyState.vue")['default']
+export const FeedCard: typeof import("../components/FeedCard.vue")['default']
+export const FeedList: typeof import("../components/FeedList.vue")['default']
+export const InterfaceSettings: typeof import("../components/InterfaceSettings.vue")['default']
+export const LinearProgressBar: typeof import("../components/LinearProgressBar.vue")['default']
+export const SearchFilter: typeof import("../components/SearchFilter.vue")['default']
+export const SettingsSection: typeof import("../components/SettingsSection.vue")['default']
+export const StatusBadge: typeof import("../components/StatusBadge.vue")['default']
+export const TorrentCard: typeof import("../components/TorrentCard.vue")['default']
+export const TorrentList: typeof import("../components/TorrentList.vue")['default']
+export const TorrentRow: typeof import("../components/TorrentRow.vue")['default']
+export const UButtonBracket: typeof import("../components/UButtonBracket.vue")['default']
 export const UColorModeAvatar: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue")['default']
 export const UColorModeButton: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue")['default']
 export const UColorModeImage: typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue")['default']
@@ -172,6 +190,24 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Html']
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+export const LazyAddTorrentModal: LazyComponent<typeof import("../components/AddTorrentModal.vue")['default']>
+export const LazyAppBottomNav: LazyComponent<typeof import("../components/AppBottomNav.vue")['default']>
+export const LazyAppSidebar: LazyComponent<typeof import("../components/AppSidebar.vue")['default']>
+export const LazyCircularProgress: LazyComponent<typeof import("../components/CircularProgress.vue")['default']>
+export const LazyClientConfigForm: LazyComponent<typeof import("../components/ClientConfigForm.vue")['default']>
+export const LazyDownloadSettings: LazyComponent<typeof import("../components/DownloadSettings.vue")['default']>
+export const LazyEmptyState: LazyComponent<typeof import("../components/EmptyState.vue")['default']>
+export const LazyFeedCard: LazyComponent<typeof import("../components/FeedCard.vue")['default']>
+export const LazyFeedList: LazyComponent<typeof import("../components/FeedList.vue")['default']>
+export const LazyInterfaceSettings: LazyComponent<typeof import("../components/InterfaceSettings.vue")['default']>
+export const LazyLinearProgressBar: LazyComponent<typeof import("../components/LinearProgressBar.vue")['default']>
+export const LazySearchFilter: LazyComponent<typeof import("../components/SearchFilter.vue")['default']>
+export const LazySettingsSection: LazyComponent<typeof import("../components/SettingsSection.vue")['default']>
+export const LazyStatusBadge: LazyComponent<typeof import("../components/StatusBadge.vue")['default']>
+export const LazyTorrentCard: LazyComponent<typeof import("../components/TorrentCard.vue")['default']>
+export const LazyTorrentList: LazyComponent<typeof import("../components/TorrentList.vue")['default']>
+export const LazyTorrentRow: LazyComponent<typeof import("../components/TorrentRow.vue")['default']>
+export const LazyUButtonBracket: LazyComponent<typeof import("../components/UButtonBracket.vue")['default']>
 export const LazyUColorModeAvatar: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeAvatar.vue")['default']>
 export const LazyUColorModeButton: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue")['default']>
 export const LazyUColorModeImage: LazyComponent<typeof import("../node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeImage.vue")['default']>

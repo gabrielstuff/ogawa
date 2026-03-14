@@ -33,6 +33,10 @@ import { RuntimeConfig as UserRuntimeConfig, PublicRuntimeConfig as UserPublicRu
 
    appVersion: string,
 
+   device: {
+      defaultUserAgent: string,
+   },
+
    i18n: {
       baseUrl: string,
 

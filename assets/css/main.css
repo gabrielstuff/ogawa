@@ -664,96 +664,120 @@ body {
 }
 
 /* ===========================================
-   SELECT DROPDOWN OVERRIDES
-   CRT Signal styling for USelect component
+   SELECT MENU DROPDOWN OVERRIDES
+   CRT Signal styling for USelectMenu component (Nuxt UI v3)
    =========================================== */
 
-/* Select trigger */
-button[type="button"].inline-flex {
+/* SelectMenu trigger button */
+button[type="button"].inline-flex.items-center {
   font-family: var(--font-mono) !important;
-  background: transparent !important;
+  background: var(--surface) !important;
   border: 1px solid var(--line) !important;
   color: var(--ink-0) !important;
   border-radius: 0 !important;
 }
 
-button[type="button"].inline-flex:hover {
+button[type="button"].inline-flex.items-center:hover {
   border-color: var(--accent) !important;
-  background: rgba(255, 255, 255, 0.05) !important;
 }
 
-button[type="button"].inline-flex:focus {
+button[type="button"].inline-flex.items-center:focus {
   border-color: var(--accent) !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
-/* Select placeholder */
-button[type="button"].inline-flex .truncate {
+/* SelectMenu placeholder */
+button[type="button"].inline-flex.items-center .truncate {
   color: var(--ink-3) !important;
   opacity: 0.6;
 }
 
-/* Select value */
-button[type="button"].inline-flex .text-highlighted {
+/* SelectMenu value */
+button[type="button"].inline-flex.items-center .text-highlighted {
   color: var(--ink-0) !important;
 }
 
-/* Select chevron icon */
-button[type="button"].inline-flex svg[data-name="chevron-down"],
-button[type="button"].inline-flex svg[data-name="ChevronDown"] {
+/* SelectMenu chevron icon */
+button[type="button"].inline-flex.items-center svg[data-name="chevron-down"],
+button[type="button"].inline-flex.items-center svg[data-name="ChevronDown"],
+button[type="button"].inline-flex.items-center .group-data-[state=open]:rotate-180 {
   color: var(--ink-3) !important;
 }
 
-/* Select dropdown content */
-[data-radix-popper-content-wrapper] > div[data-state="open"] > div[id*="radix"],
-div[data-variant="select"] {
+/* SelectMenu dropdown content - the popup menu */
+[data-radix-popper-content-wrapper] > div[id*="select"],
+[data-radix-popper-content-wrapper] > div[data-state="open"],
+div[data-variant="select-menu"],
+div[class*="select-menu__content"] {
   background: var(--surface) !important;
   border: 1px solid var(--line) !important;
   border-radius: 0 !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Select dropdown items */
-div[data-variant="select"] [data-radix-collection-item],
-div[data-variant="select"] [role="option"] {
-  font-family: var(--font-karla) !important;
-  color: var(--ink-3) !important;
-  padding: 8px 12px !important;
+/* SelectMenu dropdown viewport/items container */
+[data-radix-popper-content-wrapper] > div[id*="select"] div[class*="viewport"],
+div[data-variant="select-menu"] [data-radix-collection-viewport],
+div[class*="select-menu__viewport"] {
+  background: var(--surface) !important;
 }
 
-div[data-variant="select"] [data-radix-collection-item]:hover,
-div[data-variant="select"] [role="option"]:hover,
-div[data-variant="select"] [data-highlighted],
-div[data-variant="select"] [data-state="highlighted"] {
-  background: var(--ink-2) !important;
+/* SelectMenu dropdown items */
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item],
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="option"],
+div[data-variant="select-menu"] [data-radix-collection-item],
+div[data-variant="select-menu"] [role="option"] {
+  font-family: var(--font-karla) !important;
+  color: var(--ink-1) !important;
+  padding: 8px 12px !important;
+  background: transparent !important;
+}
+
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item]:hover,
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="option"]:hover,
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-highlighted],
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-state="highlighted"],
+div[data-variant="select-menu"] [data-radix-collection-item]:hover,
+div[data-variant="select-menu"] [role="option"]:hover,
+div[data-variant="select-menu"] [data-highlighted],
+div[data-variant="select-menu"] [data-state="highlighted"] {
+  background: var(--surface-2) !important;
   color: var(--ink-0) !important;
   outline: none !important;
 }
 
-/* Select item text */
-div[data-variant="select"] [data-radix-collection-item] span,
-div[data-variant="select"] [role="option"] span {
+/* SelectMenu item text */
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item] span,
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="option"] span,
+div[data-variant="select-menu"] [data-radix-collection-item] span,
+div[data-variant="select-menu"] [role="option"] span {
   color: inherit !important;
 }
 
-/* Select checkmark when selected */
-div[data-variant="select"] [data-radix-collection-item][data-state="checked"] svg,
-div[data-variant="select"] [role="option"][data-state="checked"] svg {
+/* SelectMenu checkmark when selected */
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item][data-state="checked"] svg,
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="option"][data-state="checked"] svg,
+div[data-variant="select-menu"] [data-radix-collection-item][data-state="checked"] svg,
+div[data-variant="select-menu"] [role="option"][data-state="checked"] svg {
   color: var(--accent) !important;
 }
 
-/* Select separator */
-div[data-variant="select"] [role="separator"],
-div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator] {
+/* SelectMenu separator */
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="separator"],
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item] + [data-radix-separator],
+div[data-variant="select-menu"] [role="separator"],
+div[data-variant="select-menu"] [data-radix-collection-item] + [data-radix-separator] {
   background: var(--line) !important;
   height: 1px !important;
   margin: 4px 0 !important;
 }
 
-/* Select group label */
-div[data-variant="select"] [role="group"] span,
-div[data-variant="select"] [data-radix-collection-item][data-disabled] {
+/* SelectMenu group label */
+[data-radix-popper-content-wrapper] > div[id*="select"] [role="group"] span,
+[data-radix-popper-content-wrapper] > div[id*="select"] [data-radix-collection-item][data-disabled],
+div[data-variant="select-menu"] [role="group"] span,
+div[data-variant="select-menu"] [data-radix-collection-item][data-disabled] {
   color: var(--ink-3) !important;
   opacity: 0.5 !important;
 }

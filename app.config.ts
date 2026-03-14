@@ -1,4 +1,19 @@
 export default defineAppConfig({
+  layout: {
+    mobileBreakpoint: 768,
+    sidebarWidth: 56,
+    mobileNavItems: [
+      { name: 'nav.torrents', path: '/', icon: 'i-heroicons-arrow-down-circle' },
+      { name: 'nav.add', icon: 'i-heroicons-plus-circle', action: 'addTorrent' },
+      { name: 'nav.feeds', path: '/feeds', icon: 'i-heroicons-rss' },
+    ],
+    desktopNavItems: [
+      { name: 'nav.torrents', path: '/', icon: 'i-heroicons-arrow-down-circle' },
+      { name: 'nav.feeds', path: '/feeds', icon: 'i-heroicons-rss' },
+    ],
+    settingsItem: { name: 'nav.settings', path: '/settings', icon: 'i-heroicons-cog-6-tooth' },
+  },
+
   ui: {
     primary: 'accent',
     gray: 'slate',
@@ -22,13 +37,13 @@ export default defineAppConfig({
           sm: 'px-3 py-1.5 text-[11px]',
           md: 'px-4 py-2 text-xs',
           lg: 'px-5 py-2.5 text-sm',
-        }
+        },
       },
       defaultVariants: {
         color: 'primary',
         variant: 'solid',
         size: 'md',
-      }
+      },
     },
 
     input: {
@@ -41,8 +56,8 @@ export default defineAppConfig({
           sm: 'h-8 text-sm px-2.5',
           md: 'h-9 text-sm px-3',
           lg: 'h-10 text-base px-4',
-        }
-      }
+        },
+      },
     },
 
     select: {
@@ -78,7 +93,7 @@ export default defineAppConfig({
         size: 'md',
         color: 'primary',
         variant: 'outline',
-      }
+      },
     },
 
     card: {
@@ -139,12 +154,12 @@ export default defineAppConfig({
         variant: {
           solid: '',
           outline: 'bg-transparent',
-        }
+        },
       },
       defaultVariants: {
         color: 'error',
         variant: 'outline',
-      }
+      },
     },
 
     badge: {
@@ -158,5 +173,5 @@ export default defineAppConfig({
         content: 'bg-surface border border-line-strong font-karla text-xs text-ink-1',
       },
     },
-  }
+  },
 })
