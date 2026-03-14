@@ -64,9 +64,10 @@ const handleAction = (item: NavItem) => {
           />
           <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ $t(item.name).charAt(0) }}</span>
         </NuxtLink>
-        <button
+        <UButton
           v-else
-          class="flex flex-col items-center justify-center py-3 transition-colors text-ink-3 hover:text-ink-1"
+          variant="ghost"
+          class="flex flex-col items-center justify-center w-full py-3 transition-colors text-ink-3 hover:text-ink-1 rounded-none"
           @click="handleAction(item)"
         >
           <UIcon
@@ -74,7 +75,7 @@ const handleAction = (item: NavItem) => {
             class="w-5 h-5"
           />
           <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ $t(item.name).charAt(0) }}</span>
-        </button>
+        </UButton>
       </template>
     </nav>
 

@@ -48,16 +48,18 @@ function cycleStatus() {
       />
       <span class="bl" /><span class="br2" />
     </div>
-    <button
-      class="bracket px-3 py-1 font-mono text-xs uppercase tracking-widest text-ink-3 hover:text-ink-0 whitespace-nowrap transition-colors min-w-[4rem]"
+    <UButtonBracket
+      variant="bracket"
+      class="font-mono text-xs uppercase tracking-widest whitespace-nowrap min-w-[4rem]"
       @click="cycleStatus"
     >
       {{ currentStatusLabel }}
-      <span class="bl" /><span class="br2" />
-    </button>
-    <button class="bracket px-3 py-1 font-mono text-xs uppercase tracking-widest text-ink-3 whitespace-nowrap hidden sm:block">
+    </UButtonBracket>
+    <UButtonBracket
+      variant="bracket"
+      class="font-mono text-xs uppercase tracking-widest whitespace-nowrap hidden sm:flex"
+    >
       Sort: activity
-      <span class="bl" /><span class="br2" />
-    </button>
+    </UButtonBracket>
   </div>
 </template>

@@ -135,15 +135,11 @@ const queueCount = computed(() => count.value)
     />
 
     <!-- Mobile FAB -->
-    <button
-      class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 flex items-center justify-center shadow-lg transition-colors md:hidden btn-primary"
+    <UButton
+      icon="i-heroicons-plus"
+      class="fixed right-3 bottom-16 sm:bottom-20 w-12 h-12 md:hidden btn-primary shadow-lg"
       @click="showAddModal = true"
-    >
-      <UIcon
-        name="i-heroicons-plus"
-        class="w-5 h-5"
-      />
-    </button>
+    />
 
     <AddTorrentModal
       v-if="showAddModal"
