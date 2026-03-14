@@ -87,15 +87,12 @@ const queueCount = computed(() => filteredTorrents.value.length)
             {{ queueCount }} in queue · rtorrent connected · 0.0 MB/s ↓ · 0.0 MB/s ↑
           </p>
         </div>
-        <UButton
-          class="btn-bracket"
+        <UButtonBracket
+          variant="bracket"
           icon="i-heroicons-arrow-path"
-          variant="ghost"
           size="sm"
           @click="refresh()"
-        >
-          <span class="bl"></span><span class="br2"></span>
-        </UButton>
+        />
       </div>
       <span class="bl"></span><span class="br2"></span>
     </div>
@@ -148,16 +145,14 @@ const queueCount = computed(() => filteredTorrents.value.length)
       </div>
       <div class="flex gap-3 justify-center mb-4">
         <NuxtLink to="/add">
-          <UButton class="btn-bracket">
+          <UButtonBracket variant="bracket">
             + Add torrent
-            <span class="bl"></span><span class="br2"></span>
-          </UButton>
+          </UButtonBracket>
         </NuxtLink>
         <NuxtLink to="/add?tab=magnet">
-          <UButton class="btn-bracket">
+          <UButtonBracket variant="bracket">
             Paste magnet <span class="opacity-60">↗</span>
-            <span class="bl"></span><span class="br2"></span>
-          </UButton>
+          </UButtonBracket>
         </NuxtLink>
       </div>
       <div class="empty-state-meta">

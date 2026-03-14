@@ -54,6 +54,7 @@
   },
   "settings": {
     "title": "设置",
+    "language": "语言",
     "connection": "连接",
     "torrentClient": "BT客户端",
     "clientUrl": "{client} 链接",

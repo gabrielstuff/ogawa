@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { t, locale, locales, setLocale } = useI18n()
+const { t } = useI18n()
 const route = useRoute()
 
 const navItems = computed(() => [
@@ -8,20 +8,6 @@ const navItems = computed(() => [
   { name: t('nav.feeds'), path: '/feeds', icon: 'i-heroicons-rss' },
   { name: t('nav.settings'), path: '/settings', icon: 'i-heroicons-cog-6-tooth' },
 ])
-
-const localeOptions = computed(() =>
-  (locales.value as Array<{ code: string; name: string }>).map(l => ({
-    value: l.code,
-    label: l.name,
-  })),
-)
-
-const currentLocale = computed({
-  get: () => locale.value,
-  set: (val) => {
-    setLocale(val)
-  },
-})
 
 const isMobile = ref(true)
 
@@ -41,22 +27,6 @@ const appVersion = '1.0.0'
   <div class="min-h-screen min-h-[100dvh] bg-blue text-phosphor font-karla">
     <!-- Main Content -->
     <main class="pb-20 md:pb-16 md:ml-14">
-      <!-- Mobile Language Switcher -->
-      <div
-        v-if="isMobile"
-        class="p-2 flex justify-end"
-      >
-        <USelect
-          v-model="currentLocale"
-          :items="localeOptions"
-          option-attribute="label"
-          value-attribute="value"
-          size="xs"
-          color="neutral"
-          variant="outline"
-          class="w-28"
-        />
-      </div>
       <slot />
     </main>
 
@@ -109,19 +79,6 @@ const appVersion = '1.0.0'
           <span class="text-[9px] mt-1 font-bold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
         </NuxtLink>
       </nav>
-
-      <!-- Language Switcher -->
-      <div class="mt-auto">
-        <USelect
-          v-model="currentLocale"
-          :items="localeOptions"
-          option-attribute="label"
-          value-attribute="value"
-          size="xs"
-          color="neutral"
-          variant="outline"
-        />
-      </div>
     </aside>
 
     <!-- Status Strip - Always visible -->

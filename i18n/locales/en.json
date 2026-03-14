@@ -54,6 +54,7 @@
   },
   "settings": {
     "title": "Settings",
+    "language": "Language",
     "connection": "Connection",
     "torrentClient": "Torrent Client",
     "clientUrl": "{client} URL",

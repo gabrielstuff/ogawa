@@ -5,7 +5,7 @@ definePageMeta({
   layout: 'default',
 })
 
-const { t } = useI18n()
+const { t, locale, locales, setLocale } = useI18n()
 
 useHead({
   title: computed(() => `${t('settings.title')} - Ogawa`),
@@ -40,6 +40,20 @@ const themeOptions = computed(() => [
   { value: 'light', label: t('settings.themeLight') },
   { value: 'dark', label: t('settings.themeDark') },
 ])
+
+const localeOptions = computed(() =>
+  (locales.value as Array<{ code: string; name: string }>).map(l => ({
+    value: l.code,
+    label: l.name,
+  })),
+)
+
+const currentLocale = computed({
+  get: () => locale.value,
+  set: (val) => {
+    setLocale(val)
+  },
+})
 
 const clientOptions = [
   { value: 'qBittorrent', label: 'qBittorrent' },
@@ -308,13 +322,13 @@ async function testConnection() {
           </div>
 
           <div class="flex gap-2 pt-2">
-            <UButton
-              class="btn-ghost"
+            <UButtonBracket
+              variant="bracket"
               :loading="testStatus === 'testing'"
               @click="testConnection"
             >
               {{ t('settings.testConnection') }}
-            </UButton>
+            </UButtonBracket>
           </div>
 
           <UAlert
@@ -354,6 +368,19 @@ async function testConnection() {
             <USelect
               v-model="theme"
               :options="themeOptions"
+              option-attribute="label"
+              value-attribute="value"
+              color="neutral"
+              variant="outline"
+              class="w-full"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-2 text-ghost">{{ t('settings.language') }}</label>
+            <USelect
+              v-model="currentLocale"
+              :items="localeOptions"
               option-attribute="label"
               value-attribute="value"
               color="neutral"
@@ -440,15 +467,14 @@ async function testConnection() {
 
       <!-- Save Button -->
       <div class="flex justify-end">
-        <UButton
-          class="btn-bracket"
+        <UButtonBracket
+          variant="bracket"
           :loading="isLoading"
           size="lg"
           @click="saveSettings"
         >
           {{ t('settings.save') }}
-          <span class="bl"></span><span class="br2"></span>
-        </UButton>
+        </UButtonBracket>
       </div>
     </div>
   </div>

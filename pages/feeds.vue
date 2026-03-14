@@ -63,14 +63,13 @@ async function deleteFeed(id: number) {
         <h1 class="text-2xl font-bold text-phosphor">
           {{ t('feeds.title') }}
         </h1>
-        <UButton
-          class="btn-bracket"
+        <UButtonBracket
+          variant="bracket"
           icon="i-heroicons-plus"
           @click="showAddModal = true"
         >
           {{ t('feeds.addFeed') }}
-          <span class="bl"></span><span class="br2"></span>
-        </UButton>
+        </UButtonBracket>
       </div>
       <p class="header-meta">
         RSS feed management for automated torrent downloads
@@ -103,13 +102,12 @@ async function deleteFeed(id: number) {
       <div class="empty-state-sub">
         Add RSS feeds to automatically download torrents
       </div>
-      <UButton
-        class="btn-bracket"
+      <UButtonBracket
+        variant="bracket"
         @click="showAddModal = true"
       >
         {{ t('feeds.addFirstFeed') }}
-        <span class="bl"></span><span class="br2"></span>
-      </UButton>
+      </UButtonBracket>
       <span class="bl"></span><span class="br2"></span>
     </div>
 
@@ -178,15 +176,14 @@ async function deleteFeed(id: number) {
             >
               {{ t('feeds.cancel') }}
             </UButton>
-            <UButton
-              class="btn-bracket"
+            <UButtonBracket
+              variant="bracket"
               :loading="isLoading"
               :disabled="!newFeedUrl"
               @click="addFeed"
             >
               {{ t('feeds.addFeed') }}
-              <span class="bl"></span><span class="br2"></span>
-            </UButton>
+            </UButtonBracket>
           </div>
         </template>
       </UCard>

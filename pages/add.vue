@@ -264,15 +264,14 @@ function pasteFromClipboard() {
       </div>
 
       <div class="flex gap-2">
-        <UButton
-          class="btn-bracket"
+        <UButtonBracket
+          variant="bracket"
           :loading="isLoading"
           :disabled="!magnetInput"
           @click="addMagnet"
         >
           Add magnet
-          <span class="bl"></span><span class="br2"></span>
-        </UButton>
+        </UButtonBracket>
         <UButton
           class="btn-ghost"
           @click="pasteFromClipboard"
@@ -300,15 +299,14 @@ function pasteFromClipboard() {
         <span class="bl"></span><span class="br2"></span>
       </div>
 
-      <UButton
-        class="btn-bracket"
+      <UButtonBracket
+        variant="bracket"
         :loading="isLoading"
         :disabled="!urlInput"
         @click="addFromUrl"
       >
         {{ t('add.addFromUrl') }}
-        <span class="bl"></span><span class="br2"></span>
-      </UButton>
+      </UButtonBracket>
     </div>
   </div>
 </template>
