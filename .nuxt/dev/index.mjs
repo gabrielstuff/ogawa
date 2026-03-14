@@ -3105,16 +3105,16 @@ _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 const assets = {
   "/index.mjs": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2e404-QDIu6oO1Ul/81JVBmXf7OBdBY+8\"",
-    "mtime": "2026-03-14T10:31:16.207Z",
-    "size": 189444,
+    "etag": "\"2e517-S7y17g4EoC+VX684FL6XGwFY5z4\"",
+    "mtime": "2026-03-14T10:44:02.485Z",
+    "size": 189719,
     "path": "index.mjs"
   },
   "/index.mjs.map": {
     "type": "application/json",
-    "etag": "\"af72d-qMHDzJBVX1BCDeozKKSnZycIEWQ\"",
-    "mtime": "2026-03-14T10:31:16.208Z",
-    "size": 718637,
+    "etag": "\"afb5c-oWpKwqWggchqj6pXTyI0pOuYuT0\"",
+    "mtime": "2026-03-14T10:44:02.485Z",
+    "size": 719708,
     "path": "index.mjs.map"
   }
 };
@@ -4792,7 +4792,7 @@ class TransmissionAdapter {
     };
   }
   async request(method, args = {}) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f;
     const headers = {
       "Content-Type": "application/json"
     };
@@ -4803,21 +4803,25 @@ class TransmissionAdapter {
       const credentials = Buffer.from(`${this.auth.username}:${this.auth.password}`).toString("base64");
       headers["Authorization"] = `Basic ${credentials}`;
     }
+    const body = {
+      jsonrpc: "2.0",
+      method,
+      params: args,
+      id: 1
+    };
     try {
       const response = await ofetch(`${this.baseUrl}/transmission/rpc`, {
         method: "POST",
         headers,
-        body: {
-          jsonrpc: "2.0",
-          method,
-          arguments: args,
-          id: 1
-        }
+        body
       });
-      return (_a = response.arguments) != null ? _a : response.result;
+      if (response.error) {
+        throw new Error(response.error.message || "Transmission error");
+      }
+      return response.result;
     } catch (e) {
-      if (((_b = e.response) == null ? void 0 : _b.status) === 409) {
-        const sessionHeader = ((_d = (_c = e.response) == null ? void 0 : _c.headers) == null ? void 0 : _d["x-transmission-session-id"]) || ((_g = (_f = (_e = e.response) == null ? void 0 : _e.headers) == null ? void 0 : _f.get) == null ? void 0 : _g.call(_f, "x-transmission-session-id"));
+      if (((_a = e.response) == null ? void 0 : _a.status) === 409) {
+        const sessionHeader = ((_c = (_b = e.response) == null ? void 0 : _b.headers) == null ? void 0 : _c["x-transmission-session-id"]) || ((_f = (_e = (_d = e.response) == null ? void 0 : _d.headers) == null ? void 0 : _e.get) == null ? void 0 : _f.call(_e, "x-transmission-session-id"));
         if (sessionHeader) {
           this.sessionId = sessionHeader;
           return this.request(method, args);
@@ -4828,39 +4832,42 @@ class TransmissionAdapter {
   }
   async getTorrents() {
     try {
-      const result = await this.request("torrent-get", {
+      const result = await this.request("torrent_get", {
         fields: [
           "id",
-          "hashString",
+          "hash_string",
           "name",
-          "totalSize",
-          "downloadedEver",
-          "uploadedEver",
-          "rateDownload",
-          "rateUpload",
-          "seedersConnected",
-          "peersConnected",
+          "total_size",
+          "downloaded_ever",
+          "uploaded_ever",
+          "rate_download",
+          "rate_upload",
+          "seeds_connected",
+          "peers_connected",
           "status",
-          "dateAdded",
-          "doneDate",
-          "uploadRatio"
+          "date_added",
+          "done_date",
+          "upload_ratio"
         ]
       });
+      if (!(result == null ? void 0 : result.torrents)) {
+        return [];
+      }
       return result.torrents.map((t) => ({
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1e3,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1e3 : null,
-        ratio: t.uploadRatio
+        addedAt: t.date_added * 1e3,
+        doneAt: t.done_date > 0 ? t.done_date * 1e3 : null,
+        ratio: t.upload_ratio
       }));
     } catch (e) {
       console.error("Failed to fetch Transmission torrents:", e);
@@ -4868,52 +4875,53 @@ class TransmissionAdapter {
     }
   }
   async getTorrentDetails(hash) {
+    var _a;
     try {
-      const result = await this.request("torrent-get", {
+      const result = await this.request("torrent_get", {
         ids: [hash],
         fields: [
           "id",
-          "hashString",
+          "hash_string",
           "name",
-          "totalSize",
-          "downloadedEver",
-          "uploadedEver",
-          "rateDownload",
-          "rateUpload",
-          "seedersConnected",
-          "peersConnected",
+          "total_size",
+          "downloaded_ever",
+          "uploaded_ever",
+          "rate_download",
+          "rate_upload",
+          "seeds_connected",
+          "peers_connected",
           "status",
-          "dateAdded",
-          "doneDate",
-          "uploadRatio",
+          "date_added",
+          "done_date",
+          "upload_ratio",
           "files",
           "trackers"
         ]
       });
-      const t = result.torrents[0];
+      const t = (_a = result.torrents) == null ? void 0 : _a[0];
       if (!t) return null;
       return {
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1e3,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1e3 : null,
-        ratio: t.uploadRatio,
+        addedAt: t.date_added * 1e3,
+        doneAt: t.done_date > 0 ? t.done_date * 1e3 : null,
+        ratio: t.upload_ratio,
         files: (t.files || []).map((f) => ({
           name: f.name,
           size: f.length,
-          completed: f.bytesCompleted,
+          completed: f.bytes_completed,
           priority: this.mapPriority(f.priority)
         })),
-        trackers: (t.trackers || []).map((t2) => t2.announceUrl)
+        trackers: (t.trackers || []).map((tr) => tr.announce)
       };
     } catch (e) {
       console.error("Failed to fetch Transmission torrent details:", e);
@@ -4923,7 +4931,7 @@ class TransmissionAdapter {
   async addTorrentByFile(file) {
     try {
       const base64 = Buffer.from(file).toString("base64");
-      await this.request("torrent-add", {
+      await this.request("torrent_add", {
         metainfo: base64
       });
       return true;
@@ -4934,7 +4942,7 @@ class TransmissionAdapter {
   }
   async addTorrentByUrl(url) {
     try {
-      await this.request("torrent-add", {
+      await this.request("torrent_add", {
         filename: url
       });
       return true;
@@ -4948,7 +4956,7 @@ class TransmissionAdapter {
   }
   async startTorrents(hashes) {
     try {
-      await this.request("torrent-start", {
+      await this.request("torrent_start", {
         ids: hashes
       });
       return true;
@@ -4959,7 +4967,7 @@ class TransmissionAdapter {
   }
   async stopTorrents(hashes) {
     try {
-      await this.request("torrent-stop", {
+      await this.request("torrent_stop", {
         ids: hashes
       });
       return true;
@@ -4970,7 +4978,7 @@ class TransmissionAdapter {
   }
   async deleteTorrents(hashes, deleteFiles) {
     try {
-      await this.request("torrent-remove", {
+      await this.request("torrent_remove", {
         ids: hashes,
         "delete-local-data": deleteFiles
       });

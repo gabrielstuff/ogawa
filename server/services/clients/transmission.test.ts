@@ -8,7 +8,7 @@ const transmissionSettings = {
   password: 'pasdemdp',
 }
 
-describe.skip('TransmissionAdapter', () => {
+describe('TransmissionAdapter', () => {
   const adapter = new TransmissionAdapter(transmissionSettings)
 
   it('should connect to Transmission', async () => {

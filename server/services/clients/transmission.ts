@@ -35,19 +35,25 @@ export class TransmissionAdapter implements TorrentClientAdapter {
       headers['Authorization'] = `Basic ${credentials}`
     }
 
+    const body = {
+      jsonrpc: '2.0',
+      method,
+      params: args,
+      id: 1,
+    }
+
     try {
-      const response = await ofetch<{ result: string; arguments?: T }>(`${this.baseUrl}/transmission/rpc`, {
+      const response = await ofetch<{ result: T; arguments?: T; error?: { message: string } }>(`${this.baseUrl}/transmission/rpc`, {
         method: 'POST',
         headers,
-        body: {
-          jsonrpc: '2.0',
-          method,
-          arguments: args,
-          id: 1,
-        },
+        body,
       })
 
-      return response.arguments ?? (response.result as T)
+      if (response.error) {
+        throw new Error(response.error.message || 'Transmission error')
+      }
+
+      return response.result
     } catch (e: any) {
       if (e.response?.status === 409) {
         const sessionHeader = e.response?.headers?.['x-transmission-session-id'] 
@@ -65,42 +71,46 @@ export class TransmissionAdapter implements TorrentClientAdapter {
     try {
       const result = await this.request<{ torrents: Array<{
         id: number
-        hashString: string
+        hash_string: string
         name: string
-        totalSize: number
-        downloadedEver: number
-        uploadedEver: number
-        rateDownload: number
-        rateUpload: number
-        seedersConnected: number
-        peersConnected: number
+        total_size: number
+        downloaded_ever: number
+        uploaded_ever: number
+        rate_download: number
+        rate_upload: number
+        seeds_connected: number
+        peers_connected: number
         status: number
-        dateAdded: number
-        doneDate: number
-        uploadRatio: number
-      }> }>('torrent-get', {
+        date_added: number
+        done_date: number
+        upload_ratio: number
+      }> }>('torrent_get', {
         fields: [
-          'id', 'hashString', 'name', 'totalSize', 'downloadedEver', 'uploadedEver',
-          'rateDownload', 'rateUpload', 'seedersConnected', 'peersConnected',
-          'status', 'dateAdded', 'doneDate', 'uploadRatio',
+          'id', 'hash_string', 'name', 'total_size', 'downloaded_ever', 'uploaded_ever',
+          'rate_download', 'rate_upload', 'seeds_connected', 'peers_connected',
+          'status', 'date_added', 'done_date', 'upload_ratio',
         ],
       })
 
+      if (!result?.torrents) {
+        return []
+      }
+
       return result.torrents.map(t => ({
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1000,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1000 : null,
-        ratio: t.uploadRatio,
+        addedAt: t.date_added * 1000,
+        doneAt: t.done_date > 0 ? t.done_date * 1000 : null,
+        ratio: t.upload_ratio,
       }))
     } catch (e) {
       console.error('Failed to fetch Transmission torrents:', e)
@@ -112,55 +122,55 @@ export class TransmissionAdapter implements TorrentClientAdapter {
     try {
       const result = await this.request<{ torrents: Array<{
         id: number
-        hashString: string
+        hash_string: string
         name: string
-        totalSize: number
-        downloadedEver: number
-        uploadedEver: number
-        rateDownload: number
-        rateUpload: number
-        seedersConnected: number
-        peersConnected: number
+        total_size: number
+        downloaded_ever: number
+        uploaded_ever: number
+        rate_download: number
+        rate_upload: number
+        seeds_connected: number
+        peers_connected: number
         status: number
-        dateAdded: number
-        doneDate: number
-        uploadRatio: number
-        files: Array<{ name: string, length: number, bytesCompleted: number, priority: number }>
-        trackers: Array<{ announceUrl: string }>
-      }> }>('torrent-get', {
+        date_added: number
+        done_date: number
+        upload_ratio: number
+        files: Array<{ name: string, length: number, bytes_completed: number, priority: number }>
+        trackers: Array<{ announce: string }>
+      }> }>('torrent_get', {
         ids: [hash],
         fields: [
-          'id', 'hashString', 'name', 'totalSize', 'downloadedEver', 'uploadedEver',
-          'rateDownload', 'rateUpload', 'seedersConnected', 'peersConnected',
-          'status', 'dateAdded', 'doneDate', 'uploadRatio', 'files', 'trackers',
+          'id', 'hash_string', 'name', 'total_size', 'downloaded_ever', 'uploaded_ever',
+          'rate_download', 'rate_upload', 'seeds_connected', 'peers_connected',
+          'status', 'date_added', 'done_date', 'upload_ratio', 'files', 'trackers',
         ],
       })
 
-      const t = result.torrents[0]
+      const t = result.torrents?.[0]
       if (!t) return null
 
       return {
-        hash: t.hashString,
+        hash: t.hash_string,
         name: t.name,
-        size: t.totalSize,
-        completed: t.doneDate > 0 ? t.totalSize : 0,
-        downloaded: t.downloadedEver,
-        uploaded: t.uploadedEver,
-        downloadSpeed: t.rateDownload,
-        uploadSpeed: t.rateUpload,
-        seeds: t.seedersConnected,
-        peers: t.peersConnected,
+        size: t.total_size,
+        completed: t.done_date > 0 ? t.total_size : 0,
+        downloaded: t.downloaded_ever,
+        uploaded: t.uploaded_ever,
+        downloadSpeed: t.rate_download,
+        uploadSpeed: t.rate_upload,
+        seeds: t.seeds_connected,
+        peers: t.peers_connected,
         state: this.mapStatus(t.status),
-        addedAt: t.dateAdded * 1000,
-        doneAt: t.doneDate > 0 ? t.doneDate * 1000 : null,
-        ratio: t.uploadRatio,
+        addedAt: t.date_added * 1000,
+        doneAt: t.done_date > 0 ? t.done_date * 1000 : null,
+        ratio: t.upload_ratio,
         files: (t.files || []).map(f => ({
           name: f.name,
           size: f.length,
-          completed: f.bytesCompleted,
+          completed: f.bytes_completed,
           priority: this.mapPriority(f.priority),
         })),
-        trackers: (t.trackers || []).map(t => t.announceUrl),
+        trackers: (t.trackers || []).map(tr => tr.announce),
       }
     } catch (e) {
       console.error('Failed to fetch Transmission torrent details:', e)
@@ -171,7 +181,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
   async addTorrentByFile(file: Buffer): Promise<boolean> {
     try {
       const base64 = Buffer.from(file).toString('base64')
-      await this.request('torrent-add', {
+      await this.request('torrent_add', {
         metainfo: base64,
       })
       return true
@@ -183,7 +193,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async addTorrentByUrl(url: string): Promise<boolean> {
     try {
-      await this.request('torrent-add', {
+      await this.request('torrent_add', {
         filename: url,
       })
       return true
@@ -199,7 +209,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async startTorrents(hashes: string[]): Promise<boolean> {
     try {
-      await this.request('torrent-start', {
+      await this.request('torrent_start', {
         ids: hashes,
       })
       return true
@@ -211,7 +221,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async stopTorrents(hashes: string[]): Promise<boolean> {
     try {
-      await this.request('torrent-stop', {
+      await this.request('torrent_stop', {
         ids: hashes,
       })
       return true
@@ -223,7 +233,7 @@ export class TransmissionAdapter implements TorrentClientAdapter {
 
   async deleteTorrents(hashes: string[], deleteFiles: boolean): Promise<boolean> {
     try {
-      await this.request('torrent-remove', {
+      await this.request('torrent_remove', {
         ids: hashes,
         'delete-local-data': deleteFiles,
       })
