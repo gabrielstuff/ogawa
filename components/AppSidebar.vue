@@ -62,7 +62,7 @@ const handleAction = (item: NavItem) => {
             :name="item.icon"
             class="w-5 h-5"
           />
-          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
+          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ $t(item.name).charAt(0) }}</span>
         </NuxtLink>
         <button
           v-else
@@ -73,7 +73,7 @@ const handleAction = (item: NavItem) => {
             :name="item.icon"
             class="w-5 h-5"
           />
-          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
+          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ $t(item.name).charAt(0) }}</span>
         </button>
       </template>
     </nav>
@@ -89,7 +89,7 @@ const handleAction = (item: NavItem) => {
           :name="settingsItem.icon"
           class="w-5 h-5"
         />
-        <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ settingsItem.name.charAt(0) }}</span>
+        <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ $t(settingsItem.name).charAt(0) }}</span>
       </NuxtLink>
     </div>
   </aside>

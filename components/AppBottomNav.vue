@@ -42,7 +42,7 @@ const handleAction = (item: NavItem) => {
             :name="item.icon"
             class="w-6 h-6"
           />
-          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
+          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ $t(item.name) }}</span>
         </NuxtLink>
         <button
           v-else
@@ -53,7 +53,7 @@ const handleAction = (item: NavItem) => {
             :name="item.icon"
             class="w-6 h-6"
           />
-          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
+          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ $t(item.name) }}</span>
         </button>
       </template>
     </div>
