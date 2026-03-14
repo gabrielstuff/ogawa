@@ -1,12 +1,27 @@
 <script setup lang="ts">
+const { t, locale, locales, setLocale } = useI18n()
 const route = useRoute()
 
-const navItems = [
-  { name: 'Torrents', path: '/', icon: 'i-heroicons-arrow-down-circle' },
-  { name: 'Add', path: '/add', icon: 'i-heroicons-plus-circle' },
-  { name: 'Feeds', path: '/feeds', icon: 'i-heroicons-rss' },
-  { name: 'Settings', path: '/settings', icon: 'i-heroicons-cog-6-tooth' },
-]
+const navItems = computed(() => [
+  { name: t('nav.torrents'), path: '/', icon: 'i-heroicons-arrow-down-circle' },
+  { name: t('nav.add'), path: '/add', icon: 'i-heroicons-plus-circle' },
+  { name: t('nav.feeds'), path: '/feeds', icon: 'i-heroicons-rss' },
+  { name: t('nav.settings'), path: '/settings', icon: 'i-heroicons-cog-6-tooth' },
+])
+
+const localeOptions = computed(() =>
+  (locales.value as Array<{ code: string; name: string }>).map(l => ({
+    value: l.code,
+    label: l.name,
+  })),
+)
+
+const currentLocale = computed({
+  get: () => locale.value,
+  set: (val) => {
+    setLocale(val)
+  },
+})
 
 const isMobile = ref(true)
 
@@ -23,6 +38,20 @@ onMounted(() => {
   <div class="min-h-screen min-h-[100dvh] bg-surface-900 text-surface-100">
     <!-- Main Content -->
     <main class="pb-20 md:pb-4 md:ml-56">
+      <!-- Mobile Language Switcher -->
+      <div
+        v-if="isMobile"
+        class="p-2 flex justify-end"
+      >
+        <USelect
+          v-model="currentLocale"
+          :items="localeOptions"
+          option-attribute="label"
+          value-attribute="value"
+          size="xs"
+          class="w-28"
+        />
+      </div>
       <slot />
     </main>
 
@@ -78,6 +107,17 @@ onMounted(() => {
           <span>{{ item.name }}</span>
         </NuxtLink>
       </nav>
+
+      <!-- Language Switcher -->
+      <div class="absolute bottom-4 left-3 right-3">
+        <USelect
+          v-model="currentLocale"
+          :items="localeOptions"
+          option-attribute="label"
+          value-attribute="value"
+          size="sm"
+        />
+      </div>
     </aside>
   </div>
 </template>

@@ -5,8 +5,10 @@ definePageMeta({
   layout: 'default',
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Torrents - Ogawa',
+  title: computed(() => `${t('nav.torrents')} - Ogawa`),
 })
 
 const { data: torrents, pending, refresh } = await useFetch<Torrent[]>('/api/torrents')
@@ -31,14 +33,14 @@ const filteredTorrents = computed(() => {
   return result
 })
 
-const statusOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'downloading', label: 'Downloading' },
-  { value: 'seeding', label: 'Seeding' },
-  { value: 'paused', label: 'Paused' },
-  { value: 'stopped', label: 'Stopped' },
-  { value: 'error', label: 'Error' },
-]
+const statusOptions = computed(() => [
+  { value: 'all', label: t('status.all') },
+  { value: 'downloading', label: t('status.downloading') },
+  { value: 'seeding', label: t('status.seeding') },
+  { value: 'paused', label: t('status.paused') },
+  { value: 'stopped', label: t('status.stopped') },
+  { value: 'error', label: t('status.error') },
+])
 
 function formatSize(bytes: number | undefined | null): string {
   if (!bytes || bytes === 0) return '0 B'
@@ -95,7 +97,7 @@ function toggleAll() {
     <!-- Header -->
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-xl font-semibold">
-        Torrents
+        {{ t('torrents.title') }}
       </h1>
       <UButton
         icon="i-heroicons-arrow-path"
@@ -109,7 +111,7 @@ function toggleAll() {
     <div class="flex flex-col sm:flex-row gap-2 mb-3">
       <UInput
         v-model="searchQuery"
-        placeholder="Search..."
+        :placeholder="t('torrents.search')"
         icon="i-heroicons-magnifying-glass"
         size="sm"
         class="flex-1"
@@ -145,10 +147,10 @@ function toggleAll() {
         class="w-12 h-12 mx-auto text-gray-600 mb-3"
       />
       <p class="text-gray-400 text-sm mb-4">
-        No torrents yet
+        {{ t('torrents.noResults') }}
       </p>
       <NuxtLink to="/add">
-        <UButton size="sm">Add torrent</UButton>
+        <UButton size="sm">{{ t('torrents.addFirst') }}</UButton>
       </NuxtLink>
     </div>
 
@@ -157,28 +159,28 @@ function toggleAll() {
       <!-- Desktop Table Header -->
       <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[11px] text-gray-500 font-medium uppercase tracking-wide">
         <div class="col-span-4">
-          Name
+          {{ t('torrents.name') }}
         </div>
         <div class="col-span-1 text-right">
-          Size
+          {{ t('torrents.size') }}
         </div>
         <div class="col-span-1 text-right">
-          Down
+          {{ t('torrents.down') }}
         </div>
         <div class="col-span-1 text-right">
-          Up
+          {{ t('torrents.up') }}
         </div>
         <div class="col-span-1 text-right">
-          S/P
+          {{ t('torrents.sp') }}
         </div>
         <div class="col-span-1 text-right">
-          Ratio
+          {{ t('torrents.ratio') }}
         </div>
         <div class="col-span-1 text-center">
-          %
+          {{ t('torrents.percent') }}
         </div>
         <div class="col-span-2 text-right">
-          Added
+          {{ t('torrents.added') }}
         </div>
       </div>
 
@@ -198,7 +200,7 @@ function toggleAll() {
                 :style="{ width: `${getProgressPercent(torrent.completed, torrent.size)}%` }"
               />
             </div>
-            <span class="truncate">{{ torrent.name || 'Unknown' }}</span>
+            <span class="truncate">{{ torrent.name || t('torrents.unknown') }}</span>
           </div>
 
           <!-- Size -->
@@ -289,13 +291,13 @@ function toggleAll() {
             <!-- Info -->
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium truncate">
-                {{ torrent.name || 'Unknown' }}
+                {{ torrent.name || t('torrents.unknown') }}
               </p>
               <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-gray-400 mt-1">
                 <span>{{ formatSize(torrent.size) }}</span>
                 <span v-if="torrent.downloadSpeed">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
                 <span v-if="torrent.uploadSpeed">↑ {{ formatSpeed(torrent.uploadSpeed) }}/s</span>
-                <span>{{ torrent.seeds || 0 }}S / {{ torrent.peers || 0 }}P</span>
+                <span>{{ t('torrents.seedsPeers', { seeds: torrent.seeds || 0, peers: torrent.peers || 0 }) }}</span>
               </div>
             </div>
 
@@ -310,7 +312,7 @@ function toggleAll() {
                 'bg-gray-700 text-gray-400': !torrent.state || torrent.state === 'stopped',
               }"
             >
-              {{ torrent.state || 'stopped' }}
+              {{ torrent.state ? t(`status.${torrent.state}`) : t('status.stopped') }}
             </span>
           </div>
         </div>
