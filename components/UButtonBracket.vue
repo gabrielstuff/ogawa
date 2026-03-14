@@ -23,8 +23,14 @@ const variant = computed(() => props.variant === 'bracket' ? 'ghost' : props.var
     :to="to"
     :class="[variant === 'ghost' && props.variant === 'bracket' ? 'btn-bracket' : '']"
   >
-    <span v-if="props.variant === 'bracket'" class="bl"></span>
+    <span
+      v-if="props.variant === 'bracket'"
+      class="bl"
+    />
     <slot />
-    <span v-if="props.variant === 'bracket'" class="br2"></span>
+    <span
+      v-if="props.variant === 'bracket'"
+      class="br2"
+    />
   </UButton>
 </template>

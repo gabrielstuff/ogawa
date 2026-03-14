@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Feed } from '~/types'
-
 definePageMeta({
   layout: 'default',
 })
@@ -11,53 +9,46 @@ useHead({
   title: computed(() => `${t('feeds.title')} - Ogawa`),
 })
 
-const { data: feeds, refresh } = await useFetch<Feed[]>('/api/feeds')
+const { feeds, addFeed, deleteFeed } = useFeeds()
 
 const showAddModal = ref(false)
 const newFeedUrl = ref('')
 const isLoading = ref(false)
 const error = ref('')
 
-async function addFeed() {
+async function handleAddFeed() {
   if (!newFeedUrl.value) return
 
   isLoading.value = true
   error.value = ''
 
   try {
-    await $fetch('/api/feeds', {
-      method: 'POST',
-      body: { url: newFeedUrl.value },
-    })
-
+    await addFeed(newFeedUrl.value)
     showAddModal.value = false
     newFeedUrl.value = ''
-    refresh()
   }
-  catch (e: any) {
-    error.value = e.message || t('feeds.addFailed')
+  catch (e: unknown) {
+    const err = e as { message?: string }
+    error.value = err.message || t('feeds.addFailed')
   }
   finally {
     isLoading.value = false
   }
 }
 
-async function deleteFeed(id: number) {
+async function handleDeleteFeed(id: number) {
   try {
-    await $fetch(`/api/feeds/${id}`, {
-      method: 'DELETE',
-    })
-    refresh()
+    await deleteFeed(id)
   }
-  catch (e: any) {
-    error.value = e.message || t('feeds.deleteFailed')
+  catch (e: unknown) {
+    const err = e as { message?: string }
+    error.value = err.message || t('feeds.deleteFailed')
   }
 }
 </script>
 
 <template>
   <div class="p-4">
-    <!-- Header -->
     <div class="mb-6 bracket-lg px-4 py-3">
       <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold text-ink-0">
@@ -74,10 +65,9 @@ async function deleteFeed(id: number) {
       <p class="header-meta">
         RSS feed management for automated torrent downloads
       </p>
-      <span class="bl"></span><span class="br2"></span>
+      <span class="bl" /><span class="br2" />
     </div>
 
-    <!-- Error -->
     <UAlert
       v-if="error"
       color="error"
@@ -87,67 +77,26 @@ async function deleteFeed(id: number) {
       {{ error }}
     </UAlert>
 
-    <!-- Empty State -->
-    <div
+    <EmptyState
       v-if="!feeds || feeds.length === 0"
-      class="empty-state bracket-lg"
+      :title="t('feeds.noFeeds')"
+      subtitle="Add RSS feeds to automatically download torrents"
+      :icon="t('feeds.noFeeds') ? '' : 'i-heroicons-rss'"
     >
-      <UIcon
-        name="i-heroicons-rss"
-        class="w-16 h-16 mx-auto text-ink-3/30 mb-4"
-      />
-      <div class="empty-state-title">
-        {{ t('feeds.noFeeds') }}
-      </div>
-      <div class="empty-state-sub">
-        Add RSS feeds to automatically download torrents
-      </div>
       <UButtonBracket
         variant="bracket"
         @click="showAddModal = true"
       >
         {{ t('feeds.addFirstFeed') }}
       </UButtonBracket>
-      <span class="bl"></span><span class="br2"></span>
-    </div>
+    </EmptyState>
 
-    <!-- Feed List -->
-    <div
+    <FeedList
       v-else
-      class="space-y-3"
-    >
-      <div
-        v-for="feed in feeds"
-        :key="feed.id"
-        class="bracket p-4"
-      >
-        <div class="flex items-center justify-between">
-          <div class="flex-1 min-w-0">
-            <h3 class="font-bold text-ink-0 truncate">
-              {{ feed.title }}
-            </h3>
-            <p class="text-sm font-mono text-ink-3/60 truncate">
-              {{ feed.url }}
-            </p>
-            <div class="flex gap-4 mt-2 text-xs font-mono text-ink-3/40">
-              <span>{{ feed.items?.length || 0 }} items</span>
-              <span>{{ feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : 'never' }}</span>
-            </div>
-          </div>
-          <div class="flex gap-2 ml-4">
-            <UButton
-              variant="ghost"
-              color="error"
-              icon="i-heroicons-trash"
-              @click="deleteFeed(feed.id)"
-            />
-          </div>
-        </div>
-        <span class="bl"></span><span class="br2"></span>
-      </div>
-    </div>
+      :feeds="feeds"
+      @delete="handleDeleteFeed"
+    />
 
-    <!-- Add Feed Modal -->
     <UModal v-model="showAddModal">
       <UCard>
         <template #header>
@@ -164,7 +113,7 @@ async function deleteFeed(id: number) {
               size="lg"
               class="w-full"
             />
-            <span class="bl"></span><span class="br2"></span>
+            <span class="bl" /><span class="br2" />
           </div>
         </div>
 
@@ -180,7 +129,7 @@ async function deleteFeed(id: number) {
               variant="bracket"
               :loading="isLoading"
               :disabled="!newFeedUrl"
-              @click="addFeed"
+              @click="handleAddFeed"
             >
               {{ t('feeds.addFeed') }}
             </UButtonBracket>

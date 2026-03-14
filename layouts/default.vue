@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const route = useRoute()
+const addTorrentModal = useAddTorrentModal()
 
 const navItems = computed(() => [
   { name: t('nav.torrents'), path: '/', icon: 'i-heroicons-arrow-down-circle' },
-  { name: t('nav.add'), path: '/add', icon: 'i-heroicons-plus-circle' },
+  { name: t('nav.add'), icon: 'i-heroicons-plus-circle', action: () => addTorrentModal.value.show = true },
   { name: t('nav.feeds'), path: '/feeds', icon: 'i-heroicons-rss' },
 ])
 
@@ -37,19 +38,34 @@ const appVersion = '1.0.0'
       class="fixed bottom-0 left-0 right-0 bg-surface-h/95 backdrop-blur-sm border-t border-line safe-area-inset-bottom z-50"
     >
       <div class="flex justify-around items-center h-16">
-        <NuxtLink
+        <template
           v-for="item in navItems"
           :key="item.path"
-          :to="item.path"
-          class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200"
-          :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
         >
-          <UIcon
-            :name="item.icon"
-            class="w-6 h-6"
-          />
-          <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
-        </NuxtLink>
+          <NuxtLink
+            v-if="!item.action"
+            :to="item.path"
+            class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200"
+            :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
+          >
+            <UIcon
+              :name="item.icon"
+              class="w-6 h-6"
+            />
+            <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
+          </NuxtLink>
+          <button
+            v-else
+            class="flex flex-col items-center justify-center w-full h-full transition-colors duration-200 text-ink-3 hover:text-ink-1"
+            @click="item.action"
+          >
+            <UIcon
+              :name="item.icon"
+              class="w-6 h-6"
+            />
+            <span class="text-[10px] mt-1 font-semibold uppercase tracking-wide">{{ item.name }}</span>
+          </button>
+        </template>
       </div>
     </nav>
 
@@ -66,19 +82,34 @@ const appVersion = '1.0.0'
       </div>
 
       <nav class="flex-1 space-y-0">
-        <NuxtLink
+        <template
           v-for="item in navItems"
           :key="item.path"
-          :to="item.path"
-          class="flex flex-col items-center justify-center py-3 transition-colors"
-          :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
         >
-          <UIcon
-            :name="item.icon"
-            class="w-5 h-5"
-          />
-          <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
-        </NuxtLink>
+          <NuxtLink
+            v-if="!item.action"
+            :to="item.path"
+            class="flex flex-col items-center justify-center py-3 transition-colors"
+            :class="route.path === item.path ? 'text-accent' : 'text-ink-3 hover:text-ink-1'"
+          >
+            <UIcon
+              :name="item.icon"
+              class="w-5 h-5"
+            />
+            <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
+          </NuxtLink>
+          <button
+            v-else
+            class="flex flex-col items-center justify-center py-3 transition-colors text-ink-3 hover:text-ink-1"
+            @click="item.action"
+          >
+            <UIcon
+              :name="item.icon"
+              class="w-5 h-5"
+            />
+            <span class="text-[9px] mt-1 font-semibold uppercase tracking-wider">{{ item.name.charAt(0) }}</span>
+          </button>
+        </template>
       </nav>
 
       <!-- Settings - Sticky at bottom -->
@@ -100,7 +131,7 @@ const appVersion = '1.0.0'
     <!-- Status Strip - Always visible -->
     <footer class="fixed bottom-0 left-0 right-0 md:left-14 status-strip z-40">
       <div class="flex items-center gap-2">
-        <span class="status-dot"></span>
+        <span class="status-dot" />
         <span>daemon: connected</span>
       </div>
       <span>feeds: 0</span>
