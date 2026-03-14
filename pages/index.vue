@@ -80,7 +80,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
     <div class="mb-4 bracket-lg px-4 py-3">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-phosphor">
+          <h1 class="text-2xl font-bold text-ink-0">
             {{ t('torrents.title') }}
           </h1>
           <p class="header-meta">
@@ -128,7 +128,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
     >
       <UIcon
         name="i-heroicons-arrow-path"
-        class="w-6 h-6 animate-spin text-halation"
+        class="w-6 h-6 animate-spin text-accent"
       />
     </div>
 
@@ -164,7 +164,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
     <!-- Torrent List -->
     <div v-else>
       <!-- Desktop Table Header -->
-      <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[10px] text-ghost font-mono uppercase tracking-widest">
+      <div class="hidden md:grid grid-cols-12 gap-2 px-2 py-1.5 text-[10px] text-ink-3 font-mono uppercase tracking-widest">
         <div class="col-span-4">
           {{ t('torrents.name') }}
         </div>
@@ -200,43 +200,43 @@ const queueCount = computed(() => filteredTorrents.value.length)
         >
           <!-- Name with inline progress -->
           <div class="col-span-4 flex items-center gap-2 min-w-0">
-            <div class="w-14 h-1.5 bg-scan/30 overflow-hidden flex-shrink-0">
+            <div class="w-14 h-1.5 bg-line/30 overflow-hidden flex-shrink-0">
               <div
                 class="h-full transition-all"
                 :class="{
-                  'bg-halation': torrent.state === 'downloading',
-                  'bg-phosphor': torrent.state === 'seeding',
+                  'bg-accent-t': torrent.state === 'downloading',
+                  'bg-accent': torrent.state === 'seeding',
                   'bg-flicker': torrent.state === 'paused',
                   'bg-red-500': torrent.state === 'error',
                 }"
                 :style="{ width: `${getProgressPercent(torrent.completed, torrent.size)}%` }"
               />
             </div>
-            <span class="truncate text-ghost">{{ torrent.name || t('torrents.unknown') }}</span>
+            <span class="truncate text-ink-3">{{ torrent.name || t('torrents.unknown') }}</span>
           </div>
 
           <!-- Size -->
-          <div class="col-span-1 text-right font-mono text-ghost/70">
+          <div class="col-span-1 text-right font-mono text-ink-3/70">
             {{ formatSize(torrent.size) }}
           </div>
 
           <!-- Down -->
-          <div class="col-span-1 text-right font-mono text-halation">
+          <div class="col-span-1 text-right font-mono text-accent">
             {{ formatSpeed(torrent.downloadSpeed) }}/s
           </div>
 
           <!-- Up -->
-          <div class="col-span-1 text-right font-mono text-ghost/70">
+          <div class="col-span-1 text-right font-mono text-ink-3/70">
             {{ formatSpeed(torrent.uploadSpeed) }}/s
           </div>
 
           <!-- Seeds/Peers -->
-          <div class="col-span-1 text-right font-mono text-ghost/60">
+          <div class="col-span-1 text-right font-mono text-ink-3/60">
             {{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }}
           </div>
 
           <!-- Ratio -->
-          <div class="col-span-1 text-right font-mono text-ghost/70">
+          <div class="col-span-1 text-right font-mono text-ink-3/70">
             {{ (torrent.ratio || 0).toFixed(2) }}
           </div>
 
@@ -245,11 +245,11 @@ const queueCount = computed(() => filteredTorrents.value.length)
             <span
               class="text-[10px] font-mono font-medium px-1.5 py-0.5"
               :class="{
-                'bg-halation/20 text-halation': torrent.state === 'downloading',
-                'bg-phosphor/20 text-phosphor': torrent.state === 'seeding',
+                'bg-accent-t/20 text-accent': torrent.state === 'downloading',
+                'bg-accent/20 text-ink-0': torrent.state === 'seeding',
                 'bg-flicker/20 text-flicker': torrent.state === 'paused',
                 'bg-red-500/20 text-red-400': torrent.state === 'error',
-                'bg-scan/30 text-ghost/50': !torrent.state || torrent.state === 'stopped',
+                'bg-line/30 text-ink-3/50': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ getProgressPercent(torrent.completed, torrent.size) }}%
@@ -257,7 +257,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
           </div>
 
           <!-- Added -->
-          <div class="col-span-2 text-right font-mono text-ghost/50">
+          <div class="col-span-2 text-right font-mono text-ink-3/50">
             {{ torrent.addedAt ? new Date(torrent.addedAt).toLocaleDateString() : '-' }}
           </div>
         </div>
@@ -287,8 +287,8 @@ const queueCount = computed(() => filteredTorrents.value.length)
                   />
                   <path
                     :class="{
-                      'text-halation': torrent.state === 'downloading',
-                      'text-phosphor': torrent.state === 'seeding',
+                      'text-accent': torrent.state === 'downloading',
+                      'text-ink-0': torrent.state === 'seeding',
                       'text-flicker': torrent.state === 'paused',
                       'text-red-400': torrent.state === 'error',
                     }"
@@ -299,7 +299,7 @@ const queueCount = computed(() => filteredTorrents.value.length)
                     :stroke-dasharray="`${getProgressPercent(torrent.completed, torrent.size)}, 100`"
                   />
                 </svg>
-                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-mono font-medium text-phosphor">
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-mono font-medium text-ink-0">
                   {{ getProgressPercent(torrent.completed, torrent.size) }}%
                 </span>
               </div>
@@ -307,12 +307,12 @@ const queueCount = computed(() => filteredTorrents.value.length)
 
             <!-- Info -->
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-bold truncate text-phosphor">
+              <p class="text-sm font-bold truncate text-ink-0">
                 {{ torrent.name || t('torrents.unknown') }}
               </p>
-              <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-mono text-ghost/60 mt-1">
+              <div class="flex flex-wrap gap-x-3 gap-y-1 text-[10px] font-mono text-ink-3/60 mt-1">
                 <span>{{ formatSize(torrent.size) }}</span>
-                <span v-if="torrent.downloadSpeed" class="text-halation">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
+                <span v-if="torrent.downloadSpeed" class="text-accent">↓ {{ formatSpeed(torrent.downloadSpeed) }}/s</span>
                 <span v-if="torrent.uploadSpeed">↑ {{ formatSpeed(torrent.uploadSpeed) }}/s</span>
                 <span>{{ torrent.seeds || 0 }}/{{ torrent.peers || 0 }} peers</span>
               </div>
@@ -322,11 +322,11 @@ const queueCount = computed(() => filteredTorrents.value.length)
             <span
               class="text-[10px] font-mono font-medium px-2 py-1 flex-shrink-0"
               :class="{
-                'bg-halation/20 text-halation': torrent.state === 'downloading',
-                'bg-phosphor/20 text-phosphor': torrent.state === 'seeding',
+                'bg-accent-t/20 text-accent': torrent.state === 'downloading',
+                'bg-accent/20 text-ink-0': torrent.state === 'seeding',
                 'bg-flicker/20 text-flicker': torrent.state === 'paused',
                 'bg-red-500/20 text-red-400': torrent.state === 'error',
-                'bg-scan/30 text-ghost/50': !torrent.state || torrent.state === 'stopped',
+                'bg-line/30 text-ink-3/50': !torrent.state || torrent.state === 'stopped',
               }"
             >
               {{ torrent.state ? t(`status.${torrent.state}`) : t('status.stopped') }}

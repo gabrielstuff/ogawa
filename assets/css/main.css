@@ -2,80 +2,135 @@
 @import "@nuxt/ui";
 
 /* ===========================================
-   CRT SIGNAL DESIGN SYSTEM
-   Torrent Client UI - Electric Cobalt Theme
+   DUAL THEME DESIGN SYSTEM
+   CRT Signal (Dark) + Flood Light (Light)
    =========================================== */
 
 @theme {
   /* Font families */
   --font-karla: 'Karla', sans-serif;
   --font-mono: 'Inconsolata', monospace;
-  
-  /* Custom colors - CRT Signal palette */
-  --color-signal-blue: #1633CC;
-  --color-deep-field: #0E1E8A;
-  --color-void: #071266;
-  --color-phosphor: #EFF3FF;
-  --color-halation: #B8C8FF;
-  --color-ghost: #96AAFF;
-  --color-electric: #2845E8;
-  --color-scan: #4464F5;
-  --color-drift: #6685FF;
-  --color-flicker: #C8D5FF;
-  --color-static: #E0E8FF;
-  
-  /* Error/Success colors - CRT Signal */
-  --color-coral: #FF4466;
-  --color-mint: #44FF99;
 }
 
 /* ===========================================
-   CSS CUSTOM PROPERTIES
+   LIGHT THEME (Default) - Flood Light
    =========================================== */
-:root {
-  /* Core colors */
-  --blue: #1633CC;
-  --deep: #0E1E8A;
-  --void: #071266;
-  --phosphor: #EFF3FF;
-  --halation: #B8C8FF;
-  --ghost: #96AAFF;
+:root,
+.light {
+  /* Surfaces */
+  --bg: #F4F5FD;
+  --surface: #EBEEFF;
+  --surface-2: #DEE3FF;
+  --surface-3: #CED5FA;
+  --surface-h: #C2CAF4;
 
-  /* Extended tones */
-  --electric: #2845E8;
-  --scan: #4464F5;
-  --drift: #6685FF;
-  --flicker: #C8D5FF;
-  --static: #E0E8FF;
+  /* Lines & Borders */
+  --line: #B4BDE8;
+  --line-strong: #8695D8;
 
-  /* Typography */
-  --font-karla: 'Karla', sans-serif;
-  --font-mono: 'Inconsolata', monospace;
+  /* Ink (Text) */
+  --ink-0: #0A1250;
+  --ink-1: #101B73;
+  --ink-2: #263AAA;
+  --ink-3: #4558B8;
+  --ink-4: #6272BA;
 
-  /* Error/Success - CRT Signal */
-  --coral: #FF4466;
-  --mint: #44FF99;
+  /* Accent */
+  --accent: #1838D0;
+  --accent-h: #0F2AAE;
+  --accent-t: #E4EAFF;
 
-  /* Semantic mappings */
-  --color-background: var(--blue);
-  --color-foreground: var(--phosphor);
-  --color-primary: var(--phosphor);
-  --color-primary-foreground: var(--deep);
-  --color-secondary: var(--deep);
-  --color-secondary-foreground: var(--phosphor);
-  --color-muted: var(--electric);
-  --color-muted-foreground: var(--ghost);
-  --color-accent: var(--halation);
-  --color-accent-foreground: var(--void);
-  --color-destructive: #EF4444;
+  /* Semantic */
+  --red: #C52B2B;
+  --red-bg: #FFF0F0;
+  --red-line: #F5BFBF;
+  --green: #1A7A3A;
+  --green-bg: #EDFBF2;
+  --green-line: #B3E6C4;
+  --amber: #956A00;
+  --amber-bg: #FFF9E6;
+  --amber-line: #F0D97A;
+
+  /* Semantic mappings for Nuxt UI */
+  --color-background: var(--bg);
+  --color-foreground: var(--ink-1);
+  --color-primary: var(--accent);
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: var(--surface-2);
+  --color-secondary-foreground: var(--ink-1);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-foreground: #FFFFFF;
+  --color-destructive: var(--red);
   --color-destructive-foreground: #FFFFFF;
-  --color-border: var(--scan);
-  --color-input: var(--scan);
-  --color-ring: var(--halation);
-  --color-card: var(--deep);
-  --color-card-foreground: var(--phosphor);
-  --color-popover: var(--deep);
-  --color-popover-foreground: var(--phosphor);
+  --color-border: var(--line);
+  --color-input: var(--line-strong);
+  --color-ring: var(--accent);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink-1);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink-1);
+}
+
+/* ===========================================
+   DARK THEME - CRT Signal
+   =========================================== */
+.dark {
+  /* Surfaces */
+  --bg: #1633CC;
+  --surface: #0E1E8A;
+  --surface-2: #071266;
+  --surface-3: #051244;
+  --surface-h: #1a3ce6;
+
+  /* Lines & Borders */
+  --line: #4464F5;
+  --line-strong: #6685FF;
+
+  /* Ink (Text) */
+  --ink-0: #EFF3FF;
+  --ink-1: #B8C8FF;
+  --ink-2: #96AAFF;
+  --ink-3: #6685FF;
+  --ink-4: #4464F5;
+
+  /* Accent */
+  --accent: #B8C8FF;
+  --accent-h: #96AAFF;
+  --accent-t: #1e3a8a;
+
+  /* Semantic */
+  --red: #FF4466;
+  --red-bg: rgba(255, 68, 102, 0.15);
+  --red-line: #FF4466;
+  --green: #44FF99;
+  --green-bg: rgba(68, 255, 153, 0.15);
+  --green-line: #44FF99;
+  --amber: #FFD166;
+  --amber-bg: rgba(255, 209, 102, 0.15);
+  --amber-line: #FFD166;
+
+  /* Semantic mappings for Nuxt UI */
+  --color-background: var(--bg);
+  --color-foreground: var(--ink-0);
+  --color-primary: var(--ink-0);
+  --color-primary-foreground: var(--surface);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--ink-0);
+  --color-muted: var(--surface-2);
+  --color-muted-foreground: var(--ink-2);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--surface-2);
+  --color-destructive: var(--red);
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink-0);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink-0);
 }
 
 /* ===========================================
@@ -107,64 +162,6 @@ body {
 }
 
 /* ===========================================
-   FORCE DARK MODE
-   Override any light mode styles
-   =========================================== */
-html {
-  color-scheme: dark;
-}
-
-html.dark,
-.dark {
-  --color-bg: var(--blue);
-  --color-text: var(--phosphor);
-}
-
-/* Force all surfaces to use dark colors */
-.bg-default,
-.bg-surface-50,
-.bg-white,
-.bg-gray-50,
-.bg-gray-100,
-.bg-gray-200 {
-  background-color: var(--deep) !important;
-}
-
-.text-default,
-.text-gray-50,
-.text-gray-100,
-.text-gray-200,
-.text-gray-300,
-.text-gray-400,
-.text-gray-500,
-.text-gray-600,
-.text-gray-700,
-.text-gray-800,
-.text-gray-900 {
-  color: var(--ghost) !important;
-}
-
-.text-highlighted {
-  color: var(--phosphor) !important;
-}
-
-/* Override light mode borders */
-.border-default,
-.border-gray-100,
-.border-gray-200,
-.border-gray-300,
-.border-gray-400 {
-  border-color: var(--scan) !important;
-}
-
-/* Input backgrounds */
-input,
-textarea,
-select {
-  background-color: transparent !important;
-}
-
-/* ===========================================
    CORNER BRACKETS
    The signature detail - 4-corner tick marks
    =========================================== */
@@ -180,7 +177,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation);
+  border-color: var(--ink-4);
   border-style: solid;
   pointer-events: none;
 }
@@ -222,7 +219,7 @@ select {
   position: absolute;
   width: 12px;
   height: 12px;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--line-strong);
   border-style: solid;
   pointer-events: none;
 }
@@ -256,8 +253,8 @@ select {
    Three types: Primary, Ghost, Bracketed
    =========================================== */
 .btn-primary {
-  background: var(--phosphor);
-  color: var(--deep);
+  background: var(--ink-0);
+  color: var(--surface);
   border: none;
   font-family: var(--font-karla);
   font-weight: 700;
@@ -273,15 +270,15 @@ select {
 }
 
 .btn-primary:hover {
-  background: var(--static);
+  background: var(--accent-t);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--phosphor);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--ink-0);
+  border: 1px solid var(--line-strong);
   font-family: var(--font-karla);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -294,16 +291,16 @@ select {
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--halation);
+  background: var(--accent-t);
+  border-color: var(--accent);
 }
 
 .btn-bracket {
   background: transparent;
-  color: var(--phosphor);
+  color: var(--ink-2);
   border: none !important;
   font-family: var(--font-karla);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -323,7 +320,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation) !important;
+  border-color: var(--ink-4) !important;
   border-style: solid !important;
   pointer-events: none;
   border-radius: 0 !important;
@@ -347,7 +344,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: var(--halation) !important;
+  border-color: var(--ink-4) !important;
   border-style: solid !important;
   pointer-events: none;
   border-radius: 0 !important;
@@ -379,8 +376,8 @@ select {
   font-size: 13px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--phosphor);
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--ink-1);
   padding: 9px 22px;
   width: 260px;
   outline: none;
@@ -389,7 +386,7 @@ select {
 }
 
 .input-bracket input::placeholder {
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-4);
 }
 
 .input-bracket::before,
@@ -400,7 +397,7 @@ select {
   position: absolute;
   width: 8px;
   height: 8px;
-  border-color: rgba(200, 215, 255, 0.35);
+  border-color: var(--line-strong);
   border-style: solid;
 }
 
@@ -413,7 +410,7 @@ select {
 .input-bracket::after {
   top: 0;
   right: 0;
-  border-width: 1px 1pxpx 0 0;
+  border-width: 1px 1px 0 0;
 }
 
 .input-bracket .bl {
@@ -439,24 +436,30 @@ select {
   font-family: var(--font-mono);
 }
 
+/* Legacy aliases for backward compatibility */
 .text-phosphor {
-  color: var(--phosphor);
+  color: var(--ink-0);
 }
 
 .text-ghost {
-  color: var(--ghost);
+  color: var(--ink-3);
 }
 
 .text-halation {
-  color: var(--halation);
+  color: var(--accent);
 }
 
 .bg-deep {
-  background-color: var(--deep);
+  background-color: var(--surface);
 }
 
 .bg-blue {
-  background-color: var(--blue);
+  background-color: var(--bg);
+}
+
+/* Semantic color aliases for dark theme compat */
+.bg-scan {
+  background-color: var(--line);
 }
 
 /* ===========================================
@@ -494,15 +497,15 @@ a,
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--deep);
+  background: var(--surface);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scan);
+  background: var(--line);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--drift);
+  background: var(--ink-4);
 }
 
 /* ===========================================
@@ -524,15 +527,15 @@ body {
    Persistent bottom bar with system info
    =========================================== */
 .status-strip {
-  background: var(--deep);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
   padding: 8px 18px;
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-3);
 }
 
 .status-strip span {
@@ -544,7 +547,7 @@ body {
 .status-strip .status-dot {
   width: 4px;
   height: 4px;
-  background: var(--halation);
+  background: var(--green);
 }
 
 /* ===========================================
@@ -554,7 +557,7 @@ body {
 .header-meta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.35);
+  color: var(--ink-3);
   margin-top: 2px;
 }
 
@@ -569,23 +572,23 @@ body {
 .empty-state-title {
   font-family: var(--font-karla);
   font-size: 15px;
-  font-weight: 700;
-  color: var(--phosphor);
+  font-weight: 600;
+  color: var(--ink-0);
   margin-bottom: 5px;
 }
 
 .empty-state-sub {
   font-family: var(--font-karla);
   font-size: 13px;
-  font-weight: 300;
-  color: rgba(200, 215, 255, 0.5);
+  font-weight: 400;
+  color: var(--ink-3);
   margin-bottom: 1.5rem;
 }
 
 .empty-state-meta {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(200, 215, 255, 0.3);
+  color: var(--ink-4);
 }
 
 /* ===========================================
@@ -601,25 +604,25 @@ body {
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(200, 215, 255, 0.35);
+  color: var(--ink-3);
   text-align: left;
   padding: 8px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--line);
 }
 
 .crt-table td {
   font-family: var(--font-karla);
   font-size: 13px;
-  color: var(--ghost);
+  color: var(--ink-2);
   padding: 9px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 
 .crt-table td.mono {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--phosphor);
+  color: var(--ink-1);
   white-space: nowrap;
 }
 
@@ -632,7 +635,7 @@ body {
    With corner brackets
    =========================================== */
 .panel-card {
-  background: var(--deep);
+  background: var(--surface);
   padding: 18px 22px;
   position: relative;
 }
@@ -650,7 +653,7 @@ body {
   font-family: var(--font-karla);
   font-size: 24px;
   font-weight: 700;
-  color: var(--phosphor);
+  color: var(--ink-0);
   margin-bottom: 3px;
 }
 
@@ -669,44 +672,44 @@ body {
 button[type="button"].inline-flex {
   font-family: var(--font-mono) !important;
   background: transparent !important;
-  border: 1px solid var(--scan) !important;
-  color: var(--phosphor) !important;
+  border: 1px solid var(--line) !important;
+  color: var(--ink-0) !important;
   border-radius: 0 !important;
 }
 
 button[type="button"].inline-flex:hover {
-  border-color: var(--halation) !important;
+  border-color: var(--accent) !important;
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
 button[type="button"].inline-flex:focus {
-  border-color: var(--halation) !important;
+  border-color: var(--accent) !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
 /* Select placeholder */
 button[type="button"].inline-flex .truncate {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   opacity: 0.6;
 }
 
 /* Select value */
 button[type="button"].inline-flex .text-highlighted {
-  color: var(--phosphor) !important;
+  color: var(--ink-0) !important;
 }
 
 /* Select chevron icon */
 button[type="button"].inline-flex svg[data-name="chevron-down"],
 button[type="button"].inline-flex svg[data-name="ChevronDown"] {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
 }
 
 /* Select dropdown content */
 [data-radix-popper-content-wrapper] > div[data-state="open"] > div[id*="radix"],
 div[data-variant="select"] {
-  background: var(--deep) !important;
-  border: 1px solid var(--scan) !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
   border-radius: 0 !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
@@ -715,7 +718,7 @@ div[data-variant="select"] {
 div[data-variant="select"] [data-radix-collection-item],
 div[data-variant="select"] [role="option"] {
   font-family: var(--font-karla) !important;
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   padding: 8px 12px !important;
 }
 
@@ -723,8 +726,8 @@ div[data-variant="select"] [data-radix-collection-item]:hover,
 div[data-variant="select"] [role="option"]:hover,
 div[data-variant="select"] [data-highlighted],
 div[data-variant="select"] [data-state="highlighted"] {
-  background: var(--electric) !important;
-  color: var(--phosphor) !important;
+  background: var(--ink-2) !important;
+  color: var(--ink-0) !important;
   outline: none !important;
 }
 
@@ -737,13 +740,13 @@ div[data-variant="select"] [role="option"] span {
 /* Select checkmark when selected */
 div[data-variant="select"] [data-radix-collection-item][data-state="checked"] svg,
 div[data-variant="select"] [role="option"][data-state="checked"] svg {
-  color: var(--halation) !important;
+  color: var(--accent) !important;
 }
 
 /* Select separator */
 div[data-variant="select"] [role="separator"],
 div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator] {
-  background: var(--scan) !important;
+  background: var(--line) !important;
   height: 1px !important;
   margin: 4px 0 !important;
 }
@@ -751,7 +754,7 @@ div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator]
 /* Select group label */
 div[data-variant="select"] [role="group"] span,
 div[data-variant="select"] [data-radix-collection-item][data-disabled] {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   opacity: 0.5 !important;
 }
 

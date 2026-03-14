@@ -60,7 +60,7 @@ async function deleteFeed(id: number) {
     <!-- Header -->
     <div class="mb-6 bracket-lg px-4 py-3">
       <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-phosphor">
+        <h1 class="text-2xl font-bold text-ink-0">
           {{ t('feeds.title') }}
         </h1>
         <UButtonBracket
@@ -94,7 +94,7 @@ async function deleteFeed(id: number) {
     >
       <UIcon
         name="i-heroicons-rss"
-        class="w-16 h-16 mx-auto text-ghost/30 mb-4"
+        class="w-16 h-16 mx-auto text-ink-3/30 mb-4"
       />
       <div class="empty-state-title">
         {{ t('feeds.noFeeds') }}
@@ -123,13 +123,13 @@ async function deleteFeed(id: number) {
       >
         <div class="flex items-center justify-between">
           <div class="flex-1 min-w-0">
-            <h3 class="font-bold text-phosphor truncate">
+            <h3 class="font-bold text-ink-0 truncate">
               {{ feed.title }}
             </h3>
-            <p class="text-sm font-mono text-ghost/60 truncate">
+            <p class="text-sm font-mono text-ink-3/60 truncate">
               {{ feed.url }}
             </p>
-            <div class="flex gap-4 mt-2 text-xs font-mono text-ghost/40">
+            <div class="flex gap-4 mt-2 text-xs font-mono text-ink-3/40">
               <span>{{ feed.items?.length || 0 }} items</span>
               <span>{{ feed.lastUpdated ? new Date(feed.lastUpdated).toLocaleDateString() : 'never' }}</span>
             </div>
@@ -151,7 +151,7 @@ async function deleteFeed(id: number) {
     <UModal v-model="showAddModal">
       <UCard>
         <template #header>
-          <h2 class="text-lg font-bold text-phosphor">
+          <h2 class="text-lg font-bold text-ink-0">
             {{ t('feeds.addRssFeed') }}
           </h2>
         </template>
