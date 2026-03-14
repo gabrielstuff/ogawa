@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { QBittorrentAdapter } from './qbittorrent'
+import { QBittorrentAdapter } from '../../../server/services/clients/qbittorrent'
 
 const qbitSettings = {
   client: 'qBittorrent' as const,

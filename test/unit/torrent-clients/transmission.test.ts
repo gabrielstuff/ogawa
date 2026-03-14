@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { TransmissionAdapter } from './transmission'
+import { TransmissionAdapter } from '../../../server/services/clients/transmission'
 
 const transmissionSettings = {
   client: 'Transmission' as const,
