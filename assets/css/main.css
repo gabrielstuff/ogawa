@@ -11,7 +11,30 @@
   --font-karla: 'Karla', sans-serif;
   --font-mono: 'Inconsolata', monospace;
 
-  /* Semantic colors — references CSS vars so utilities resolve per-theme */
+  /* Surfaces */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-h: var(--surface-h);
+
+  /* Borders */
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  /* Ink (text) */
+  --color-ink-0: var(--ink-0);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+
+  /* Accent */
+  --color-accent: var(--accent);
+  --color-accent-h: var(--accent-h);
+  --color-accent-t: var(--accent-t);
+
+  /* Semantic colors */
   --color-red: var(--red);
   --color-red-bg: var(--red-bg);
   --color-red-line: var(--red-line);

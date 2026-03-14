@@ -146,7 +146,7 @@ export default defineAppConfig({
         icon: 'shrink-0 size-4 mt-0.5',
         actions: 'flex gap-1.5 shrink-0',
         progress: 'absolute inset-x-0 bottom-0 h-[2px]',
-        close: 'p-0',
+        close: 'p-0 text-ink-3 hover:text-ink-0',
       },
       variants: {
         color: {
