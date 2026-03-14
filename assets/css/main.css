@@ -2,9 +2,8 @@
 @import "@nuxt/ui";
 
 /* ===========================================
-   FLOOD LIGHT DESIGN SYSTEM
-   Torrent Client UI - Light Theme
-   Based on docs/flood_light_theme_guidelines.md
+   DUAL THEME DESIGN SYSTEM
+   CRT Signal (Dark) + Flood Light (Light)
    =========================================== */
 
 @theme {
@@ -14,9 +13,10 @@
 }
 
 /* ===========================================
-   CSS CUSTOM PROPERTIES - FLOOD LIGHT
+   LIGHT THEME (Default) - Flood Light
    =========================================== */
-:root {
+:root,
+.light {
   /* Surfaces */
   --bg: #F4F5FD;
   --surface: #EBEEFF;
@@ -51,10 +51,6 @@
   --amber-bg: #FFF9E6;
   --amber-line: #F0D97A;
 
-  /* Typography */
-  --font-karla: 'Karla', sans-serif;
-  --font-mono: 'Inconsolata', monospace;
-
   /* Semantic mappings for Nuxt UI */
   --color-background: var(--bg);
   --color-foreground: var(--ink-1);
@@ -75,6 +71,66 @@
   --color-card-foreground: var(--ink-1);
   --color-popover: var(--surface);
   --color-popover-foreground: var(--ink-1);
+}
+
+/* ===========================================
+   DARK THEME - CRT Signal
+   =========================================== */
+.dark {
+  /* Surfaces */
+  --bg: #1633CC;
+  --surface: #0E1E8A;
+  --surface-2: #071266;
+  --surface-3: #051244;
+  --surface-h: #1a3ce6;
+
+  /* Lines & Borders */
+  --line: #4464F5;
+  --line-strong: #6685FF;
+
+  /* Ink (Text) */
+  --ink-0: #EFF3FF;
+  --ink-1: #B8C8FF;
+  --ink-2: #96AAFF;
+  --ink-3: #6685FF;
+  --ink-4: #4464F5;
+
+  /* Accent */
+  --accent: #B8C8FF;
+  --accent-h: #96AAFF;
+  --accent-t: #1e3a8a;
+
+  /* Semantic */
+  --red: #FF4466;
+  --red-bg: rgba(255, 68, 102, 0.15);
+  --red-line: #FF4466;
+  --green: #44FF99;
+  --green-bg: rgba(68, 255, 153, 0.15);
+  --green-line: #44FF99;
+  --amber: #FFD166;
+  --amber-bg: rgba(255, 209, 102, 0.15);
+  --amber-line: #FFD166;
+
+  /* Semantic mappings for Nuxt UI */
+  --color-background: var(--bg);
+  --color-foreground: var(--ink-0);
+  --color-primary: var(--ink-0);
+  --color-primary-foreground: var(--surface);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--ink-0);
+  --color-muted: var(--surface-2);
+  --color-muted-foreground: var(--ink-2);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--surface-2);
+  --color-destructive: var(--red);
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink-0);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink-0);
 }
 
 /* ===========================================
@@ -103,64 +159,6 @@ body {
   min-height: 100dvh;
   background-color: var(--color-background);
   color: var(--color-foreground);
-}
-
-/* ===========================================
-   FORCE DARK MODE
-   Override any light mode styles
-   =========================================== */
-html {
-  color-scheme: dark;
-}
-
-html.dark,
-.dark {
-  --color-bg: var(--blue);
-  --color-text: var(--phosphor);
-}
-
-/* Force all surfaces to use dark colors */
-.bg-default,
-.bg-surface-50,
-.bg-white,
-.bg-gray-50,
-.bg-gray-100,
-.bg-gray-200 {
-  background-color: var(--deep) !important;
-}
-
-.text-default,
-.text-gray-50,
-.text-gray-100,
-.text-gray-200,
-.text-gray-300,
-.text-gray-400,
-.text-gray-500,
-.text-gray-600,
-.text-gray-700,
-.text-gray-800,
-.text-gray-900 {
-  color: var(--ghost) !important;
-}
-
-.text-highlighted {
-  color: var(--phosphor) !important;
-}
-
-/* Override light mode borders */
-.border-default,
-.border-gray-100,
-.border-gray-200,
-.border-gray-300,
-.border-gray-400 {
-  border-color: var(--scan) !important;
-}
-
-/* Input backgrounds */
-input,
-textarea,
-select {
-  background-color: transparent !important;
 }
 
 /* ===========================================
@@ -255,8 +253,8 @@ select {
    Three types: Primary, Ghost, Bracketed
    =========================================== */
 .btn-primary {
-  background: var(--phosphor);
-  color: var(--deep);
+  background: var(--ink-0);
+  color: var(--surface);
   border: none;
   font-family: var(--font-karla);
   font-weight: 700;
@@ -272,15 +270,15 @@ select {
 }
 
 .btn-primary:hover {
-  background: var(--static);
+  background: var(--accent-t);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--phosphor);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--ink-0);
+  border: 1px solid var(--line-strong);
   font-family: var(--font-karla);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -438,24 +436,30 @@ select {
   font-family: var(--font-mono);
 }
 
+/* Legacy aliases for backward compatibility */
 .text-phosphor {
-  color: var(--phosphor);
+  color: var(--ink-0);
 }
 
 .text-ghost {
-  color: var(--ghost);
+  color: var(--ink-3);
 }
 
 .text-halation {
-  color: var(--halation);
+  color: var(--accent);
 }
 
 .bg-deep {
-  background-color: var(--deep);
+  background-color: var(--surface);
 }
 
 .bg-blue {
-  background-color: var(--blue);
+  background-color: var(--bg);
+}
+
+/* Semantic color aliases for dark theme compat */
+.bg-scan {
+  background-color: var(--line);
 }
 
 /* ===========================================
@@ -493,15 +497,15 @@ a,
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--deep);
+  background: var(--surface);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scan);
+  background: var(--line);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--drift);
+  background: var(--ink-4);
 }
 
 /* ===========================================
@@ -631,7 +635,7 @@ body {
    With corner brackets
    =========================================== */
 .panel-card {
-  background: var(--deep);
+  background: var(--surface);
   padding: 18px 22px;
   position: relative;
 }
@@ -649,7 +653,7 @@ body {
   font-family: var(--font-karla);
   font-size: 24px;
   font-weight: 700;
-  color: var(--phosphor);
+  color: var(--ink-0);
   margin-bottom: 3px;
 }
 
@@ -668,44 +672,44 @@ body {
 button[type="button"].inline-flex {
   font-family: var(--font-mono) !important;
   background: transparent !important;
-  border: 1px solid var(--scan) !important;
-  color: var(--phosphor) !important;
+  border: 1px solid var(--line) !important;
+  color: var(--ink-0) !important;
   border-radius: 0 !important;
 }
 
 button[type="button"].inline-flex:hover {
-  border-color: var(--halation) !important;
+  border-color: var(--accent) !important;
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
 button[type="button"].inline-flex:focus {
-  border-color: var(--halation) !important;
+  border-color: var(--accent) !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
 /* Select placeholder */
 button[type="button"].inline-flex .truncate {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   opacity: 0.6;
 }
 
 /* Select value */
 button[type="button"].inline-flex .text-highlighted {
-  color: var(--phosphor) !important;
+  color: var(--ink-0) !important;
 }
 
 /* Select chevron icon */
 button[type="button"].inline-flex svg[data-name="chevron-down"],
 button[type="button"].inline-flex svg[data-name="ChevronDown"] {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
 }
 
 /* Select dropdown content */
 [data-radix-popper-content-wrapper] > div[data-state="open"] > div[id*="radix"],
 div[data-variant="select"] {
-  background: var(--deep) !important;
-  border: 1px solid var(--scan) !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
   border-radius: 0 !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
@@ -714,7 +718,7 @@ div[data-variant="select"] {
 div[data-variant="select"] [data-radix-collection-item],
 div[data-variant="select"] [role="option"] {
   font-family: var(--font-karla) !important;
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   padding: 8px 12px !important;
 }
 
@@ -722,8 +726,8 @@ div[data-variant="select"] [data-radix-collection-item]:hover,
 div[data-variant="select"] [role="option"]:hover,
 div[data-variant="select"] [data-highlighted],
 div[data-variant="select"] [data-state="highlighted"] {
-  background: var(--electric) !important;
-  color: var(--phosphor) !important;
+  background: var(--ink-2) !important;
+  color: var(--ink-0) !important;
   outline: none !important;
 }
 
@@ -736,13 +740,13 @@ div[data-variant="select"] [role="option"] span {
 /* Select checkmark when selected */
 div[data-variant="select"] [data-radix-collection-item][data-state="checked"] svg,
 div[data-variant="select"] [role="option"][data-state="checked"] svg {
-  color: var(--halation) !important;
+  color: var(--accent) !important;
 }
 
 /* Select separator */
 div[data-variant="select"] [role="separator"],
 div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator] {
-  background: var(--scan) !important;
+  background: var(--line) !important;
   height: 1px !important;
   margin: 4px 0 !important;
 }
@@ -750,7 +754,7 @@ div[data-variant="select"] [data-radix-collection-item] + [data-radix-separator]
 /* Select group label */
 div[data-variant="select"] [role="group"] span,
 div[data-variant="select"] [data-radix-collection-item][data-disabled] {
-  color: var(--ghost) !important;
+  color: var(--ink-3) !important;
   opacity: 0.5 !important;
 }
 

@@ -6,6 +6,7 @@ definePageMeta({
 })
 
 const { t, locale, locales, setLocale } = useI18n()
+const colorMode = useColorMode()
 
 useHead({
   title: computed(() => `${t('settings.title')} - Ogawa`),
@@ -26,8 +27,13 @@ const clientHost = ref('')
 const clientPort = ref(58846)
 
 // UI settings
-const theme = ref('system')
+const theme = ref(colorMode.value === 'system' ? 'system' : colorMode.value)
 const itemsPerPage = ref(20)
+
+// Watch theme changes and update colorMode
+watch(theme, (newTheme) => {
+  colorMode.preference = newTheme
+})
 
 // Download settings
 const defaultDownloadPath = ref('')
